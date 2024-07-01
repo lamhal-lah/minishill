@@ -6,7 +6,7 @@
 #    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/06/13 06:57:13 by lamhal           ###   ########.fr        #
+#    Updated: 2024/07/01 18:10:59 by lamhal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 CC = cc -fsanitize=address -g
 CFLAGS = -Wall -Werror -Wextra 
 
-SRC = minishell.c parsing/parsing.c  utils/libft_utils.c utils/linked_lst.c utils/linked_lst2.c
+SRC = minishell.c parsing/parsing.c parsing/syntaxe_error.c utils/libft_utils.c \
+	utils/linked_lst.c utils/linked_lst2.c parsing/env.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/06/13 00:43:38 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/01 18:15:58 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,29 @@
 int	main(int ac, char **av, char **env)
 {
 	t_list	*lst;
+	t_list	*tmp;
+	t_env	*env_lst;
+	char	*line;
 
 	(void)ac;
 	(void)av;
-	(void)env;
 	lst = NULL;
-	char	*line;
-	char	*msg;
-
-	msg = "minishell:  ";
-	line = readline(msg);
-	while (line)
+	env_lst = ft_env(env);
+	
+	line = readline("minishell:  ");
+	while (line && ft_strncmp(line, "exit", 5))
 	{
+		// system("leaks minishell");
 		proccess_line(line, &lst);
-		while (lst)
+		tmp = lst;
+		while (tmp)
 		{
-			printf("%s\n", lst->content);
-			lst = lst->next;
+			printf("%s-- %d\n", tmp->content, tmp->type);
+			tmp = tmp->next;
 		}
 		free(line);
-		line = readline(msg);
+		check_syntaxe_error(lst);
+		ft_lstclear(&lst);
+		line = readline("minishell:  ");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:02:43 by lamhal            #+#    #+#             */
-/*   Updated: 2024/06/12 18:02:17 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/01 16:42:30 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	if (!tmp)
 		*lst = new;
 	else
-		tmp -> next = new;
+		tmp->next = new;
 }
 
 void	ft_lstadd_front(t_list **l, t_list *new)
@@ -55,4 +55,21 @@ void	ft_lstadd_front(t_list **l, t_list *new)
 		return ;
 	new -> next = *l;
 	*l = new;
+}
+
+
+void	ft_lstclear(t_list **lst)
+{
+	t_list	*tmp;
+
+	if (!lst)
+		return ;
+	while (*lst)
+	{
+		tmp = *lst;
+		*lst = (*lst)-> next;
+		free(tmp->content);
+        free(tmp);
+	}
+    lst = NULL;
 }

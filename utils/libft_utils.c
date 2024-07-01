@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:40:50 by lamhal            #+#    #+#             */
-/*   Updated: 2024/06/11 17:53:49 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/06/30 17:37:01 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*ft_strdup(const char *s1)
 	i = 0;
 	s = malloc(ft_strlen(s1) * sizeof(char) + 1);
 	if (!s)
-		return (0);
+		(write(2, "allocation failed\n", 19), exit (EXIT_FAILURE));
 	while (s1[i])
 	{
 		s[i] = s1[i];
@@ -79,7 +79,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s + start);
 	ptr = malloc (len + 1);
 	if (!ptr)
-		return (NULL);
+		(write(1, "allocation failed", 2), exit (EXIT_FAILURE));
 	while (i < len)
 		ptr[i++] = s[start++];
 	ptr[i] = '\0';
