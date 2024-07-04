@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/01 16:14:32 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:10:49 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,26 @@ int	find_type(char *str)
 		return (3);
 	else if (ft_strncmp(str, ">>", 3) == 0)
 		return (4);
-	else if (ft_strncmp(str, "\"", 1) == 0)
+	else if (str[0] == '\"')
 		return (5);
-	else if (ft_strncmp(str, "\'", 1) == 0)
+	else if (str[0] == '\'')
 		return (6);
-	else if (ft_strncmp(str, "$", 1) == 0)
+	else if (str[0] == '$')
 		return (7);
-	return (8);
+	else if (str[0] == ' ')
+		return (8);
+	return (9);
 }	
 
+void	handl_quotes(char *line, int *i)
+{
+	char	c;
+	
+	c = line[*i];
+	*i += 1;
+	while (line[*i] && line[*i] != c)
+		*i += 1;
+}
 
 // void	add_to_list(t_list **lst, char *token)
 // {
@@ -44,33 +55,52 @@ int	find_type(char *str)
 // 	ft_lstadd_back(lst, node);
 // }
 
-static void	get_token(char *line ,char **token , int *i)
+static char	*get_token(char *line , int *i)
 {
 	int		len;
 	char	c;
+	char	*token;
 	
+	token = NULL;
 	len = *i;
+	if (line[len] == ' ' || line[len] == '\t')
+	{
+		while (line[*i] == ' ' || line[*i] == '\t')
+			*i += 1;
+		if (line[*i] == '\0')
+			return (NULL);
+		return (ft_strdup(" "));
+	}
 	if (line[len] == 39 || line[len] == 34)
 	{
 		c = line[len++];
-		while (line[len] && line[len] != c)
+		while ( line[len] &&line[len] && line[len] != c)
 			len++;
 		len += 1 - *i;
 	}
 	else if ((line[len] == '>' && line[len + 1] == '>') ||
-			(line[len] == '<' && line[len + 1] == '<') || (line[len] == '$' && line[len + 1] >= '0' && line[len + 1] <= '9'))
+			(line[len] == '<' && line[len + 1] == '<'))
 		len = 2;
 	else if (line[len] == '|' || line[len] == '>' || line[len] == '<')
 		len = 1;
-	else if (line[len] != ' ' && line[len] != '\t')
+	else if(line[len++] == '$')
 	{
-		while (line[len] && line [len] != ' ' && line[len] != '\t' && 
-			line[len] != '|' && line[len] != '>' && line[len] != '<')
+		while ((line[len] >= 'a' && line[len] <= 'z') ||
+			(line[len] >= 'A' && line[len] <= 'Z') || line[len] == '_' ||
+			(line[len] >= '0' && line[len] <= '9'))
 			len++;
 		len -= *i;
 	}
-	*token = ft_substr(line, *i, len);
+	else if (line[len] != ' ' && line[len] != '\t' && line[len] != '$')
+	{
+		while (line[len] && line [len] != ' ' && line[len] != '\t' && 
+			line[len] != '|' && line[len] != '>' && line[len] != '<' && line[len] != '$')
+			len++;
+		len -= *i;
+	}
+	token = ft_substr(line, *i, len);
 	*i += len;
+	return (token);
 }
 
 void	proccess_line(char *line, t_list **lst)
@@ -82,13 +112,11 @@ void	proccess_line(char *line, t_list **lst)
 	node = NULL;
 	token = NULL;
 	i = 0;
-	if (check_couts(line))
-		return ;
+	while (line[i] == ' ' || line [i] == '\t')
+			i++;
 	while (line && line[i] && line[i] != '\n')
 	{
-		while (line[i] == ' ' || line [i] == '\t')
-			i++;
-		get_token(line, &token, &i);
+		token = get_token(line, &i);
 		//add_to_list(lst, token);
 		if (token && *token)
 		{
@@ -98,5 +126,6 @@ void	proccess_line(char *line, t_list **lst)
 			node->type = find_type(token);
 			ft_lstadd_back(lst, node);
 		}
+		remove_quotes(*lst);
 	}
 }

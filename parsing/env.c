@@ -6,12 +6,27 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/01 18:17:42 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/04 15:09:35 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+
+char   *ft_getenv(char *key, t_env *env)
+{
+    t_env *tmp;
+    // char *value;
+
+    tmp = env;
+    while (tmp->next)
+    {
+        if (ft_strncmp(key, tmp->key, ft_strlen(key)) == 0)
+            return (tmp->value);
+        tmp = tmp->next;
+    }
+    return (NULL);
+}
 t_env    *ft_env(char **env)
 {
     int i;
@@ -31,7 +46,7 @@ t_env    *ft_env(char **env)
         if (head == NULL)
             head = tmp;
         else
-            ft_lstadd_back_env(&head, ft_lstnew_env(env[i]));
+            ft_lstadd_back_env(&head, tmp);
         i++;
     }
     return (head);

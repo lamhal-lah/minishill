@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/01 18:14:32 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/04 09:28:47 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,31 @@
 # include <readline/readline.h>
 # include <stdio.h>
 
+typedef enum
+{
+	Pipe,
+	red_out,
+	red_in,
+	herdoc,
+	append,
+	dquot,
+	squot,
+	var,
+	space,
+	word,
+}	t_type;
+
 typedef struct s_list
 {
 	char			*content;
-	int				type;
+	t_type			type;
 	struct s_list	*next;
 }	t_list;
 
 typedef struct s_env
 {
-	char			*env;
+	char			*key;
+	char			*value;
 	struct s_env	*next;
 }	t_env;
 
@@ -50,5 +65,9 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new);
 void	ft_lstadd_front_env(t_env **l, t_env *new);
 void	ft_lstclear_env(t_env **lst);
 t_env	*ft_env(char **env);
+void	 remove_quotes(t_list *list);
+char	*get_env(char *var, t_env *env);
+char	*ft_strjoin_free(char *str1, char *str2);
+char	*ft_strchr(const char *s, int c);
 
 #endif

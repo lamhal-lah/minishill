@@ -6,22 +6,47 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 06:50:25 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/01 17:02:40 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/04 15:10:11 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env	*ft_lstnew_env(char *env)
-{
-	t_env	*node;
+// t_env	*ft_lstnew_env(char *env)
+// {
+// 	t_env	*node;
 
-	node = (t_env *)malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
-	node -> env = env;
-	node -> next = NULL;
-	return (node);
+// 	node = (t_env *)malloc(sizeof(t_env));
+// 	if (!node)
+// 		return (NULL);
+// 	node -> key = ;
+// 	node -> next = NULL;
+// 	return (node);
+// }
+
+t_env    *ft_lstnew_env(char *env)
+{
+    t_env *new;
+    char *equal_sign;
+
+    new = (t_env *)malloc(sizeof(t_env));
+    if (!new)
+        return (NULL);
+    equal_sign = ft_strchr(env, '=');
+    if (equal_sign)
+    {
+		new->key = ft_substr(env, 0, equal_sign - env);
+        new->value = ft_strdup(equal_sign + 1);
+        //new->type = 1;
+    }
+    else
+    {
+        new->key = ft_strdup(env);
+        new->value = NULL;
+        //new->type = 0;
+    }
+    new->next = NULL;
+    return (new);
 }
 
 t_env	*ft_lstlast_env(t_env *lst)
@@ -68,7 +93,8 @@ void	ft_lstclear_env(t_env **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)-> next;
-		free(tmp->env);
+		free(tmp->key);
+		free(tmp->value);
         free(tmp);
 	}
     lst = NULL;
