@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/04 09:28:47 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/30 14:31:56 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ typedef enum
 	word,
 }	t_type;
 
+typedef struct s_cmds
+{
+	int fdin;
+	int fdout;
+	char **av;
+	struct s_cmds *next;	
+}t_cmds;
+
 typedef struct s_list
 {
 	char			*content;
@@ -56,9 +64,8 @@ void	ft_putstr_fd(char *s, int fd);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	proccess_line(char *line, t_list **lst);
+void	proccess_line(char *line, t_list **lst, t_env *env);
 int		check_syntaxe_error(t_list *lst);
-int		check_couts(char *line);
 t_env	*ft_lstnew_env(char *env);
 t_env	*ft_lstlast_env(t_env *lst);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -66,8 +73,9 @@ void	ft_lstadd_front_env(t_env **l, t_env *new);
 void	ft_lstclear_env(t_env **lst);
 t_env	*ft_env(char **env);
 void	 remove_quotes(t_list *list);
-char	*get_env(char *var, t_env *env);
+char   *ft_getenv(char *key, t_env *env);
 char	*ft_strjoin_free(char *str1, char *str2);
 char	*ft_strchr(const char *s, int c);
+void	expand(t_list *lst, t_env *env);
 
 #endif

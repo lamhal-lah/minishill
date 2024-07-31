@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:02:43 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/01 16:42:30 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/30 11:00:21 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_lstclear(t_list **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)-> next;
-		free(tmp->content);
+		//free(tmp->content);
         free(tmp);
 	}
     lst = NULL;

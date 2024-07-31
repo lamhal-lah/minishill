@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/03 10:36:18 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/30 15:18:03 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av, char **env)
 	{
 		add_history(line);
 		// system("leaks minishell");
-		proccess_line(line, &lst);
+		proccess_line(line, &lst, env_lst);
 		tmp = lst;
 		while (tmp)
 		{
@@ -36,7 +36,6 @@ int	main(int ac, char **av, char **env)
 			tmp = tmp->next;
 		}
 		free(line);
-		check_syntaxe_error(lst);
 		ft_lstclear(&lst);
 		line = readline("minishell:  ");
 	}

@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/04 15:10:43 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/07/30 18:34:41 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	 remove_quotes(t_list *list)
 	{
 		if(tmp->content[0] == '\'' || tmp->content[0] == '\"')
 		{
-			free(tmp->content);
+			//free(tmp->content);
 			tmp->content = ft_substr(tmp->content, 1, ft_strlen(tmp->content) - 2);
 		}
 		tmp = tmp->next;
@@ -34,26 +34,120 @@ char	*expand_var(char *varaible, t_env *env)
 {
 	char	*tmp;
 
+	if (!varaible[1])
+		return(varaible);
 	tmp = varaible;
-	varaible = get_env(varaible + 1, env);
+	varaible = ft_getenv(varaible + 1, env);
 	free(tmp);
 	return varaible;
 }
 
-// void	expand_dqout(char *str, t_env *env)
+// char	**split_str(char *str, t_env *env , int *l)
 // {
-// 	char	*variab;
-// 	char	*prev;
-
-// 	while (str)
-// 	{
-// 		variab = ft_strchr(str, '$');
-// 		prev = ft_substr(str, 0, str - variab);
-		
-// 	}
+// 	char	**strs;
+// 	int		i;
+// 	int		k;
+// 	int		j;
 	
+// 	strs = NULL;
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i])
+// 	{
+// 		k = i;
+// 		if (str[i] == '$')
+// 		{
+// 			i++;
+// 			while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') ||
+// 			(str[i] >= 'A' && str[i] <= 'Z') || str[i] == '_' ||
+// 			(str[i] >= '0' && str[i] <= '9')))
+// 			i++;
+// 		}
+// 		else
+// 			while(str[i] && str[i] != '$')
+// 				i++;
+
+// 		strs[j] = ft_substr(str, k, i - k + 1);
+// 		if (strs[j] && strs[j][0] == '$')
+// 			strs[j] = expand_var(strs[j], env);
+// 		j++;
+// 	}
+// 	*l = j;
+// 	return(strs);
 // }
 
+// char	*expand_dquot(char *str,t_env *env)
+// {
+// 	char	**strs;
+// 	int		i;
+// 	int		nbr_str = 0;
+
+// 	strs = split_str(str, env, &i);
+// 	// while(strs)
+// 	// {
+// 	// 	printf("%s->", *strs);
+// 	// 	strs++;
+// 	// }
+// 	// exit(0);
+// 	i = 0;
+// 	free(str);
+// 	if (nbr_str == 1)
+// 		return (&str[0]);
+// 	str = ft_strjoin_free(strs[i], strs[i + 1]);
+// 	if (nbr_str == 2)
+// 		return (str);
+// 	i = 2;
+// 	while (i < nbr_str)
+// 	{
+// 		str = ft_strjoin_free(str, &str[i]);
+// 		i++;
+// 	}
+// 	return (str);
+// }
+
+char	*expand_dquot(char *str,t_env *env)
+{
+	char	**strs;
+	int		i;
+	int		nbr_str = 0;
+
+	strs = split_str(str, env, &i);
+	// while(strs)
+	// {
+	// 	printf("%s->", *strs);
+	// 	strs++;
+	// }
+	// exit(0);
+	i = 0;
+	free(str);
+	if (nbr_str == 1)
+		return (&str[0]);
+	str = ft_strjoin_free(strs[i], strs[i + 1]);
+	if (nbr_str == 2)
+		return (str);
+	i = 2;
+	while (i < nbr_str)
+	{
+		str = ft_strjoin_free(str, &str[i]);
+		i++;
+	}
+	return (str);
+}
+
+void	expand(t_list *lst, t_env *env)
+{
+	t_list	*tmp;
+
+	tmp = lst;
+	while (tmp)
+	{
+		if (tmp->type == var)
+			tmp->content = expand_var(tmp->content, env);
+		else if (tmp->type == dquot)
+			tmp->content = expand_dquot(tmp->content, env);
+		tmp=tmp->next;
+	}
+}
 // void	expand(t_list *lst, t_env *env)
 // {
 // 	t_list *tmp;
@@ -123,10 +217,6 @@ char	*expand_var(char *varaible, t_env *env)
 // 	return (str);
 // }
 
-// char	*expan_varaible(char *var, t_env *env)
-// {
-	
-// }
 
 // char	*expan_varaible(char *var, t_env *env)
 // {
