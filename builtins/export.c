@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:17:46 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/07 16:44:08 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,28 +94,28 @@ int	ft_if(char *str, char **new_key, char **new_value, t_env **env)
 	return (1);
 }
 
-void	export(char **av, t_env **env, int i)
+void	export(char **args, t_env **env, int i)
 {
 	t_env	*tmp;
 	t_env	*new;
 	char	*new_key;
 	char	*new_value;
 
-	while (++i && av[i])
+	while (++i && args[i])
 	{
 		(1) && (tmp = *env, new_key = NULL, new_value = NULL);
-		if (ft_fill(&new_key, &new_value, av[i]))
+		if (ft_fill(&new_key, &new_value, args[i]))
 			new_key = NULL;
 		else
 		{
 			while (tmp)
 			{
-				if (!ft_if(av[i], &new_key, &new_value, &tmp))
+				if (!ft_if(args[i], &new_key, &new_value, &tmp))
 					break ;
 				tmp = tmp->next;
 				if (!tmp)
 				{
-					if (help_export(env, &new, av[i]))
+					if (help_export(env, &new, args[i]))
 						return ;
 					free(new_value);
 					break ;
@@ -124,17 +124,17 @@ void	export(char **av, t_env **env, int i)
 		}
 		free(new_key);
 	}
-	ft_print_export(av, *env);
+	ft_print_export(args, *env);
 }
 
-void	ft_print_export(char **av, t_env *env)
+void	ft_print_export(char **args, t_env *env)
 {
 	t_env	*tmp;
 	int		i;
 
 	tmp = env;
 	i = 0;
-	while (av[i])
+	while (args[i])
 		i++;
 	if (i == 1)
 	{

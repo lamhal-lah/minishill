@@ -6,16 +6,20 @@
 #    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/07/30 16:08:39 by lamhal           ###   ########.fr        #
+#    Updated: 2024/08/11 11:21:17 by lamhal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc 
-CFLAGS = -Wall -Werror -Wextra 
+CC = cc -g -fsanitize=address 
+CFLAGS = -Wall -Werror -Wextra
 
-SRC = minishell.c parsing/parsing.c parsing/syntaxe_error.c utils/libft_utils.c \
-	utils/linked_lst.c utils/linked_lst2.c parsing/env.c parsing/expand.c utils/libft_utils2.c \
+SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c \
+	builtins/unset.c builtins/utils.c builtins/utils2.c execution/execute_bonus.c \
+	execution/pipex_bonus.c execution/search_for_path.c parsing/env.c parsing/expand.c \
+	parsing/handl_cmd.c parsing/parsing.c parsing/syntaxe_error.c utils/ft_split.c \
+	utils/libft_utils.c utils/libft_utils2.c utils/linked_lst.c utils/linked_lst2.c \
+	utils/linked_lst3.c minishell.c
 
 OBJ = $(SRC:.c=.o)
 

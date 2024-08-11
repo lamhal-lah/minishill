@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/30 18:34:41 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/08 12:04:26 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,123 +15,139 @@
 void	 remove_quotes(t_list *list)
 {
 	t_list	*tmp;
+    char    *tmp_var;
 
 	if (!list)
 		return ;
 	tmp = list;
 	while (tmp)
 	{
-		if(tmp->content[0] == '\'' || tmp->content[0] == '\"')
+		if(tmp->type == squot || tmp->type == dquot)
 		{
-			//free(tmp->content);
+			tmp_var = tmp->content;
 			tmp->content = ft_substr(tmp->content, 1, ft_strlen(tmp->content) - 2);
+            free(tmp_var);
 		}
 		tmp = tmp->next;
 	}
 }
 
-char	*expand_var(char *varaible, t_env *env)
+char	*expand_var_dqout(char *varaible, t_env *env)
 {
 	char	*tmp;
 
-	if (!varaible[1])
+	if ( varaible && !varaible[1])
 		return(varaible);
 	tmp = varaible;
 	varaible = ft_getenv(varaible + 1, env);
-	free(tmp);
+    if(!varaible)
+        return (NULL);
+    varaible = ft_strdup(varaible);
+    free(tmp);
 	return varaible;
 }
 
-// char	**split_str(char *str, t_env *env , int *l)
-// {
-// 	char	**strs;
-// 	int		i;
-// 	int		k;
-// 	int		j;
-	
-// 	strs = NULL;
-// 	i = 0;
-// 	j = 0;
-// 	while (str[i])
-// 	{
-// 		k = i;
-// 		if (str[i] == '$')
-// 		{
-// 			i++;
-// 			while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') ||
-// 			(str[i] >= 'A' && str[i] <= 'Z') || str[i] == '_' ||
-// 			(str[i] >= '0' && str[i] <= '9')))
-// 			i++;
-// 		}
-// 		else
-// 			while(str[i] && str[i] != '$')
-// 				i++;
-
-// 		strs[j] = ft_substr(str, k, i - k + 1);
-// 		if (strs[j] && strs[j][0] == '$')
-// 			strs[j] = expand_var(strs[j], env);
-// 		j++;
-// 	}
-// 	*l = j;
-// 	return(strs);
-// }
-
-// char	*expand_dquot(char *str,t_env *env)
-// {
-// 	char	**strs;
-// 	int		i;
-// 	int		nbr_str = 0;
-
-// 	strs = split_str(str, env, &i);
-// 	// while(strs)
-// 	// {
-// 	// 	printf("%s->", *strs);
-// 	// 	strs++;
-// 	// }
-// 	// exit(0);
-// 	i = 0;
-// 	free(str);
-// 	if (nbr_str == 1)
-// 		return (&str[0]);
-// 	str = ft_strjoin_free(strs[i], strs[i + 1]);
-// 	if (nbr_str == 2)
-// 		return (str);
-// 	i = 2;
-// 	while (i < nbr_str)
-// 	{
-// 		str = ft_strjoin_free(str, &str[i]);
-// 		i++;
-// 	}
-// 	return (str);
-// }
-
-char	*expand_dquot(char *str,t_env *env)
+void	expand_var(char *var, t_env *env, t_list **lst)
 {
+    char    *tmp;    
 	char	**strs;
 	int		i;
-	int		nbr_str = 0;
-
-	strs = split_str(str, env, &i);
-	// while(strs)
-	// {
-	// 	printf("%s->", *strs);
-	// 	strs++;
-	// }
-	// exit(0);
-	i = 0;
-	free(str);
-	if (nbr_str == 1)
-		return (&str[0]);
-	str = ft_strjoin_free(strs[i], strs[i + 1]);
-	if (nbr_str == 2)
-		return (str);
-	i = 2;
-	while (i < nbr_str)
+	t_list	*node;
+	
+	i = 1;
+	tmp = var;
+	var = ft_getenv(var + 1, env);
+    if(!var)
 	{
-		str = ft_strjoin_free(str, &str[i]);
-		i++;
+		(*lst)->content = NULL;
+		//ft_remove_node(lst);
+		free(tmp); 
+    	return ;
 	}
-	return (str);
+	free(tmp);
+	var = ft_strdup(var);
+	if (!var)
+		return ;
+	strs = ft_split(var);
+	if (!strs)
+		return ;
+	free(var);
+	if (!strs[0])
+		return ;
+	(*lst)->content = strs[0];
+	while(strs[i])
+	{
+		node = ft_lstnew(ft_strdup(" "));
+		node->type = space;
+		ft_lstadd_midl(lst, node);
+		(*lst) = (*lst)->next;
+		node = ft_lstnew(strs[i++]);
+		node->type = word;
+		ft_lstadd_midl(lst, node);
+		(*lst) = (*lst)->next;
+	}
+}
+
+char    *get_str(char *str, int *indx, t_env *env)
+{
+    int i;
+    char    *str1;
+    int    k;
+
+    i = *indx;
+    k = *indx;
+    if (str[i] == '$')
+    {
+        i++;
+        while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') ||
+                (str[i] >= 'A' && str[i] <= 'Z') || str[i] == '_' ||
+            (str[i] >= '0' && str[i] <= '9')))
+            i++;
+    }
+    else
+        while(str[i] && str[i] != '$')
+            i++;
+    str1 = ft_substr(str, k, i - k);
+    if (str1 && str1[0] == '$')
+        str1 = expand_var_dqout(str1, env);
+    *indx = i;
+    return (str1);
+}
+
+char    *expand_dquot(char *str, t_env *env)
+{
+    char    *str1;
+    char    *str2;
+    int        i;
+
+    i = 0;
+    str1 = get_str(str, &i, env);
+    while(str[i])
+    {
+        str2 = get_str(str, &i, env);
+        str1 = ft_strjoin_free(str1, str2);
+    }
+    free(str);
+    return (str1);
+}
+
+void	remove_empty_node(t_list **lst)
+{
+	t_list	*tmp;
+
+	tmp = *lst;
+	while(tmp && tmp->next)
+	{
+		if (tmp->next->type == space && tmp->next->next->content == NULL)
+		{
+			ft_remove_node(&tmp->next);
+			ft_remove_node(&tmp->next);
+		}
+		else if(tmp->next->content == NULL)
+			ft_remove_node(&tmp->next);
+		else
+			tmp = tmp->next;
+	}
 }
 
 void	expand(t_list *lst, t_env *env)
@@ -142,11 +158,12 @@ void	expand(t_list *lst, t_env *env)
 	while (tmp)
 	{
 		if (tmp->type == var)
-			tmp->content = expand_var(tmp->content, env);
-		else if (tmp->type == dquot)
+			expand_var(tmp->content, env, &tmp);
+		if (tmp->type == dquot)
 			tmp->content = expand_dquot(tmp->content, env);
-		tmp=tmp->next;
+		tmp && (tmp = tmp->next);
 	}
+	remove_empty_node(&lst);
 }
 // void	expand(t_list *lst, t_env *env)
 // {

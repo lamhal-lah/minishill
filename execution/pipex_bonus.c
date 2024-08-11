@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/07 10:44:02 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:18:32 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,16 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 			tmp = tmp->next;
 			i++;
 		}
-		if (tmp)
+		if (tmp->next == NULL)
 			status = last_command(tmp, envp, find_path(*tmp->args, env), fd);
 	}
-	else if (tmp && ft_cmdsize(tmp) == 2)
-	{
-		ft_first_command(tmp, envp, find_path(*tmp->args, env), fd);
-		tmp = tmp->next;
-		if (tmp)
-			status = last_command(tmp, envp, find_path(*tmp->args, env), fd);
-	}
+	// else if (tmp && ft_cmdsize(tmp) == 2)
+	// {
+	// 	ft_first_command(tmp, envp, find_path(*tmp->args, env), fd);
+	// 	tmp = tmp->next;
+	// 	if (tmp)
+	// 		status = last_command(tmp, envp, find_path(*tmp->args, env), fd);
+	// }
 	else
 		status = last_command(tmp, envp, find_path(*tmp->args, env), fd);
 	while(wait(NULL) > 0)

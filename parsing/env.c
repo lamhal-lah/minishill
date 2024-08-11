@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/07/04 15:09:35 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/05 11:16:26 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char   *ft_getenv(char *key, t_env *env)
     tmp = env;
     while (tmp->next)
     {
-        if (ft_strncmp(key, tmp->key, ft_strlen(key)) == 0)
+        if (ft_strncmp(key, tmp->key, ft_strlen(key) + 1) == 0)
             return (tmp->value);
         tmp = tmp->next;
     }

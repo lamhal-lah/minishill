@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 18:12:27 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/07 11:11:37 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	chekc_string(char *str, char c)
 	return (1);
 }
 
-void	echo(char **av)
+void	echo(char **args)
 {
 	int	i;
 	int	j;
@@ -35,9 +35,9 @@ void	echo(char **av)
 	i = 1;
 	j = 0;
 	k = 0;
-	while (av[i] && ft_strncmp(av[i], "-n", 2) == 0)
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
-		if (chekc_string(&av[i][1], 'n') == 1)
+		if (chekc_string(&args[i][1], 'n') == 1)
 		{
 			k = 1;
 			i++;
@@ -45,10 +45,10 @@ void	echo(char **av)
 		else
 			break ;
 	}
-	while (av[i])
+	while (args[i])
 	{
-		printf("%s", av[i]);
-		(av[i + 1]) && (printf(" "));
+		printf("%s", args[i]);
+		(args[i + 1]) && (printf(" "));
 		i++;
 	}
 	(k == 0) && (printf("\n"));
