@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:17:46 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/10 18:12:26 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,7 @@ int	ft_fill(char **key, char **value, char *str)
 			return (1);
 		*value = ft_strdup(ft_strchr(str, '=') + 1);
 		if (!*value || ft_strlen(*value) == 0)
-		{
-			if (*value)
-				free(*value);
-			*value = NULL;
-		}
+			(*value) && (free(*value), *value = NULL);
 	}
 	else
 	{
@@ -55,11 +51,8 @@ int	ft_fill(char **key, char **value, char *str)
 		*value = NULL;
 	}
 	if (ft_check_key(*key, '+') > 1 || !check_first_char(*key))
-	{
-		(1) && (free(*key), free(*value),
-		printf("minishell: export: `%s': not a valid identifier\n", str));
-		return (1);
-	}
+		return (printf("minishell: export: `%s': not a valid identifier\n",
+				str), free(*key), free(*value), 1);
 	if (ft_strchr(*key, '_') && ft_strlen(*key) == 1)
 		return (free(*key), free(*value), 1);
 	return (0);
@@ -94,47 +87,42 @@ int	ft_if(char *str, char **new_key, char **new_value, t_env **env)
 	return (1);
 }
 
-void	export(char **args, t_env **env, int i)
+void	export(char **av, t_env **env, int i, t_export *exp)
 {
-	t_env	*tmp;
-	t_env	*new;
-	char	*new_key;
-	char	*new_value;
-
-	while (++i && args[i])
+	while (++i && av[i])
 	{
-		(1) && (tmp = *env, new_key = NULL, new_value = NULL);
-		if (ft_fill(&new_key, &new_value, args[i]))
-			new_key = NULL;
+		(1) && (exp->tmp = *env, exp->new_key = NULL, exp->new_value = NULL);
+		if (ft_fill(&exp->new_key, &exp->new_value, av[i]))
+			exp->new_key = NULL;
 		else
 		{
-			while (tmp)
+			while (exp->tmp)
 			{
-				if (!ft_if(args[i], &new_key, &new_value, &tmp))
+				if (!ft_if(av[i], &exp->new_key, &exp->new_value, &exp->tmp))
 					break ;
-				tmp = tmp->next;
-				if (!tmp)
+				exp->tmp = exp->tmp->next;
+				if (!exp->tmp)
 				{
-					if (help_export(env, &new, args[i]))
+					if (help_export(env, &exp->new, av[i]))
 						return ;
-					free(new_value);
+					free(exp->new_value);
 					break ;
 				}
 			}
 		}
-		free(new_key);
+		free(exp->new_key);
 	}
-	ft_print_export(args, *env);
+	ft_print_export(av, *env);
 }
 
-void	ft_print_export(char **args, t_env *env)
+void	ft_print_export(char **av, t_env *env)
 {
 	t_env	*tmp;
 	int		i;
 
 	tmp = env;
 	i = 0;
-	while (args[i])
+	while (av[i])
 		i++;
 	if (i == 1)
 	{

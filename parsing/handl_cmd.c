@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handl_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/12 13:29:16 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,67 +59,6 @@ char	**get_args(t_list **lst)
 	args[i] = NULL;
 	return (args);
 }
-// void	handl_redin(t_list **lst, t_cmds *node)
-// {
-// 	if(node->fdin != -1337)
-// 		close(node->fdin);
-// 	node->fdin = open((*lst)->next->content, O_RDONLY);
-// 	if (node->fdin == -1)
-// 	{
-// 		perror("failed open");
-// 		node->args = NULL;
-// 	}
-// 	*lst = (*lst)->next;
-// }
-
-// void	handl_redout(t_list **lst, t_cmds *node)
-// {
-// 	if(node->fdout != -1337)
-// 		close(node->fdout);
-// 	if ((*lst)->type == red_out)
-// 	{
-// 		node->fdout = open((*lst)->next->content, O_RDONLY | O_CREAT | O_TRUNC , 0777);
-// 		if (node->fdout == -1)
-// 		{
-// 			perror("failed open");
-// 			node->args = NULL;
-// 		}
-// 		*lst = (*lst)->next;
-// 	}
-// 	else if ((*lst)->type == append)
-// 	{
-// 		node->fdout = open((*lst)->content, O_RDONLY | O_CREAT | O_APPEND , 0777);
-// 		if (node->fdout == -1)
-// 		{
-// 			perror("failed open");
-// 			node->args = NULL;
-// 		}
-// 		*lst = (*lst)->next;
-// 	}
-// }
-
-// void	fill_node_cmd(t_list **lst, t_cmds *node)
-// {
-// 	t_list	*tmp;
-
-// 	tmp = *lst;
-// 	while(*lst && (*lst)->type != Pipe)
-// 	{
-// 		if ((*lst)->type == red_in)
-// 		{
-// 			handl_redin(lst, node);
-// 			if (node->fdin == -1)
-// 				return ;
-// 		}
-// 		else if ((*lst)->type == red_out || (*lst)->type == append)
-// 		{
-// 			handl_redout(lst, node);
-// 			if (node->fdin == -1)
-// 				return ;
-// 		}
-// 		*lst && (*lst = (*lst)->next);
-// 	}
-//}
 
 t_list	*handll_red(t_list *lst)
 {
@@ -159,6 +98,8 @@ t_cmds	*ft_lstnew_cmd(t_list **lst)
 	// 	return (NULL);
 	node->red = handll_red(*lst);
 	node->args = get_args(lst);
+	node->fdin = -1337;
+	node->fdout = -1337;
 	node -> next = NULL;
 	return (node);
 }

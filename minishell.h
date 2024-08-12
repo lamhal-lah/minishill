@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/11 11:21:59 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/12 16:47:04 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <string.h>
 
-typedef enum
+typedef enum e_type
 {
 	Pipe,
 	red_out,
@@ -47,11 +48,12 @@ typedef struct s_list
 
 typedef struct s_cmds
 {
-	t_list	*red;
-	char	**args;
-	struct s_cmds *next;	
-}t_cmds;
-
+	t_list			*red;
+	char			**args;
+	int				fdin;
+	int				fdout;
+	struct s_cmds	*next;	
+}	t_cmds;
 
 typedef struct s_env
 {
@@ -70,7 +72,8 @@ typedef struct s_export
 }	t_export;
 
 //-----------------execution---------------//
-int		open_rediractions(t_cmds *cmds);
+int		handle_rediractions(t_cmds *cmds);
+int		ft_is_builtin(t_cmds *cmds, t_env *env);
 void	pwd(void);
 char	*ft_strndup(const char *s1, size_t n);
 void	ft_print_env(t_env *env);
@@ -90,21 +93,20 @@ int		ft_fill(char **key, char **value, char *str);
 int		ft_isdigit(int c);
 int		help_export(t_env **env, t_env **new, char *av);
 char	**free_split(char **split, size_t size);
+t_cmds	*ft_lstlast_cmd(t_cmds *lst);
 //char	*ft_strjoin_free(char *str1, char *str2);
 
 //-----------------execution2---------------//
-void	ft_check_redirections(t_cmds *cmd, int *fd);
+void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
+char	**ft_split_execution(char *str, char c);
 int		ft_lstsize(t_env *lst);
 char	*find_path(char *cmd, t_env *env);
 char	**environement(t_env *env);
 int		execute(t_cmds *cmd, t_env *env, int i);
-void	ft_first_command(t_cmds *cmd, char **env, char *path, int *fd);
-void	middle_commands(t_cmds *cmd, char **env, char *path, int *fd);
-int		last_command(t_cmds *cmd, char **env, char *path, int *fd);
+// void	ft_first_command(t_cmds *cmd, char **env, char *path, int *fd);
+void	middle_commands(t_cmds *cmd, char **env, char *path, int **fd, int i);
+// int		last_command(t_cmds *cmd, char **env, char *path, int *fd, int *i);
 int		ft_cmdsize(t_cmds *cmd);
-
-
-
 
 //----------utils-----------
 
@@ -133,7 +135,7 @@ void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new);
 void	ft_lstclear_cmd(t_cmds **lst);
 t_cmds	*list_cmds(t_list *lst);
 int		count_words(char *str);
-
+int		open_rediractions(t_cmds *cmd);
 //------------parsing-----------
 
 void	expand(t_list *lst, t_env *env);
@@ -142,7 +144,7 @@ void	ft_lst_join(t_list **lst);
 t_cmds	*proccess_line(char *line, t_list **lst, t_env *env);
 int		check_syntaxe_error(t_list *lst);
 //t_env	*ft_env(char **env);
-void	 remove_quotes(t_list *list);
+void	remove_quotes(t_list *list);
 //char   *ft_getenv(char *key, t_env *env);
 
 #endif

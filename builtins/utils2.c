@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 21:25:32 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/07 14:35:31 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int	ft_check_key(char *str, char c)
 	return (j);
 }
 
-int	help_export(t_env **env, t_env **new, char *args)
+int	help_export(t_env **env, t_env **new, char *av)
 {
-	*new = ft_lstnew_env(args);
+	*new = ft_lstnew_env(av);
 	if (!new)
 		return (1);
 	ft_lstadd_back_env(env, *new);

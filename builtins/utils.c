@@ -6,29 +6,29 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:41:42 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/07 13:13:40 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:37:16 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strchr(char *str, char c)
-{
-	int	i;
+// char	*ft_strchr(char *str, char c)
+// {
+// 	int	i;
 
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (str + i);
-		i++;
-	}
-	return (NULL);
-}
+// 	i = 0;
+// 	if (!str)
+// 		return (NULL);
+// 	while (str[i])
+// 	{
+// 		if (str[i] == c)
+// 			return (str + i);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
 
-size_t	count_words(const char *s, char c)
+size_t	count_words_execution(const char *s, char c)
 {
 	size_t	word;
 
@@ -47,7 +47,7 @@ size_t	count_words(const char *s, char c)
 	return (word);
 }
 
-char	**free_split(char **split, size_t size)
+char	**free_split_execution(char **split, size_t size)
 {
 	size_t	i;
 
@@ -68,7 +68,7 @@ static char	**alloc_split(const char *s, char c)
 	i = 0;
 	if (!s)
 		return (NULL);
-	size = count_words(s, c);
+	size = count_words_execution(s, c);
 	split = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!split)
 		return (NULL);
@@ -81,13 +81,13 @@ static char	**alloc_split(const char *s, char c)
 			total++;
 		split[i] = (char *)malloc(sizeof(char) * (total + 1));
 		if (!split[i])
-			return (free_split(split, i));
+			return (free_split_execution(split, i));
 		i++;
 	}
 	return (split);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split_execution(char *s, char c)
 {
 	char		**split;
 	size_t		i;
@@ -95,7 +95,7 @@ char	**ft_split(const char *s, char c)
 	size_t		size;
 
 	i = 0;
-	size = count_words(s, c);
+	size = count_words_execution(s, c);
 	split = alloc_split(s, c);
 	if (!split)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/11 11:15:13 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/12 17:53:26 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@ int	main(int ac, char **args, char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// system("leaks minishell");
-		cmds = proccess_line(line, &lst, env_lst);
+		if (count_words(line) > 0)
+			cmds = proccess_line(line, &lst, env_lst);
+		if (cmds && cmds->red)
+			printf("red = %s-----%d\n", cmds->red->content, cmds->red->type);
 		free(line);
 		ft_lstclear(&lst);
+		ft_is_builtin(cmds, env_lst);
 		execute(cmds, env_lst, 0);
 		line = readline("minishell:  ");
 	}

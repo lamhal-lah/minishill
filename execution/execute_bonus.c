@@ -6,82 +6,33 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/07 11:56:30 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:58:51 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_first_command(t_cmds *cmd, char **env, char *path, int *fd)
+void	middle_commands(t_cmds *cmd, char **env, char *path, int **fd, int i)
 {
-	int	pid;
+	int	x;
 
-	pid = fork();
-	if (pid == -1)
-		perror("fork");
-	if (pid == 0)
+	x = -1;
+	if (open_rediractions(cmd) < 0)
+		exit(1);
+	ft_check_redirections(cmd, fd, i);
+	while (fd[++x])
 	{
-		printf("%s\n", path);
-		ft_check_redirections(cmd, fd);
-		if (!path)
-		{
-			if (execve(cmd->args[0], cmd->args, env) == -1)
-				perror("execve");
-		}
-		else
-		{
-			if (execve(path, cmd->args, env) == -1)
-				perror("execve");
-		}
+		close(fd[x][0]);
+		close(fd[x][1]);
 	}
-}
-
-void	middle_commands(t_cmds *cmd, char **env, char *path, int *fd)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror("fork");
-	if (pid == 0)
+	if (!path)
 	{
-		ft_check_redirections(cmd, fd);
-		if (!path)
-		{
-			if (execve(cmd->args[0], cmd->args, env) == -1)
-				perror("execve");
-		}
-		else
-		{
-			if (execve(path, cmd->args, env) == -1)
-				perror("execve");
-		}
-	}
-}
-int last_command(t_cmds *cmd, char **env, char *path, int *fd)
-{
-	int	pid;
-	int status;
-
-	pid = fork();
-	if (pid == -1)
-		perror("fork");
-	if (pid == 0)
-	{
-		ft_check_redirections(cmd, fd);
-		if (!path)
-		{
-			if (execve(cmd->args[0], cmd->args, env) == -1)
-				perror("execve");
-		}
-		else
-		{
-			if (execve(path, cmd->args, env) == -1)
-				perror("execve");
-		}
+		if (execve(cmd->args[0], cmd->args, env) == -1)
+			perror("execve");
 	}
 	else
-		waitpid(pid, &status, 0);
-	return (WEXITSTATUS(status));	
+	{
+		if (execve(path, cmd->args, env) == -1)
+			perror("execve");
+	}
 }
-

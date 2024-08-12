@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/11 10:29:48 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/12 18:31:59 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,18 +206,18 @@ t_cmds	*proccess_line(char *line, t_list **lst, t_env *env)
 	tmp = *lst;
 	while (tmp)
 	{
-		printf("%s %d\n", tmp->content, tmp->type);
+		//printf("%s %d\n", tmp->content, tmp->type);
 		tmp = tmp->next;
 	}
-	printf("**********************************************\n");
+	//printf("**********************************************\n");
 	ft_lst_join(lst);
 	tmp = *lst;
 	while (tmp)
 	{
-		printf("%s %d\n", tmp->content, tmp->type);
+		//printf("%s %d\n", tmp->content, tmp->type);
 		tmp = tmp->next;
 	}
-	printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
+	//printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
 	cmds = list_cmds(*lst);
 	t_cmds	*tmp1;
 	tmp1 = cmds;
@@ -229,19 +229,19 @@ t_cmds	*proccess_line(char *line, t_list **lst, t_env *env)
 	while (tmp1)
 	{
 		i = 0;
-      	while(tmp1 && tmp1->args && tmp1->args[i])
+    	while(tmp1 && tmp1->args && tmp1->args[i])
 		{
 			printf("args[%d] = %s\n", i, tmp1->args[i]);
 			i++;
 		}
-		while (tmp1->red)
-		{
-			printf("%s-- %d\n", tmp1->red->content, tmp1->red->type);
-			tmp1->red = tmp1->red->next;
-		}
-		printf("------------------\n");
+		// while (tmp1->red)
+		// {
+		// 	printf("%s-- %d\n", tmp1->red->content, tmp1->red->type);
+		// 	tmp1->red = tmp1->red->next;
+		// }
+		// printf("------------------\n");
 		tmp1 = tmp1->next;
 	}
-	
+
 	return (cmds);
 }
