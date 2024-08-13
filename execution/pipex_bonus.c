@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/12 17:03:19 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:17:31 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	handle_fds(t_cmds *cmd)
 	tmp = ft_lstlast_cmd(cmd);
 	tmp->fdout = 1;
 }
+
 int	open_rediractions(t_cmds *cmds)
 {
 	t_list	*red;
@@ -34,7 +35,6 @@ int	open_rediractions(t_cmds *cmds)
 				cmds->fdin = open(red->content, O_RDONLY));
 			if (cmds->fdin == -1)
 				return (perror("failed open"), -1);
-				
 		}
 		else if (red->type == red_out)
 		{
@@ -69,14 +69,12 @@ void	ft_check_redirections(t_cmds *cmd, int **fd, int i)
 			cmd->fdin = fd[i - 1][0];
 		dup2(cmd->fdin, 0);
 	}
-	
 	if (cmd->next != NULL)
 	{
-		if (cmd->fdout  == -1337)
-			cmd->fdout = fd[i][1];	
+		if (cmd->fdout == -1337)
+			cmd->fdout = fd[i][1];
 		dup2(cmd->fdout, 1);
 	}
-	
 }
 
 int	execute(t_cmds *cmd, t_env *env, int i)
@@ -132,7 +130,7 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 	i = -1;
 	while (++i < ft_cmdsize(cmd))
 		waitpid(pid[i], &status, 0);
-	(1) && (free(pid), free(fd), free(envp), dup2(fake_in, 0), dup2(fake_out, 1));
-	(1) && (close(fake_in), close(fake_out));
-	return (close(fake_out), status);
+	(1) && (free(pid), free(fd), free(envp),
+		dup2(fake_in, 0), dup2(fake_out, 1), close(fake_in), close(fake_out));
+	return (status);
 }

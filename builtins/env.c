@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/12 18:35:35 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:07:34 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	ft_print_env(t_env *env)
 	while (tmp)
 	{
 		if (tmp->key && tmp->value != NULL)
-			printf("=%s\n", tmp->value);
+			printf("%s=%s\n", tmp->key, tmp->value);
 		else if (tmp->printed == 1 && tmp->key && tmp->value == NULL)
-			printf("dfdfdf");
+			printf("%s=\n", tmp->key);
 		tmp = tmp->next;
 	}
 }

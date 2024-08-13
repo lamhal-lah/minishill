@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lst3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 09:47:18 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/09 17:01:09 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/13 10:56:44 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	ft_lstclear_cmd(t_cmds **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)-> next;
-		//free(tmp->content);
+		
+		//free(tmp->co);
         free(tmp);
 	}
     lst = NULL;
