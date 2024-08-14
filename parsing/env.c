@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/12 18:37:02 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:36:47 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char   *ft_getenv(char *key, t_env *env)
     // char *value;
 
     tmp = env;
-    while (tmp->next)
+    while (tmp)
     {
         if (ft_strncmp(key, tmp->key, ft_strlen(key) + 1) == 0)
             return ft_strdup(tmp->value);

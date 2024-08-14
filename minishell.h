@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/13 17:07:05 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:21:48 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ typedef struct s_export
 }	t_export;
 
 //-----------------execution---------------//
-void	directory_or_file(char *cmd, t_cmds *cmds);
+void	ft_handle_dot(t_cmds *cmds, t_env *env, int **fd, int i);
+void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i);
+void	error_management(t_cmds *cmds, t_env *env, int **fd, int i);
 int		handle_rediractions(t_cmds *cmds);
 int		ft_is_builtin(t_cmds *cmds, t_env *env);
 void	pwd(void);
@@ -106,7 +108,7 @@ char	*find_path(char *cmd, t_env *env);
 char	**environement(t_env *env);
 int		execute(t_cmds *cmd, t_env *env, int i);
 // void	ft_first_command(t_cmds *cmd, char **env, char *path, int *fd);
-void	middle_commands(t_cmds *cmd, char **env, char *path, int **fd, int i);
+void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 // int		last_command(t_cmds *cmd, char **env, char *path, int *fd, int *i);
 int		ft_cmdsize(t_cmds *cmd);
 

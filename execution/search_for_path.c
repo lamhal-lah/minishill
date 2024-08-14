@@ -6,69 +6,40 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/13 20:27:46 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:21:37 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	directory_or_file(char *cmd, t_cmds *cmds)
+void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
 {
 	struct stat	buf;
 
-	if (ft_strchr(cmd, '.') && !ft_strchr(cmd, '/'))
+	if (!ft_strchr(cmds->args[0], '/'))
 	{
-		if (ft_strlen(cmd) == 1 && cmds->args[1] == NULL)
+		(!ft_strncmp(cmds->args[0], ".", ft_strlen(cmds->args[0]))) &&
+			(ft_handle_dot(cmds, env, fd, i), 0);
+		if (stat(cmds->args[0], &buf) == 0)
 		{
-			printf("minishell: .: filename argument required\n");
-			printf(".: usage: . filename [arguments]\n");
-			exit(2);
+			(S_ISDIR(buf.st_mode)) && (printf("minishell: %s: is a directory\n",
+				cmds->args[0]), exit(126), 0);
 		}
-		else if (ft_strlen(cmd) == 1 && cmds->args[1] != NULL)
+		if (!find_path(cmds->args[0], env))
 		{
-			if (stat(cmds->args[1], &buf) == 0)
-			{
-				if (S_ISDIR(buf.st_mode))
-				{
-					printf("minishell: %s: is a directory\n", cmds->args[1]);
-					exit(1);
-				}
-			}
-			if (execve(cmds->args[1], cmds->args + 1, NULL) == -1)
-			{
-				if (errno == 2)
-				{
-					printf("minishell: %s: No such file or directory\n", cmds->args[1]);
-					exit(1);
-				}
-				else
-				{
-					printf("minishell: %s: command not found\n", cmds->args[1]);
-					exit(1);
-				}
-			}
+			printf("minishell: %s: command not found\n", cmds->args[0]);
+			exit(127);
+		}
+		else
+		{
+			ft_check_redirections(cmds, fd, i);
+			if (execve(find_path(cmds->args[0], env),
+					cmds->args, environement(env)) == -1)
+				perror("minishell");
 		}
 	}
-	if (ft_strchr(cmd, '/'))
-	{
-		if (stat(cmd, &buf) == 0)
-		{
-			if (S_ISDIR(buf.st_mode))
-			{
-				printf("minishell: %s: is a directory\n", cmd);
-				exit(126);
-			}
-		}
-	}
-	// else
-	// {
-	// 	printf("cmd : %s\n", cmd);
-	// 	if (execve(cmd, NULL, NULL) == -1)
-	// 	{
-	// 		printf("minishell: %s: command not found\n", cmd);
-	// 		exit(127);
-	// 	}
-	// }
+	else if (ft_strchr(cmds->args[0], '/'))
+		slash_condition(cmds, env, fd, i);
 }
 
 int	ft_lstsize(t_env *lst)
@@ -98,7 +69,7 @@ char	*find_path(char *cmd, t_env *env)
 		return (NULL);
 	paths = ft_split_execution(path, ':');
 	i = 0;
-	while (paths[i] /*&& (!ft_strchr(cmd, '.')) && ft_strlen(cmd) > 1*/)
+	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		tmp = ft_strjoin(tmp, cmd);

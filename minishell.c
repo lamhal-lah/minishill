@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/13 16:00:28 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:38:07 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int ac, char **args, char **env)
 			printf("red = %s-----%d\n", cmds->red->content, cmds->red->type);
 		free(line);
 		ft_lstclear(&lst);
-		ft_is_builtin(cmds, env_lst);
+		//ft_is_builtin(cmds, env_lst);
 		execute(cmds, env_lst, 0);
 		// ft_lstclear_cmds(&cmds);
 		cmds = NULL;

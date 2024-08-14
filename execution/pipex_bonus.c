@@ -6,12 +6,11 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/13 12:17:31 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:45:57 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 static void	handle_fds(t_cmds *cmd)
 {
@@ -87,7 +86,6 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 	t_cmds	*tmp;
 	int		*pid = NULL;
 
-
 	(1) && (i = -1, envp = environement(env), tmp = cmd,
 		fake_in = dup(0), fake_out = dup(1));
 	if (!tmp)
@@ -115,7 +113,7 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 		if (pid[i] < 0)
 			return (perror("fork"), -1);
 		if (pid[i] == 0)
-			middle_commands(tmp, envp, find_path(*tmp->args, env), fd, i);
+			middle_commands(tmp, env, fd, i);
 		else
 		{
 			if (i < ft_cmdsize(cmd) - 1)

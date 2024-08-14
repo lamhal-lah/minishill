@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/11 10:45:27 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/14 20:24:59 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	cc = (unsigned char)c;
-	while (s[i])
+	while (s && s[i])
 	{
 		if (s[i] == cc)
 			return ((char *)(s + i));
 		i++;
 	}
-	if (s[i] == cc)
+	if (s && s[i] == cc)
 		return ((char *)(s + i));
 	return (NULL);
 }
