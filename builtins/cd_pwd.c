@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:59:07 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/11 13:36:05 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:06:17 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	cd(char **av, t_env *env)
 	else
 		path = ft_strdup(av[1]);
 	if (chdir(path) != 0)
-		printf("minishell: cd: %s: %s\n", path, strerror(errno));
+		(1) && (printf("minishell: cd: %s: %s\n", path, strerror(errno)),
+			exit(1), i = 1);
 	else
 	{
 		tmp = getcwd(NULL, 0);
@@ -54,7 +55,7 @@ void	cd(char **av, t_env *env)
 		change_env_value("PWD", tmp, &env);
 	}
 	(1) && (free(path), free(tmp), free(old_path),
-		path = NULL, tmp = NULL, old_path = NULL);
+		path = NULL, tmp = NULL, old_path = NULL, exit(0), 0);
 }
 
 void	pwd(void)

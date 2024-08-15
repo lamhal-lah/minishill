@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/14 17:21:48 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:46:29 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,14 @@ typedef struct s_export
 }	t_export;
 
 //-----------------execution---------------//
+int		handle_one_cmd(t_cmds *cmd, t_env **env);
+int		open_rediractions_parent(t_cmds *cmds);
+int		check_if_builtin(t_cmds *cmds);
 void	ft_handle_dot(t_cmds *cmds, t_env *env, int **fd, int i);
 void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i);
 void	error_management(t_cmds *cmds, t_env *env, int **fd, int i);
 int		handle_rediractions(t_cmds *cmds);
-int		ft_is_builtin(t_cmds *cmds, t_env *env);
+int		ft_is_builtin(t_cmds *cmds, t_env **env);
 void	pwd(void);
 char	*ft_strndup(const char *s1, size_t n);
 void	ft_print_env(t_env *env);
@@ -87,8 +90,8 @@ t_env	*ft_lstnew_env(char *env);
 void	cd(char **av, t_env *env);
 int		chekc_string(char *str, char c);
 void	echo(char **av);
-void	unset(char **av, t_env **env);
-void	export(char **av, t_env **env, int i, t_export *exp);
+int		unset(char **av, t_env **env, int i, int k);
+int		export(char **av, t_env **env, int i, t_export *exp);
 int		ft_check_key(char *str, char c);
 int		check_first_char(char *str);
 int		ft_isalpha(int c);
@@ -102,11 +105,12 @@ t_cmds	*ft_lstlast_cmd(t_cmds *lst);
 
 //-----------------execution2---------------//
 void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
+void	ft_check_redirections_parent(t_cmds *cmd);
 char	**ft_split_execution(char *str, char c);
 int		ft_lstsize(t_env *lst);
 char	*find_path(char *cmd, t_env *env);
 char	**environement(t_env *env);
-int		execute(t_cmds *cmd, t_env *env, int i);
+int		execute(t_cmds *cmd, t_env **env, int i);
 // void	ft_first_command(t_cmds *cmd, char **env, char *path, int *fd);
 void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 // int		last_command(t_cmds *cmd, char **env, char *path, int *fd, int *i);

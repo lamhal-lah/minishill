@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/13 15:07:34 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:42:57 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void	ft_print_env(t_env *env)
 			printf("%s=\n", tmp->key);
 		tmp = tmp->next;
 	}
+	exit(0);
 }

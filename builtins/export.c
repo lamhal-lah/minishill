@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:17:46 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/10 18:12:26 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:23:18 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ int	ft_if(char *str, char **new_key, char **new_value, t_env **env)
 	return (1);
 }
 
-void	export(char **av, t_env **env, int i, t_export *exp)
+int		export(char **av, t_env **env, int i, t_export *exp)
 {
+	int k;
+
+	k = 0;
 	while (++i && av[i])
 	{
 		(1) && (exp->tmp = *env, exp->new_key = NULL, exp->new_value = NULL);
@@ -99,12 +102,15 @@ void	export(char **av, t_env **env, int i, t_export *exp)
 			while (exp->tmp)
 			{
 				if (!ft_if(av[i], &exp->new_key, &exp->new_value, &exp->tmp))
+				{
+					k = 1;
 					break ;
+				}
 				exp->tmp = exp->tmp->next;
 				if (!exp->tmp)
 				{
 					if (help_export(env, &exp->new, av[i]))
-						return ;
+						return (1);
 					free(exp->new_value);
 					break ;
 				}
@@ -112,7 +118,7 @@ void	export(char **av, t_env **env, int i, t_export *exp)
 		}
 		free(exp->new_key);
 	}
-	ft_print_export(av, *env);
+	return (ft_print_export(av, *env), k);
 }
 
 void	ft_print_export(char **av, t_env *env)

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/14 19:45:57 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:45:54 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ int	open_rediractions(t_cmds *cmds)
 		{
 			(1) && (close(cmds->fdin),
 				cmds->fdin = open(red->content, O_RDONLY));
-			if (cmds->fdin == -1)
-				return (perror("failed open"), -1);
+			(cmds->fdin == -1) && (printf("minihell: %s: %s", red->content,
+				strerror(errno)), exit(1), 0);
 		}
 		else if (red->type == red_out)
 		{
 			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
 				O_WRONLY | O_CREAT | O_TRUNC, 0777));
-			if (cmds->fdout == -1)
-				return (perror("failed open"), -1);
+			(cmds->fdout == -1) && (printf("minihell: %s: %s", red->content,
+				strerror(errno)), exit(1), 0);
 		}
 		else if (red->type == append)
 		{
 			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
 				O_WRONLY | O_CREAT | O_APPEND, 0777));
-			if (cmds->fdout == -1)
-				return (perror("failed open"), -1);
+			(cmds->fdout == -1) && (printf("minihell: %s: %s", red->content,
+				strerror(errno)), exit(1), 0);
 		}
 		else if (red->type == ambigus)
 		{
@@ -62,7 +62,7 @@ int	open_rediractions(t_cmds *cmds)
 
 void	ft_check_redirections(t_cmds *cmd, int **fd, int i)
 {
-	if (i > 0)
+	if (i >= 0)
 	{
 		if (cmd->fdin == -1337)
 			cmd->fdin = fd[i - 1][0];
@@ -76,17 +76,16 @@ void	ft_check_redirections(t_cmds *cmd, int **fd, int i)
 	}
 }
 
-int	execute(t_cmds *cmd, t_env *env, int i)
+int	execute(t_cmds *cmd, t_env **env, int i)
 {
-	char	**envp;
 	int		fake_in;
 	int		fake_out;
 	int		**fd;
-	int		status = 0;
+	int		status;
 	t_cmds	*tmp;
-	int		*pid = NULL;
+	int		*pid;
 
-	(1) && (i = -1, envp = environement(env), tmp = cmd,
+	(1) && (i = -1, tmp = cmd, status = 0, pid = NULL, fd = NULL,
 		fake_in = dup(0), fake_out = dup(1));
 	if (!tmp)
 		return (0);
@@ -109,18 +108,23 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 	i = 0;
 	while (tmp)
 	{
-		pid[i] = fork();
-		if (pid[i] < 0)
-			return (perror("fork"), -1);
-		if (pid[i] == 0)
-			middle_commands(tmp, env, fd, i);
+		if (ft_cmdsize(tmp) == 1 && check_if_builtin(tmp))
+			(1) && (status = handle_one_cmd(tmp, env), tmp = tmp->next, i++);
 		else
 		{
-			if (i < ft_cmdsize(cmd) - 1)
-				close(fd[i][1]);
+			pid[i] = fork();
+			if (pid[i] < 0)
+				return (perror("fork"), -1);
+			if (pid[i] == 0)
+				middle_commands(tmp, *env, fd, i);
+			else
+			{
+				if (i < ft_cmdsize(cmd) - 1)
+					close(fd[i][1]);
+			}
+			tmp = tmp->next;
+			i++;
 		}
-		tmp = tmp->next;
-		i++;
 	}
 	i = -1;
 	while (fd[++i])
@@ -128,7 +132,7 @@ int	execute(t_cmds *cmd, t_env *env, int i)
 	i = -1;
 	while (++i < ft_cmdsize(cmd))
 		waitpid(pid[i], &status, 0);
-	(1) && (free(pid), free(fd), free(envp),
+	(1) && (free(pid), free(fd),
 		dup2(fake_in, 0), dup2(fake_out, 1), close(fake_in), close(fake_out));
 	return (status);
 }

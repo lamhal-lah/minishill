@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/14 17:21:37 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:46:13 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,23 @@ void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
 	{
 		(!ft_strncmp(cmds->args[0], ".", ft_strlen(cmds->args[0]))) &&
 			(ft_handle_dot(cmds, env, fd, i), 0);
-		if (stat(cmds->args[0], &buf) == 0)
-		{
+		if (!stat(cmds->args[0], &buf) && !check_if_builtin(cmds))
 			(S_ISDIR(buf.st_mode)) && (printf("minishell: %s: is a directory\n",
 				cmds->args[0]), exit(126), 0);
-		}
-		if (!find_path(cmds->args[0], env))
-		{
-			printf("minishell: %s: command not found\n", cmds->args[0]);
-			exit(127);
-		}
+		if (!find_path(cmds->args[0], env) && !check_if_builtin(cmds))
+			(1) && (printf("minishell: %s: command not found\n",
+				cmds->args[0]), exit(127), 0);
 		else
 		{
-			ft_check_redirections(cmds, fd, i);
-			if (execve(find_path(cmds->args[0], env),
+			(1) && (ft_check_redirections(cmds, fd, i) , 0);
+			if (check_if_builtin(cmds))
+				exit(ft_is_builtin(cmds, &env));
+			else if (execve(find_path(cmds->args[0], env),
 					cmds->args, environement(env)) == -1)
 				perror("minishell");
 		}
 	}
-	else if (ft_strchr(cmds->args[0], '/'))
-		slash_condition(cmds, env, fd, i);
+	(ft_strchr(cmds->args[0], '/')) && (slash_condition(cmds, env, fd, i), 0);
 }
 
 int	ft_lstsize(t_env *lst)
