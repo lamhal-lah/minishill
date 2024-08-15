@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/14 19:36:47 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:50:34 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 char   *ft_getenv(char *key, t_env *env)
 {
@@ -18,10 +19,10 @@ char   *ft_getenv(char *key, t_env *env)
     // char *value;
 
     tmp = env;
-    while (tmp)
-    {
-        if (ft_strncmp(key, tmp->key, ft_strlen(key) + 1) == 0)
-            return ft_strdup(tmp->value);
+	while (tmp)
+	{
+		if (ft_strncmp(key, tmp->key, ft_strlen(key) + 1) == 0)
+            return (tmp->value);
         tmp = tmp->next;
     }
     return (NULL);

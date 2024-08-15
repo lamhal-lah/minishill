@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/14 20:24:59 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:17:35 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ char	*ft_strjoin_free(char *str1, char *str2)
 	str = ft_strjoin(str1, str2);
 	free(str1);
 	free(str2);
-	str1 = NULL;
-	str2 = NULL;
 	return (str);
 }
 
@@ -58,13 +56,13 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	cc = (unsigned char)c;
-	while (s && s[i])
+	while (s[i])
 	{
 		if (s[i] == cc)
 			return ((char *)(s + i));
 		i++;
 	}
-	if (s && s[i] == cc)
+	if (s[i] == cc)
 		return ((char *)(s + i));
 	return (NULL);
 }

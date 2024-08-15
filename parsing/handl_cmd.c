@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handl_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/12 13:29:16 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 15:41:38 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	count_arg(t_list *lst)
 	{
 		if (tmp->type > 0 &&  tmp->type < 5)
 		{
-			tmp = tmp->next->next; // < h < f < h
+			tmp = tmp->next->next;
 		}
 		else
 		{
@@ -76,6 +76,10 @@ t_list	*handll_red(t_list *lst)
 			str = ft_strdup(tmp->next->content);
 			node = ft_lstnew(str);
 			node->type = tmp->type;
+			if (tmp->next && tmp->next->type == ambigus)
+				node->type = ambigus;
+			if (tmp->next && tmp->next->content[0] == '\0')
+				node->type = nofile;			
 			ft_lstadd_back(&red, node);
 			tmp = tmp->next;
 		}
@@ -93,9 +97,6 @@ t_cmds	*ft_lstnew_cmd(t_list **lst)
 	node = (t_cmds *)malloc(sizeof(t_cmds));
 	if (!node)
 		return (NULL);
-	// node->args = malloc((count_arg(*lst) + 1)* sizeof(char *));
-	// if (!node->args)
-	// 	return (NULL);
 	node->red = handll_red(*lst);
 	node->args = get_args(lst);
 	node->fdin = -1337;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/15 15:46:29 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:09:41 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef enum e_type
 	word,
 	limtr,
 	limtr_qt,
-	ambigus
+	ambigus,
+	nofile
 }	t_type;
 
 typedef struct s_list
@@ -154,5 +155,10 @@ int		check_syntaxe_error(t_list *lst);
 //t_env	*ft_env(char **env);
 void	remove_quotes(t_list *list);
 //char   *ft_getenv(char *key, t_env *env);
+void    *get_token(char *line, int *i);
+void    flag_ambigus(t_list *lst, t_env *env);
+char    *expand_dquot(char *str, t_env *env);
+void    remove_empty_node(t_list **lst);
+
 
 #endif

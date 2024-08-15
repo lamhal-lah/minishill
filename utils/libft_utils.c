@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:40:50 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/14 20:25:30 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:01:18 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t			i;
 	unsigned char	*a1;
 	unsigned char	*a2;
-	
+
 	a1 = (unsigned char *)s1;
 	a2 = (unsigned char *)s2;
 	i = 0;
@@ -53,7 +53,7 @@ char	*ft_strdup(const char *s1)
 	int				i;
 
 	if (!s1)
-		return (NULL);         // int  pro_here(){ fd =}'
+		return (NULL);
 	i = 0;
 	s = malloc(ft_strlen(s1) * sizeof(char) + 1);
 	if (!s)

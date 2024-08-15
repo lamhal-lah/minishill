@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/14 19:14:44 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:19:49 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	expand_var(char *var, t_env *env, t_list **lst)
 	int		i;
 	t_list	*node;
 	
-	i = 1;
+	i = 0;
 	tmp = var;
 	var = ft_getenv(var + 1, env);
     if(!var)
@@ -65,24 +65,38 @@ void	expand_var(char *var, t_env *env, t_list **lst)
     	return ;
 	}
 	free(tmp);
-	var = ft_strdup(var);
-	if (!var)
-		return ;
 	strs = ft_split(var);
 	if (!strs)
 		return ;
-	free(var);
-	if (!strs[0])
-		return ;
-	(*lst)->content = strs[0];
+	if (var[0] == ' ' || var[0] == '\t')
+	{
+		(*lst)->content = ft_strdup(" ");
+		(*lst)->type = space;
+	}
+	else
+	{
+		if (!strs[0])
+			return ;
+		(*lst)->content = strs[i++];
+	}
 	while(strs[i])
+	{
+		if (i == 1)
+		{
+			node = ft_lstnew(ft_strdup(" "));
+			node->type = space;
+			ft_lstadd_midl(lst, node);
+			(*lst) = (*lst)->next;
+		}
+		node = ft_lstnew(strs[i++]);
+		node->type = word;
+		ft_lstadd_midl(lst, node);
+		(*lst) = (*lst)->next;
+	}
+	if (var[ft_strlen(var) - 1] == ' ' || var[ft_strlen(var) - 1] == '\t')
 	{
 		node = ft_lstnew(ft_strdup(" "));
 		node->type = space;
-		ft_lstadd_midl(lst, node);
-		(*lst) = (*lst)->next;
-		node = ft_lstnew(strs[i++]);
-		node->type = word;
 		ft_lstadd_midl(lst, node);
 		(*lst) = (*lst)->next;
 	}
@@ -127,32 +141,53 @@ char    *expand_dquot(char *str, t_env *env)
         str2 = get_str(str, &i, env);
         str1 = ft_strjoin_free(str1, str2);
     }
-    free(str);
     return (str1);
 }
 
-void	remove_empty_node(t_list **lst)
-{
-	t_list	*tmp;
+// int	check_nofile(t_list	*lst)
+// {
+// 	t_list	*tmp;
 
-	tmp = *lst;
-	while(tmp && tmp->next)
-	{
-		if (tmp->next->type == space && tmp->next->next->content == NULL)
-		{
-			ft_remove_node(&tmp->next);
-			ft_remove_node(&tmp->next);
-		}
-		else if(tmp->next->content == NULL)
-			ft_remove_node(&tmp->next);
-		else
-			tmp = tmp->next;
-	}
-}
+// 	tmp = lst;
+// 	while (tmp && tmp->type != space && tmp->type > 4)
+// 	{
+// 		// if (tmp->type == dquot && tmp->content == '\0')
+// 		// 	return (1);
+// 		tmp = tmp->next;
+// 	}
+// 	return (0);
+// }
+
+// void	flag_nofile(t_list **lst)
+// {
+// 	t_list	*tmp;
+// 	int		nofile;
+	
+// 	tmp = *lst;
+// 	while(tmp)
+// 	{
+// 		nofile = 0;
+// 		if (tmp->type > 0 && tmp->type < 5)
+// 		{
+// 			tmp = tmp->next;
+// 			if (tmp->type == space)
+// 				tmp = tmp->next;
+// 			nofile = check_nofile(tmp);
+// 			while(tmp && tmp->type != space  && tmp->type > 4)
+// 			{
+// 				if (nofile)
+// 					tmp->type = nofile;
+// 				tmp = tmp->next;
+// 			}
+// 		}
+// 		tmp && (tmp->type != space && tmp->type > 4) && (tmp = tmp->next);
+// 	}
+// }
 
 void	expand(t_list *lst, t_env *env)
 {
 	t_list	*tmp;
+	char	*str_tmp;
 
 	tmp = lst;
 	while (tmp)
@@ -160,100 +195,14 @@ void	expand(t_list *lst, t_env *env)
 		if (tmp->type == var)
 			expand_var(tmp->content, env, &tmp);
 		if (tmp->type == dquot)
+		{
+			str_tmp = tmp->content;
 			tmp->content = expand_dquot(tmp->content, env);
+			free(str_tmp);
+			str_tmp = NULL;
+		}
 		tmp && (tmp = tmp->next);
 	}
+	//flag_nofile(&lst);
 	remove_empty_node(&lst);
 }
-// void	expand(t_list *lst, t_env *env)
-// {
-// 	t_list *tmp;
-// 	char	*tmp1;
-// 	int		i;
-// 	char	*var;
-// 	char	*prev;
-
-// 	i = 0;
-// 	tmp = lst;
-// 	while (tmp->next)
-// 	{
-// 		if (tmp->type == var)
-// 			tmp->content = expand_var(tmp->content, env);
-// 		else if (tmp->type == dquot)
-// 		{
-// 			var = ft_strchr(tmp->content, '$');
-// 			prev = ft_substr(tmp->content, 0, tmp->content - var);
-// 			while(var)	
-			
-// 		}
-// 	}
-	
-	
-// }
-
-// char	*get_env(char *var, t_env *env)
-// {
-// 	t_env	*tmp;
-
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(var, tmp->key, ft_strlen(var)) == 0)
-// 			return (ft_strdup(tmp->env + ft_strlen(var) + 1));
-// 		tmp = tmp->next;
-// 	}
-// 	return (NULL);
-// }
-
-// char	expand_var(char *str, t_env env)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*var;
-// 	char	*tmp;
-
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$' && str[i + 1] != 0)
-// 		{
-// 			j = i + 1;
-// 			while (str[j] && str[j] != ' ' && str[j] != '$')
-// 				j++;
-// 			var = ft_substr(str, i, j - i);
-// 			tmp = get_env(var, env);
-// 			free(var);
-// 			if (tmp)
-// 			{
-// 				str = ft_strjoin(str, tmp);
-// 				free(tmp);
-// 			}
-// 		}
-// 		i++;
-// 	}
-// 	return (str);
-// }
-
-
-// char	*expan_varaible(char *var, t_env *env)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	nbr_var;
-// 	char	**vars;
-
-// 	i = 0;
-// 	nbr_var;
-// 	while (var[i])
-// 	{
-// 		if(var[i] == '$' && var[i + 1] != 0)
-// 			nbr_var++;
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (j < nbr_var)
-// 	{
-// 		while()
-// 		{}
-// 	}
-// }
