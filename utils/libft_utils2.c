@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/07 13:17:35 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/21 15:33:02 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 char	*ft_strjoin_free(char *str1, char *str2)
 {
 	char	*str;
-	
+
 	str = ft_strjoin(str1, str2);
 	free(str1);
 	free(str2);

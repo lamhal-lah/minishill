@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 09:47:18 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/09 17:01:09 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/18 18:17:15 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,23 @@ void	ft_lstadd_front_cmd(t_cmds **l, t_cmds *new)
 	*l = new;
 }
 
-
 void	ft_lstclear_cmd(t_cmds **lst)
 {
 	t_cmds	*tmp;
+	int		i;
 
 	if (!lst)
 		return ;
 	while (*lst)
 	{
+		i = 0;
+		ft_lstclear(&(*lst)->red);
+		while ((*lst)->args && (*lst)->args[i])
+			free((*lst)->args[i++]);
+		free((*lst)->args);
 		tmp = *lst;
 		*lst = (*lst)-> next;
-		//free(tmp->content);
-        free(tmp);
+		free(tmp);
 	}
-    lst = NULL;
+	lst = NULL;
 }

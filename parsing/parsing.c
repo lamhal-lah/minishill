@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/15 16:00:15 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/21 17:45:07 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,27 @@ int	find_type(char *str)
 	return (9);
 }
 
+int	find_type_limter(t_list *lst)
+{
+	t_list	*tmp;
+	int		type;
+
+	tmp = lst;
+	type = limtr;
+	while (tmp && tmp->type != space && tmp->type > 4)
+	{
+		if (tmp->type == dquot || tmp->type == squot)
+			type = limtr_qt;
+		tmp = tmp->next;
+	}
+	return (type);
+}
+
 void	flag_limitter(t_list *lst)
 {
 	t_list	*tmp;
-	t_list	*tmp1;
 	int		type;
 
-	type = limtr;
 	tmp = lst;
 	while (tmp && tmp->next)
 	{
@@ -50,14 +64,8 @@ void	flag_limitter(t_list *lst)
 			tmp && (tmp = tmp->next);
 			if (tmp->type == space && tmp->next)
 				tmp = tmp->next;
-			tmp1 = tmp;		
-			while(tmp1 && tmp1->type != space && tmp1->type > 4)
-			{
-				if (tmp1->type == dquot || tmp1->type == squot)
-					type = limtr_qt;
-				tmp1 = tmp1->next;
-			}
-			while(tmp && tmp->type != space && tmp->type > 4)
+			type = find_type_limter(tmp);
+			while (tmp && tmp->type != space && tmp->type > 4)
 			{
 				tmp->type = type;
 				tmp = tmp->next;
@@ -67,81 +75,115 @@ void	flag_limitter(t_list *lst)
 	}
 }
 
-void	add_to_list(t_list **lst, char *token)
+void	add_to_list(t_list **lst, char *token, t_env *env)
 {
-	t_list	*node = NULL;
+	t_list	*node;
+
+	if(!token)
+	{
+		ft_lstclear(lst);
+		ft_lstclear_env(&env);
+		ft_putstr_fd("mallac failed\n", 2);
+		exit(1);
+	}
 	node = ft_lstnew(token);
 	if (!node)
-		exit (EXIT_FAILURE);
+	{
+		ft_lstclear(lst);
+		ft_lstclear_env(&env);
+		ft_putstr_fd("mallac failed\n", 2);
+		exit(1);
+	}
 	node->type = find_type(token);
 	ft_lstadd_back(lst, node);
 }
 
-t_cmds	*proccess_line(char *line, t_list **lst, t_env *env)
+void	tokonisation(t_list **lst, char *line, t_env *env)
 {
-	t_list	*tmp;
-	int		i;
 	char	*token;
-	t_list	*node;
-	t_cmds	*cmds;
+	int		i;
 
-	node = NULL;
-	token = NULL;
 	i = 0;
+	token = NULL;
 	while (line[i] == ' ' || line[i] == '\t')
 		i++;
 	while (line && line[i])
 	{
 		token = get_token(line, &i);
-		if (!token)
-			(ft_lstclear(lst), ft_putstr_fd("mallac failed\n", 2), exit(1));
-		add_to_list(lst, token);
-		if (line[i] == ' ' || line [i] == '\t'){
+		add_to_list(lst, token, env);
+		if (line[i] && (line[i] == ' ' || line [i] == '\t'))
+		{
 			while (line[i] == ' ' || line [i] == '\t')
 				i++;
 			if (line[i] != '\0')
 			{
 				token = ft_strdup(" ");
-				if (!token)
-					(ft_lstclear(lst), ft_putstr_fd("mallac failed\n", 2), exit(1));
-				add_to_list(lst, token);
+				add_to_list(lst, token, env);
 			}
 		}
 	}
-	if (check_syntaxe_error(*lst))
-		return NULL;
-	remove_quotes(*lst);
-	flag_limitter(*lst);
-	flag_ambigus(*lst, env);
-	expand(*lst, env);
-	tmp = *lst;
+}
+
+t_cmds	*proccess_line(char *line, t_env *env)
+{
+	t_list	*lst;
+	t_list	*node;
+	t_cmds	*cmds;
+
+	lst = NULL;
+	node = NULL;
+	tokonisation(&lst, line, env);
+	printf("**********************************************\n");
+	t_list *tmp;
+	tmp = lst;
 	while (tmp)
 	{
 		printf("%s %d\n", tmp->content, tmp->type);
 		tmp = tmp->next;
 	}
 	printf("**********************************************\n");
-	ft_lst_join(lst);
-	tmp = *lst;
+	if (check_syntaxe_error(lst))
+	{
+		ft_lstclear(&lst);
+		return (NULL);
+	}
+	remove_quotes(lst, env);
+	flag_limitter(lst);
+	flag_ambigus(lst, env);
+	expand(lst, env);
+	tmp = lst;
+	while (tmp)
+	{
+		printf("%s %d\n", tmp->content, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("**********************************************\n");
+	ft_lst_join(&lst);//
+	tmp = lst;
 	while (tmp)
 	{
 		printf("%s %d\n", tmp->content, tmp->type);
 		tmp = tmp->next;
 	}
 	printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
-	cmds = list_cmds(*lst);
+	cmds = list_cmds(lst, env);//
+	int	i;
 	t_cmds	*tmp1;
 	t_list	*tmp2;
 	tmp1 = cmds;
 	while (tmp1)
 	{
 		i = 0;
+		if (!tmp1->args)
+			printf("args =\n");
       	while(tmp1 && tmp1->args && tmp1->args[i])
 		{
 			printf("args[%d] = %s\n", i, tmp1->args[i]);
 			i++;
 		}
 		tmp2 = tmp1->red;
+		if (!tmp2)
+			printf("red =\n");
 		while (tmp2)
 		{
 			printf("%s-- %d\n", tmp2->content, tmp2->type);
@@ -150,6 +192,6 @@ t_cmds	*proccess_line(char *line, t_list **lst, t_env *env)
 		printf("------------------\n");
 		tmp1 = tmp1->next;
 	}
-	
+	ft_lstclear(&lst);//
 	return (cmds);
 }

@@ -6,11 +6,11 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 17:21:07 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/07 21:10:07 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/21 15:32:35 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../minishell.h"
+#include "../minishell.h"
 
 int	is_space(char c)
 {
@@ -24,7 +24,7 @@ int	count_words(char *str)
 	int	count;
 
 	count = 0;
-	while(str && *str)
+	while (str && *str)
 	{
 		while (is_space(*str))
 			str++;
@@ -88,7 +88,7 @@ char	**ft_split(char *str)
 			return (ft_free(strs, i), NULL);
 		i++;
 		str += l;
-	} 
+	}
 	strs[i] = NULL;
 	return (strs);
 }

@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:40:50 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/12 18:01:18 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/18 18:16:34 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	while (i < len)
 		ptr[i++] = s[start++];
 	ptr[i] = '\0';
-	//printf("here\n");
 	return ((char *)ptr);
 }

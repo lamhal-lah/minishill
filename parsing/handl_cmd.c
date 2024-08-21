@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/15 15:41:38 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/21 19:21:27 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	count_arg(t_list *lst)
 {
-	int i;
+	int		i;
 	t_list	*tmp;
 
 	i = 0;
 	tmp = lst;
 	while (tmp && tmp->type != Pipe)
 	{
-		if (tmp->type > 0 &&  tmp->type < 5)
+		if (tmp->type > 0 && tmp->type < 5)
 		{
 			tmp = tmp->next->next;
 		}
@@ -38,14 +38,12 @@ char	**get_args(t_list **lst)
 {
 	char	**args;
 	t_list	*tmp;
-	int	i;
+	int		i;
 
 	tmp = *lst;
 	i = 0;
-	//args = NULL;
-	args = malloc((count_arg(*lst) + 1)* sizeof(char **));
-	//printf("%p\n", args);
-	while(tmp && tmp->type != Pipe)
+	args = malloc((count_arg(*lst) + 1) * sizeof(char **));
+	while (tmp && tmp->type != Pipe)
 	{
 		if (tmp->type > 0 && tmp->type < 5)
 			tmp = tmp->next->next;
@@ -60,7 +58,7 @@ char	**get_args(t_list **lst)
 	return (args);
 }
 
-t_list	*handll_red(t_list *lst)
+t_list	*handll_red(t_list *lst, t_env *env)
 {
 	t_list	*red;
 	t_list	*tmp;
@@ -71,15 +69,25 @@ t_list	*handll_red(t_list *lst)
 	tmp = lst;
 	while (tmp && tmp->next && tmp->type != Pipe)
 	{
-		if(tmp->type > 0 && tmp->type < 5)
+		if (tmp->type > 0 && tmp->type < 5)
 		{
-			str = ft_strdup(tmp->next->content);
-			node = ft_lstnew(str);
-			node->type = tmp->type;
+			if (tmp->type == herdoc)
+			{
+				node = ft_lstnew(NULL);
+				node->fd = process_herdoc(tmp->next->content,
+						tmp->next->type, env, lst);
+				node->type = herdoc;
+			}
+			else
+			{
+				str = ft_strdup(tmp->next->content);
+				node = ft_lstnew(str);
+				node->type = tmp->type;
+			}
 			if (tmp->next && tmp->next->type == ambigus)
 				node->type = ambigus;
 			if (tmp->next && tmp->next->content[0] == '\0')
-				node->type = nofile;			
+				node->type = nofile;
 			ft_lstadd_back(&red, node);
 			tmp = tmp->next;
 		}
@@ -88,7 +96,7 @@ t_list	*handll_red(t_list *lst)
 	return (red);
 }
 
-t_cmds	*ft_lstnew_cmd(t_list **lst)
+t_cmds	*ft_lstnew_cmd(t_list **lst, t_env *env)
 {
 	t_cmds	*node;
 	int		i;
@@ -97,28 +105,49 @@ t_cmds	*ft_lstnew_cmd(t_list **lst)
 	node = (t_cmds *)malloc(sizeof(t_cmds));
 	if (!node)
 		return (NULL);
-	node->red = handll_red(*lst);
-	node->args = get_args(lst);
+	if (!lst)
+	{
+		node->red = NULL;
+		node->args = NULL;
+	}
+	else
+	{
+		node->red = handll_red(*lst, env);
+		node->args = get_args(lst);
+	}
 	node->fdin = -1337;
 	node->fdout = -1337;
 	node -> next = NULL;
 	return (node);
 }
 
-t_cmds    *list_cmds(t_list *lst)
+t_cmds	*list_cmds(t_list *lst, t_env *env)
 {
-	t_cmds  *cmds;
+	t_cmds	*cmds;
 	t_list	*tmp;
 	t_cmds	*node;
 
 	node = NULL;
 	cmds = NULL;
 	tmp = lst;
+	if (!lst)
+		return (NULL);
+	if (tmp->type == Pipe)
+	{
+		node = ft_lstnew_cmd(NULL, env);
+		ft_lstadd_back_cmd(&cmds, node);
+	}
 	while (tmp)
 	{
 		if (tmp && tmp->type != Pipe)
 		{
-			node = ft_lstnew_cmd(&tmp);
+			node = ft_lstnew_cmd(&tmp, env);
+			ft_lstadd_back_cmd(&cmds, node);
+		}
+		else if ((tmp->type == Pipe && tmp->next && tmp->next->type == Pipe)
+					|| (tmp->type == Pipe && !tmp->next ))
+		{
+			node = ft_lstnew_cmd(NULL, env);
 			ft_lstadd_back_cmd(&cmds, node);
 		}
 		tmp && (tmp = tmp->next);
@@ -126,19 +155,6 @@ t_cmds    *list_cmds(t_list *lst)
 	return (cmds);
 }
 
-void	remove_spaces(t_list **lst)
-{
-	t_list	*tmp;
-	
-	tmp = *lst;
-	while(tmp && tmp->next)
-	{
-		if (tmp->next->type == space)
-			ft_remove_node(&tmp->next);
-		else
-			tmp = tmp->next;
-	}
-}
 
 void	ft_lst_join(t_list **lst)
 {
@@ -146,14 +162,20 @@ void	ft_lst_join(t_list **lst)
 	char	*tmp_content;
 
 	tmp = *lst;
-	while(tmp && tmp->next)
+	while (tmp && tmp->next)
 	{
 		if (tmp->type != space && tmp->type > 4)
 		{
-			while(tmp && tmp->next && tmp->next->type != space && tmp->next->type > 4)
+			while (tmp && tmp->next && tmp->next->type != space
+				&& tmp->next->type > 4)
 			{
 				tmp_content = tmp->content;
-				tmp->content = ft_strjoin(tmp->content, tmp->next->content);
+				if (tmp->content || tmp->next->content)
+				{
+					tmp->content = ft_strjoin(tmp->content, tmp->next->content);
+					if (tmp->content == NULL)
+						(ft_lstclear(lst), exit(1));
+				}
 				free(tmp_content);
 				if (tmp->type == limtr && tmp->next->type == limtr_qt)
 					tmp->type = limtr_qt;
@@ -162,6 +184,7 @@ void	ft_lst_join(t_list **lst)
 		}
 		tmp && (tmp = tmp->next);
 	}
+	if ((*lst) && (*lst)->type == var && (*lst)->content == NULL)
+		ft_remove_node(lst);
 	remove_spaces(lst);
 }
-
