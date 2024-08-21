@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:23:54 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/15 12:03:39 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/18 18:48:12 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	unset(char **av, t_env **env, int i, int k)
 	{
 		(1) && (tmp = *env, prev = NULL);
 		(!ft_check_first_char(av[i])) &&
-			(printf("minishell: unset: `%s': not a valid identifier\n",
-				av[i]), k = 1);
+			(ft_putstr_fd("minishell: unset: `", 2), ft_putstr_fd(av[i], 2),
+			ft_putstr_fd("': not a valid identifier\n", 2), k = 1);
 		while (tmp)
 		{
 			if (ft_strncmp(av[i], tmp->key, ft_strlen(av[i]) + 1) == 0)

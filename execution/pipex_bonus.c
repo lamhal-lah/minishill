@@ -6,133 +6,118 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/15 15:45:54 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:01:37 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	handle_fds(t_cmds *cmd)
+int	fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid)
 {
-	t_cmds	*tmp;
-
-	cmd->fdin = 0;
-	tmp = ft_lstlast_cmd(cmd);
-	tmp->fdout = 1;
-}
-
-int	open_rediractions(t_cmds *cmds)
-{
-	t_list	*red;
-
-	red = cmds->red;
-	while (red)
+	(1) && (*fd = NULL, i = -1, *pid = NULL);
+	handle_fds(cmd);
+	if (ft_cmdsize(cmd) > 1)
 	{
-		if (red->type == red_in)
+		*fd = malloc(sizeof(int *) * (ft_cmdsize(cmd)));
+		if (!*fd)
+			return (perror("malloc"), -1);
+		while (cmd && ++i < ft_cmdsize(cmd) - 1)
 		{
-			(1) && (close(cmds->fdin),
-				cmds->fdin = open(red->content, O_RDONLY));
-			(cmds->fdin == -1) && (printf("minihell: %s: %s", red->content,
-				strerror(errno)), exit(1), 0);
+			(*fd)[i] = malloc(sizeof(int) * 2);
+			if (!(*fd)[i])
+				return (perror("malloc"), -1);
+			if (pipe((*fd)[i]) == -1)
+				return (perror("pipe"), -1);
 		}
-		else if (red->type == red_out)
-		{
-			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
-				O_WRONLY | O_CREAT | O_TRUNC, 0777));
-			(cmds->fdout == -1) && (printf("minihell: %s: %s", red->content,
-				strerror(errno)), exit(1), 0);
-		}
-		else if (red->type == append)
-		{
-			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
-				O_WRONLY | O_CREAT | O_APPEND, 0777));
-			(cmds->fdout == -1) && (printf("minihell: %s: %s", red->content,
-				strerror(errno)), exit(1), 0);
-		}
-		else if (red->type == ambigus)
-		{
-			(1) && (close(cmds->fdout), close(cmds->fdin),
-			printf("minishell: %s:ambiguous redirect\n", red->content));
-			exit(1);
-		}
-		red = red->next;
+		(*fd)[i] = NULL;
 	}
+	*pid = malloc(sizeof(int) * ft_cmdsize(cmd));
+	if (!*pid)
+		return (perror("malloc"), -1);
 	return (0);
 }
 
-void	ft_check_redirections(t_cmds *cmd, int **fd, int i)
+int	wait_pids(t_cmds *cmd, int **fd, int *pid, t_execute *exec)
 {
-	if (i >= 0)
-	{
-		if (cmd->fdin == -1337)
-			cmd->fdin = fd[i - 1][0];
-		dup2(cmd->fdin, 0);
-	}
-	if (cmd->next != NULL)
-	{
-		if (cmd->fdout == -1337)
-			cmd->fdout = fd[i][1];
-		dup2(cmd->fdout, 1);
-	}
-}
+	int	i;
 
-int	execute(t_cmds *cmd, t_env **env, int i)
-{
-	int		fake_in;
-	int		fake_out;
-	int		**fd;
-	int		status;
-	t_cmds	*tmp;
-	int		*pid;
-
-	(1) && (i = -1, tmp = cmd, status = 0, pid = NULL, fd = NULL,
-		fake_in = dup(0), fake_out = dup(1));
-	if (!tmp)
-		return (0);
-	handle_fds(tmp);
-	fd = malloc(sizeof(int *) * (ft_cmdsize(cmd)));
-	if (!fd)
-		return (perror("malloc"), -1);
-	while (tmp && ++i < ft_cmdsize(cmd) - 1)
+	i = -1;
+	if (ft_cmdsize(cmd) > 1)
 	{
-		fd[i] = malloc(sizeof(int) * 2);
-		if (!fd[i])
-			return (perror("malloc"), -1);
-		if (pipe(fd[i]) == -1)
-			return (perror("pipe"), -1);
-	}
-	fd[i] = NULL;
-	pid = malloc(sizeof(int) * ft_cmdsize(cmd));
-	if (!pid)
-		return (perror("malloc"), -1);
-	i = 0;
-	while (tmp)
-	{
-		if (ft_cmdsize(tmp) == 1 && check_if_builtin(tmp))
-			(1) && (status = handle_one_cmd(tmp, env), tmp = tmp->next, i++);
-		else
+		while (fd[++i])
 		{
-			pid[i] = fork();
-			if (pid[i] < 0)
-				return (perror("fork"), -1);
-			if (pid[i] == 0)
-				middle_commands(tmp, *env, fd, i);
-			else
+			if (fd[i][0] != -1)
 			{
-				if (i < ft_cmdsize(cmd) - 1)
-					close(fd[i][1]);
+				close(fd[i][0]);
+				fd[i][0] = -1;
 			}
-			tmp = tmp->next;
-			i++;
 		}
 	}
 	i = -1;
-	while (fd[++i])
-		close(fd[i][0]);
-	i = -1;
 	while (++i < ft_cmdsize(cmd))
-		waitpid(pid[i], &status, 0);
-	(1) && (free(pid), free(fd),
-		dup2(fake_in, 0), dup2(fake_out, 1), close(fake_in), close(fake_out));
-	return (status);
+		waitpid(pid[i], &exec->status, 0);
+	exec->status = WEXITSTATUS(exec->status);
+	return (exec->status);
+}
+
+int	btn(t_execute *exec)
+{
+	dup2(exec->fake_in, 0);
+	dup2(exec->fake_out, 1);
+	close(exec->fake_in);
+	close(exec->fake_out);
+	return (0);
+}
+
+void	free_pipes(t_cmds **cmd, int ***fd, int **pid)
+{
+	int		i;
+	t_cmds	*tmp;
+
+	i = -1;
+	if (ft_cmdsize(*cmd) > 1)
+	{
+		while ((*fd)[++i])
+			free((*fd)[i]);
+		free(*fd);
+	}
+	free(*pid);
+	while (cmd && *cmd)
+	{
+		tmp = *cmd;
+		*cmd = (*cmd)->next;
+		ft_lstclear(&(*cmd)->red);
+		free_split_execution((tmp)->args, ft_split_size((tmp)->args));
+		(tmp)->args = NULL;
+		free(tmp);
+	}
+}
+
+int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)
+{
+	int		**fd;
+	t_cmds	*tmp;
+	int		*pid;
+
+	(1) && (i = 0, tmp = cmd);
+	if (!tmp)
+		return (free_pipes(&cmd, &fd, &pid), 0);
+	(prepare(exec) || fill_pipes(cmd, &fd, i, &pid))
+	&& (free_pipes(&cmd, &fd, &pid), exit(1), 0);
+	if (ft_cmdsize(tmp) == 1 && check_if_builtin(tmp))
+		return (exec->status = handle_one_cmd(tmp, env), free_pipes(&cmd,
+				&fd, &pid), btn(exec), exec->status);
+	while (tmp)
+	{
+		pid[i] = fork();
+		(pid[i] < 0) && (perror(""), free_pipes(&cmd, &fd, &pid), exit(1), 0);
+		if (pid[i] == 0)
+			middle_commands(tmp, *env, fd, i);
+		else
+			if (i < ft_cmdsize(cmd) - 1)
+				(fd[i][1] != -1) && (close(fd[i][1]), fd[i][1] = -1);
+		(1) && (i++, tmp = tmp->next);
+	}
+	return (exec->status = wait_pids(cmd, fd, pid, exec),
+		btn(exec), free_pipes(&cmd, &fd, &pid), exec->status);
 }

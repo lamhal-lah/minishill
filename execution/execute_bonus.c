@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/15 15:59:38 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:35:46 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,37 +21,43 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i)
 		exit(1);
 	if (!cmd || !cmd->args || !cmd->args[0])
 		exit(0);
-	error_management(cmd, env, fd, i);
-	while (fd[++x])
+	ft_check_redirections(cmd, fd, i);
+	while (fd && fd[++x])
 	{
-		close(fd[x][0]);
-		close(fd[x][1]);
+		if (fd[x][0] != -1)
+		{
+			close(fd[x][0]);
+			fd[x][0] = -1;
+		}
+		if (fd[x][1] != -1)
+		{
+			close(fd[x][1]);
+			fd[x][1] = -1;
+		}
 	}
+	error_management(cmd, env, fd, i);
 }
 
-void	ft_handle_dot(t_cmds *cmds, t_env *env, int **fd, int i)
+void	ft_handle_dot(t_cmds *cmds, t_env *env)
 {
 	struct stat	buf;
 
-	(cmds->args[1] == NULL) && (printf("minishell: .: filename argument"),
-		printf("required \n .: usage: . filename [arguments]\n"), exit(2), 0);
+	(cmds->args[1] == NULL) && (ft_putstr_fd("minishell: .: filename argument",
+		2), ft_putstr_fd("required \n .: usage: .",
+			2), ft_putstr_fd("filename [arguments]\n", 2), exit(2), 0);
 	if (cmds->args[1] != NULL)
 	{
-		if (ft_strchr(cmds->args[1], '/'))
-			slash_condition(cmds +1, env, fd, i);
 		if (stat(cmds->args[1], &buf) == 0)
 		{
 			if (S_ISDIR(buf.st_mode))
-			{
-				printf("minishell: %s: is a directory\n", cmds->args[1]);
-				exit(126);
-			}
+				(1) && (ft_putstr_fd("minishell: ", 2),
+				ft_putstr_fd(cmds->args[1],
+				2), ft_putstr_fd(": is a directory\n", 2), exit(1), 0);
 		}
 		if (!find_path(cmds->args[1], env))
-		{
-			printf("minishell: %s: No such file or directory\n", cmds->args[1]);
-			exit(1);
-		}
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[1],
+				2), ft_putstr_fd(": No such file or directory\n",
+					2), exit(1), 0);
 		else
 			if (execve(cmds->args[1], cmds->args, environement(env)) < 0)
 				perror("minishell");
@@ -65,16 +71,12 @@ void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i)
 	if (stat(cmds->args[0], &buf) == 0)
 	{
 		if (S_ISDIR(buf.st_mode))
-		{
-			printf("minishell: %s: is a directory\n", cmds->args[0]);
-			exit(126);
-		}
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
+				2), ft_putstr_fd(": is a directory\n", 2), exit(126), 0);
 	}
-	if (!find_path(cmds->args[0], env) && access(cmds->args[0], F_OK) == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", cmds->args[0]);
-		exit(127);
-	}
+	if (!find_path(cmds->args[0], env) && access(cmds->args[1], F_OK) == -1)
+		(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0], 2),
+			ft_putstr_fd(": No such file or directory\n", 2), exit(127), 0);
 	else
 	{
 		ft_check_redirections(cmds, fd, i);
@@ -89,10 +91,16 @@ int	handle_one_cmd(t_cmds *cmd, t_env **env)
 		return (1);
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
-	dup2(cmd->fdin, 0);
-	dup2(cmd->fdout, 1);
-	close(cmd->fdin);
-	close(cmd->fdout);
+	if (dup2(cmd->fdin, 0) < 0)
+		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd
+			(strerror(errno), 2), ft_putstr_fd("\n", 2), 1);
+	if (dup2(cmd->fdout, 1) < 0)
+		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd
+			(strerror(errno), 2), ft_putstr_fd("\n", 2), 1);
+	if (cmd->fdin != 0)
+		close(cmd->fdin);
+	if (cmd->fdout != 1)
+		close(cmd->fdout);
 	return (ft_is_builtin(cmd, env));
 }
 
@@ -103,43 +111,15 @@ int	open_rediractions_parent(t_cmds *cmds)
 	red = cmds->red;
 	while (red)
 	{
-		if (red->type == red_in)
+		if (red_in_out(cmds, red) < 0 || red_app_ambg(cmds, red) < 0)
+			return (-1);
+		if (red->type == nofile)
 		{
-			(1) && (close(cmds->fdin),
-				cmds->fdin = open(red->content, O_RDONLY));
-			if (cmds->fdin == -1)
-			{
-				printf("minihell: %s: %s", red->content,
-					strerror(errno));
-				return (-1);
-			}
-		}
-		else if (red->type == red_out)
-		{
-			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
-				O_WRONLY | O_CREAT | O_TRUNC, 0777));
-			if (cmds->fdout == -1)
-			{
-				printf("minihell: %s: %s", red->content,
-					strerror(errno));
-				return (-1);
-			}
-		}
-		else if (red->type == append)
-		{
-			(1) && (close(cmds->fdout), cmds->fdout = open(red->content,
-				O_WRONLY | O_CREAT | O_APPEND, 0777));
-			if (cmds->fdout == -1)
-			{
-				printf("minihell: %s: %s", red->content,
-					strerror(errno));
-				return (-1);
-			}
-		}
-		else if (red->type == ambigus)
-		{
-			(1) && (close(cmds->fdout), close(cmds->fdin),
-			printf("minishell: %s:ambiguous redirect\n", red->content));
+			(cmds->fdin > 0 && cmds->fdout > 1) && (close(cmds->fdout),
+			close(cmds->fdin));
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(red->content, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			return (-1);
 		}
 		red = red->next;

@@ -6,27 +6,26 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 10:41:42 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/11 12:37:16 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:59:17 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// char	*ft_strchr(char *str, char c)
-// {
-// 	int	i;
+int	ft_cmdsize(t_cmds *cmd)
+{
+	int		i;
+	t_cmds	*tmp;
 
-// 	i = 0;
-// 	if (!str)
-// 		return (NULL);
-// 	while (str[i])
-// 	{
-// 		if (str[i] == c)
-// 			return (str + i);
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
+	i = 0;
+	tmp = cmd;
+	while (tmp != NULL)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
 
 size_t	count_words_execution(const char *s, char c)
 {

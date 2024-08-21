@@ -6,31 +6,44 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/15 13:46:13 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:01:14 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	another_condition(t_cmds *cmds)
+{
+	if (cmds->args[0][0] == '~' && cmds->args[0][1] == '/')
+		cmds->args[0] = ft_strjoin("/Users/aboulakr", (cmds->args[0] + 1));
+	else if (cmds->args[0][0] == '~' && cmds->args[0][1] == '\0')
+		cmds->args[0] = ft_strdup("/Users/aboulakr");
+	else if (cmds->args[0][0] == '~'
+		&& (cmds->args[0][1] != '/' || cmds->args[0][1] == '\0'))
+		(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0], 2),
+			ft_putstr_fd(": No such file or directory\n", 2), exit(127), 0);
+}
+
 void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
 {
-	struct stat	buf;
-
+	another_condition(cmds);
 	if (!ft_strchr(cmds->args[0], '/'))
 	{
-		(!ft_strncmp(cmds->args[0], ".", ft_strlen(cmds->args[0]))) &&
-			(ft_handle_dot(cmds, env, fd, i), 0);
-		if (!stat(cmds->args[0], &buf) && !check_if_builtin(cmds))
-			(S_ISDIR(buf.st_mode)) && (printf("minishell: %s: is a directory\n",
-				cmds->args[0]), exit(126), 0);
-		if (!find_path(cmds->args[0], env) && !check_if_builtin(cmds))
-			(1) && (printf("minishell: %s: command not found\n",
-				cmds->args[0]), exit(127), 0);
+		(!ft_strncmp(cmds->args[0], ".", ft_strlen(cmds->args[0]) + 1)
+			&& ft_strlen(cmds->args[0]) == 1) && (ft_handle_dot(cmds, env), 0);
+		if (!cmds->args[0] || !ft_strlen(cmds->args[0]))
+			(1) && (ft_putstr_fd("minishell: : command not found\n", 2),
+				exit(127), 0);
+		if (!find_path(cmds->args[0], env) && !check_if_builtin(cmds)
+			&& access(cmds->args[0], X_OK) == -1)
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
+				2), ft_putstr_fd(": command not found\n", 2), exit(127), 0);
 		else
 		{
-			(1) && (ft_check_redirections(cmds, fd, i) , 0);
-			if (check_if_builtin(cmds))
-				exit(ft_is_builtin(cmds, &env));
+			(check_if_builtin(cmds)) && (exit(ft_is_builtin(cmds, &env)), 0);
+			if (!access(cmds->args[0], F_OK) || !access(cmds->args[0], X_OK))
+				(execve(cmds->args[0], cmds->args, environement(env)) < 0)
+				&& (perror("minishell"), 0);
 			else if (execve(find_path(cmds->args[0], env),
 					cmds->args, environement(env)) == -1)
 				perror("minishell");
@@ -61,6 +74,8 @@ char	*find_path(char *cmd, t_env *env)
 	char	*tmp;
 	int		i;
 
+	(!ft_strncmp(cmd, "..", ft_strlen(cmd) + 1)) && (ft_putstr_fd
+		("minishell: ..: command not found\n", 2), exit(127), 0);
 	path = ft_getenv("PATH", env);
 	if (!path)
 		return (NULL);
@@ -72,7 +87,6 @@ char	*find_path(char *cmd, t_env *env)
 		tmp = ft_strjoin(tmp, cmd);
 		if (!access(tmp, X_OK))
 		{
-			free(path);
 			free(paths);
 			return (tmp);
 		}
@@ -100,19 +114,4 @@ char	**environement(t_env *env)
 	}
 	envp[i] = NULL;
 	return (envp);
-}
-
-int	ft_cmdsize(t_cmds *cmd)
-{
-	int		i;
-	t_cmds	*tmp;
-
-	i = 0;
-	tmp = cmd;
-	while (tmp != NULL)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 18:12:27 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/15 11:25:42 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:54:28 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	chekc_string(char *str, char c)
 	return (1);
 }
 
-void	echo(char **av)
+int	echo(char **av)
 {
 	int	i;
 	int	j;
@@ -47,11 +47,10 @@ void	echo(char **av)
 	}
 	while (av && av[i])
 	{
-		printf("%s", av[i]);
+		ft_putstr_fd(av[i], 1);
 		(av[i + 1]) && (printf(" "));
 		i++;
 	}
 	(k == 0) && (printf("\n"));
-	exit(0);
+	return (0);
 }
-

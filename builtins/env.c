@@ -6,49 +6,51 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/15 11:42:57 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:36:30 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// char	*ft_getenv(char *key, t_env *env)
-// {
-// 	t_env	*tmp;
+int	prepare(t_execute *exec)
+{
+	(1) && (exec->fake_in = dup(0), exec->fake_out = dup(1), exec->status = 0);
+	return (0);
+}
 
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(key, tmp->key, ft_strlen(key)) == 0)
-// 			return (ft_strdup(tmp->value));
-// 		tmp = tmp->next;
-// 	}
-// 	return (NULL);
-// }
+void	handle_fds(t_cmds *cmd)
+{
+	t_cmds	*tmp;
 
-// t_env	*ft_env(char **env)
-// {
-// 	int		i;
-// 	t_env	*head;
-// 	t_env	*tmp;
+	cmd->fdin = 0;
+	tmp = ft_lstlast_cmd(cmd);
+	tmp->fdout = 1;
+}
 
-// 	i = 0;
-// 	head = NULL;
-// 	while (env[i])
-// 	{
-// 		tmp = ft_lstnew_env(env[i]);
-// 		if (tmp == NULL)
-// 		{
-// 			ft_lstclear_env(&head);
-// 			return (NULL);
-// 		}
-// 		ft_lstadd_back_env(&head, tmp);
-// 		i++;
-// 	}
-// 	return (head);
-// }
+int	open_rediractions(t_cmds *cmds)
+{
+	t_list	*red;
 
-void	ft_print_env(t_env *env)
+	red = cmds->red;
+	while (red)
+	{
+		if (red_in_out(cmds, red) < 0 || red_app_ambg(cmds, red) < 0)
+			exit(1);
+		if (red->type == nofile)
+		{
+			(cmds->fdin && cmds->fdout != 1) && (close(cmds->fdout),
+			close(cmds->fdin));
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(red->content, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			exit(1);
+		}
+		red = red->next;
+	}
+	return (0);
+}
+
+int	ft_print_env(t_env *env)
 {
 	t_env	*tmp;
 
@@ -61,5 +63,5 @@ void	ft_print_env(t_env *env)
 			printf("%s=\n", tmp->key);
 		tmp = tmp->next;
 	}
-	exit(0);
+	return (0);
 }
