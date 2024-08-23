@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 17:45:07 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/23 15:53:03 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	find_type(char *str)
 		return (5);
 	else if (str[0] == '\'')
 		return (6);
-	else if (str[0] == '$')
+	else if (str[0] == '$' && str[1] != '\0')
 		return (7);
 	else if (str[0] == ' ')
 		return (8);
@@ -158,7 +158,7 @@ t_cmds	*proccess_line(char *line, t_env *env)
 		tmp = tmp->next;
 	}
 	printf("**********************************************\n");
-	ft_lst_join(&lst);//
+	ft_lst_join(&lst, env);//
 	tmp = lst;
 	while (tmp)
 	{

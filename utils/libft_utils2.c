@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 15:33:02 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/22 22:45:23 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,16 @@ char	*ft_strchr(const char *s, int c)
 	if (s[i] == cc)
 		return ((char *)(s + i));
 	return (NULL);
+}
+
+void	ft_free_exit(t_list **lst, t_env **env, t_cmds **cmds, char *str)
+{
+	if (lst)
+		ft_lstclear(lst);
+	if (env)
+		ft_lstclear_env(env);
+	if (cmds)
+		ft_lstclear_cmd(cmds);
+	ft_putstr_fd(str, 2);
+	exit(EXIT_FAILURE);
 }

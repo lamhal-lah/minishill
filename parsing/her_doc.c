@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 09:36:27 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 19:53:24 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/23 16:16:15 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	process_herdoc(char	*str, int type, t_env *env, t_list *lst)
 	char	*line;
 	char	*tmp;
 
+	unlink("/tmp/tmp.txt");
 	fd = open("/tmp/tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	line = readline(">");
 	while (line && ft_strncmp(line, str, ft_strlen(str) + 1) != 0)
@@ -35,6 +36,7 @@ int	process_herdoc(char	*str, int type, t_env *env, t_list *lst)
 		free(line);
 		line = readline(">");
 	}
+	free(line);
 	close(fd);
 	fd = open("/tmp/tmp.txt", O_RDONLY);
 	unlink("/tmp/tmp.txt");

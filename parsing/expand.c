@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 19:07:00 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/23 15:35:56 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,6 @@ void	expand(t_list *lst, t_env *env)
 			str_tmp = NULL;
 		}
 		tmp && (tmp = tmp->next);
-	}
-	tmp = lst;
-	while (tmp)
-	{
-		printf("%s %d\n", tmp->content, tmp->type);
-		tmp = tmp->next;
 	}
 	remove_empty_node(&lst);
 }

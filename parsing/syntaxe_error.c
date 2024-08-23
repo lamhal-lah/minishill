@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:36:37 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/19 18:12:41 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/22 22:44:30 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	chek_error(t_list **lst)
 		tmp1 = tmp->next;
 		if ((tmp->type == Pipe && tmp1->type == Pipe) || (tmp->type == Pipe
 				&& tmp1->type == space && tmp1->next->type == Pipe))
-		{
-			
 			return (ft_putstr_fd("syntaxe error near | \n", 2), 1);
-		}
 		else if ((tmp->type > 0 && tmp->type < 5) && (tmp->next->type >= 0
 				&& tmp->next->type < 5))
 			return (ft_putstr_fd("syntaxe error near ", 2),

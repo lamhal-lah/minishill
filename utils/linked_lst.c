@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 19:02:43 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 15:34:53 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/22 15:40:49 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_list	*ft_lstnew(char *content)
 	if (!node)
 		return (NULL);
 	node -> content = content;
+	node -> fd = -1;
 	node -> next = NULL;
 	return (node);
 }
@@ -75,6 +76,7 @@ void	ft_lstclear(t_list **lst)
 	{
 		tmp = *lst;
 		*lst = (*lst)-> next;
+		(tmp->fd > -1) && close(tmp->fd);
 		free(tmp->content);
 		free(tmp);
 	}

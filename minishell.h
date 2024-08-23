@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 19:52:16 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/23 16:15:43 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,34 +148,35 @@ void	ft_lstclear_env(t_env **lst);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_free(char *str1, char *str2);
 char	*ft_strchr(const char *s, int c);
-t_cmds	*ft_lstnew_cmd(t_list **lst, t_env *env);
+t_cmds	*ft_lstnew_cmd(t_list **lst, t_list *lst1, t_env *env, t_cmds *cmds);
 void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new);
 void	ft_lstclear_cmd(t_cmds **lst);
-t_cmds	*list_cmds(t_list *lst,t_env *env);
+t_cmds	*list_cmds(t_list *lst, t_env *env);
 int		count_words(char *str);
 int		open_rediractions(t_cmds *cmd);
+void	ft_free_exit(t_list **lst, t_env **env, t_cmds **cmds, char *str);//
 
 //----------------------------------parsing-----------------------------------//
 
-void    expand(t_list *lst, t_env *env);
-char    **ft_split(char *str);
-void    ft_lst_join(t_list **lst);
-t_cmds    *proccess_line(char *line, t_env *env);
-int        check_syntaxe_error(t_list *lst);
-//t_env    *ft_env(char **env);
-void    remove_quotes(t_list *list, t_env *env);
-//char   *ft_getenv(char *key, t_env *env);
-void    *get_token(char *line, int *i);
-void    flag_ambigus(t_list *lst, t_env *env);
-char    *expand_dquot(char *str, t_env *env, t_list *lst);
-void    remove_empty_node(t_list **lst);
-int        process_herdoc(char    *str, int type, t_env *env, t_list *lst);
-
-void    ft_free(char **str, int n);
-int        count_lenght(t_list *node, t_env *env, t_list *lst);
-int        space_at_bgn(char *str, t_env *env, t_list *lst);
-int        space_at_end(char *str, t_env *env, t_list *lst);
-void    expand_var(char *var, t_env *env, t_list **node , t_list **lst);
-void    remove_spaces(t_list **lst);
+void	expand(t_list *lst, t_env *env);
+char	**ft_split(char *str);
+void	ft_lst_join(t_list **lst, t_env *env);
+t_cmds	*proccess_line(char *line, t_env *env);
+int		check_syntaxe_error(t_list *lst);
+//t_env	*ft_env(char **env);
+void	remove_quotes(t_list *list, t_env *env);
+//char	*ft_getenv(char *key, t_env *env);
+void	*get_token(char *line, int *i);
+void	flag_ambigus(t_list *lst, t_env *env);
+char	*expand_dquot(char *str, t_env *env, t_list *lst);
+void	remove_empty_node(t_list **lst);
+int		process_herdoc(char *str, int type, t_env *env, t_list *lst);
+void	ft_free(char **str, int n);
+int		count_lenght(t_list *node, t_env *env, t_list *lst);
+int		space_at_bgn(char *str, t_env *env, t_list *lst);
+int		space_at_end(char *str, t_env *env, t_list *lst);
+void	expand_var(char *var, t_env *env, t_list **node, t_list **lst);
+void	remove_spaces(t_list **lst);
+char	**get_args(t_list **lst, t_list *list, t_env *env, t_cmds *cmds);
 
 #endif
