@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 19:35:46 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:50:43 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@ void	ft_handle_dot(t_cmds *cmds, t_env *env)
 				ft_putstr_fd(cmds->args[1],
 				2), ft_putstr_fd(": is a directory\n", 2), exit(1), 0);
 		}
-		if (!find_path(cmds->args[1], env))
+		else if (!find_path(cmds->args[1], env)
+			&& access(cmds->args[1], F_OK) == -1)
 			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[1],
 				2), ft_putstr_fd(": No such file or directory\n",
 					2), exit(1), 0);
-		else
-			if (execve(cmds->args[1], cmds->args, environement(env)) < 0)
-				perror("minishell");
+		else if (find_path(cmds->args[1], env) || !access(cmds->args[1], X_OK))
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[1],
+				2), ft_putstr_fd(": command not found\n", 2), exit(1), 0);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 13:16:44 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 19:29:31 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:09:35 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ size_t	ft_split_size(char **split)
 	size_t	i;
 
 	i = 0;
-	while (split[i])
+	while (split && split[i])
 		i++;
 	return (i);
 }

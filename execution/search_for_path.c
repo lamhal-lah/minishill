@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 18:01:14 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:51:10 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ void	another_condition(t_cmds *cmds)
 		cmds->args[0] = ft_strjoin("/Users/aboulakr", (cmds->args[0] + 1));
 	else if (cmds->args[0][0] == '~' && cmds->args[0][1] == '\0')
 		cmds->args[0] = ft_strdup("/Users/aboulakr");
-	else if (cmds->args[0][0] == '~'
-		&& (cmds->args[0][1] != '/' || cmds->args[0][1] == '\0'))
-		(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0], 2),
-			ft_putstr_fd(": No such file or directory\n", 2), exit(127), 0);
 }
 
 void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
@@ -34,7 +30,7 @@ void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
 		if (!cmds->args[0] || !ft_strlen(cmds->args[0]))
 			(1) && (ft_putstr_fd("minishell: : command not found\n", 2),
 				exit(127), 0);
-		if (!find_path(cmds->args[0], env) && !check_if_builtin(cmds)
+		else if (!find_path(cmds->args[0], env) && !check_if_builtin(cmds)
 			&& access(cmds->args[0], X_OK) == -1)
 			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
 				2), ft_putstr_fd(": command not found\n", 2), exit(127), 0);

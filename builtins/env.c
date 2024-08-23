@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 19:36:30 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:20:11 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	open_rediractions(t_cmds *cmds)
 			exit(1);
 		if (red->type == nofile)
 		{
-			(cmds->fdin && cmds->fdout != 1) && (close(cmds->fdout),
+			(cmds->fdin > 0 && cmds->fdout > 1) && (close(cmds->fdout),
 			close(cmds->fdin));
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(red->content, 2);

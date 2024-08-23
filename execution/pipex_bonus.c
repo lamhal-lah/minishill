@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 22:01:37 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:16:13 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	btn(t_execute *exec)
 void	free_pipes(t_cmds **cmd, int ***fd, int **pid)
 {
 	int		i;
-	t_cmds	*tmp;
 
 	i = -1;
 	if (ft_cmdsize(*cmd) > 1)
@@ -82,15 +81,7 @@ void	free_pipes(t_cmds **cmd, int ***fd, int **pid)
 		free(*fd);
 	}
 	free(*pid);
-	while (cmd && *cmd)
-	{
-		tmp = *cmd;
-		*cmd = (*cmd)->next;
-		ft_lstclear(&(*cmd)->red);
-		free_split_execution((tmp)->args, ft_split_size((tmp)->args));
-		(tmp)->args = NULL;
-		free(tmp);
-	}
+	ft_lstclear_cmd(cmd);
 }
 
 int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)
