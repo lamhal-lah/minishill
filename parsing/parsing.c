@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/23 15:53:03 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/25 20:52:15 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ t_cmds	*proccess_line(char *line, t_env *env)
 	{
 		i = 0;
 		if (!tmp1->args)
-			printf("args =\n");
+			printf("args = NULL\n");
       	while(tmp1 && tmp1->args && tmp1->args[i])
 		{
 			printf("args[%d] = %s\n", i, tmp1->args[i]);
@@ -183,7 +183,7 @@ t_cmds	*proccess_line(char *line, t_env *env)
 		}
 		tmp2 = tmp1->red;
 		if (!tmp2)
-			printf("red =\n");
+			printf("red = NULL\n");
 		while (tmp2)
 		{
 			printf("%s-- %d\n", tmp2->content, tmp2->type);

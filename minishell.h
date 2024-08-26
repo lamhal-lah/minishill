@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/23 16:15:43 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 03:18:42 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <readline/readline.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <signal.h>
+
+int	g_i;
 
 typedef enum e_type
 {
@@ -73,6 +77,12 @@ typedef struct s_export
 	char	*new_value;
 }	t_export;
 
+typedef struct s_line
+{
+	char	*line;
+	t_env	*env_lst;
+}	t_line;
+
 typedef struct s_execute
 {
 	int		fake_in;
@@ -81,6 +91,9 @@ typedef struct s_execute
 }	t_execute;
 
 //----------------------------execution---------------------------------------//
+int		ft_exit(char **av);
+void	sig_handler2(int signo);
+void	sig_handler(int signo);
 int		red_app_ambg(t_cmds *cmds, t_list *red);
 int		red_in_out(t_cmds *cmds, t_list *red);
 char	**free_split_execution(char **split, size_t size);

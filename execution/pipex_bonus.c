@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/22 16:16:13 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:10:20 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,20 @@ int	wait_pids(t_cmds *cmd, int **fd, int *pid, t_execute *exec)
 	{
 		while (fd[++i])
 		{
-			if (fd[i][0] != -1)
-			{
-				close(fd[i][0]);
-				fd[i][0] = -1;
-			}
+			(fd[i][0] != -1) && (close(fd[i][0]), fd[i][0] = -1);
 		}
 	}
 	i = -1;
 	while (++i < ft_cmdsize(cmd))
 		waitpid(pid[i], &exec->status, 0);
-	exec->status = WEXITSTATUS(exec->status);
+	if (WIFSIGNALED(exec->status))
+	{
+		if (WTERMSIG(exec->status) == 3)
+			ft_putstr_fd("Quit: 3\n", 2);
+		exec->status = WTERMSIG(exec->status) + 128;
+	}
+	else
+		exec->status = WEXITSTATUS(exec->status);
 	return (exec->status);
 }
 
@@ -91,24 +94,23 @@ int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)
 	int		*pid;
 
 	(1) && (i = 0, tmp = cmd);
-	if (!tmp)
-		return (free_pipes(&cmd, &fd, &pid), 0);
 	(prepare(exec) || fill_pipes(cmd, &fd, i, &pid))
 	&& (free_pipes(&cmd, &fd, &pid), exit(1), 0);
 	if (ft_cmdsize(tmp) == 1 && check_if_builtin(tmp))
 		return (exec->status = handle_one_cmd(tmp, env), free_pipes(&cmd,
-				&fd, &pid), btn(exec), exec->status);
+				&fd, &pid), printf("status parent =  %d\n", exec->status), btn(exec), exec->status);
 	while (tmp)
 	{
-		pid[i] = fork();
+		(1) && (g_i = 1, signal(SIGQUIT, SIG_IGN), pid[i] = fork());
 		(pid[i] < 0) && (perror(""), free_pipes(&cmd, &fd, &pid), exit(1), 0);
 		if (pid[i] == 0)
-			middle_commands(tmp, *env, fd, i);
+			(1) && (rl_catch_signals = 1, signal(SIGQUIT,
+				SIG_DFL), middle_commands(tmp, *env, fd, i), 0);
 		else
 			if (i < ft_cmdsize(cmd) - 1)
 				(fd[i][1] != -1) && (close(fd[i][1]), fd[i][1] = -1);
 		(1) && (i++, tmp = tmp->next);
 	}
-	return (exec->status = wait_pids(cmd, fd, pid, exec),
+	return (exec->status = wait_pids(cmd, fd, pid, exec), g_i = 0, printf("status child =%d\n", exec->status),
 		btn(exec), free_pipes(&cmd, &fd, &pid), exec->status);
 }

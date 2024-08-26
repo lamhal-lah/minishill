@@ -3,18 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
+#    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/08/23 16:15:13 by lamhal           ###   ########.fr        #
+#    Updated: 2024/08/26 02:02:02 by aboulakr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc -g -fsanitize=address 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra 
 
-SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c builtins/unset.c \
+READLINEDIR = $(shell brew --prefix readline)
+LDFLAGS = -L$(READLINEDIR)/lib -lreadline
+CPPFLAGS = -I$(READLINEDIR)/include
+
+SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c builtins/unset.c  builtins/exit.c \
 	builtins/utils.c builtins/utils2.c execution/execute_bonus.c execution/is_builtins.c \
 	execution/pipex_bonus.c execution/redirections.c execution/search_for_path.c parsing/ambgus.c \
 	parsing/ambgus_utils.c parsing/env.c parsing/expand.c parsing/expand_var.c parsing/get_args.c \
@@ -27,11 +31,11 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)  
-	$(CC) -o $@ $^ -lreadline
+	$(CC) -o $@ $^ -lreadline $(LDFLAGS)
 
 
 %.o: %.c minishell.h
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@  -c $< $(CFLAGS) $(CPPFLAGS)
 
 clean:
 	rm -f $(OBJ) $(OBJ_B)

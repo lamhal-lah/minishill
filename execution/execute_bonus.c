@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/22 18:50:43 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 03:10:00 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,21 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i)
 	x = -1;
 	if (open_rediractions(cmd) < 0)
 		exit(1);
-	if (!cmd || !cmd->args || !cmd->args[0])
+	if (!cmd || !cmd->args)
 		exit(0);
 	ft_check_redirections(cmd, fd, i);
 	while (fd && fd[++x])
 	{
-		if (fd[x][0] != -1)
+		(fd[x][0] != -1) && (close(fd[x][0]), fd[x][0] = -1);
+		(fd[x][1] != -1) && (close(fd[x][1]), fd[x][1] = -1);
+	}
+	if (cmd->args[0] == NULL)
+	{
+		if (execve(NULL, NULL, environement(env)) < 0)
 		{
-			close(fd[x][0]);
-			fd[x][0] = -1;
-		}
-		if (fd[x][1] != -1)
-		{
-			close(fd[x][1]);
-			fd[x][1] = -1;
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd("command not found\n", 2);
+			exit(127);
 		}
 	}
 	error_management(cmd, env, fd, i);
@@ -82,7 +83,14 @@ void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i)
 	{
 		ft_check_redirections(cmds, fd, i);
 		if (execve(cmds->args[0], cmds->args, environement(env)) < 0)
-			perror("minishell");
+		{
+			if (errno == 2)
+				(1) && (ft_putstr_fd("minishell: ", 2),
+				ft_putstr_fd(cmds->args[0], 2), ft_putstr_fd
+				(": No such file or directo0ry\n", 2), exit(127), 0);
+			else
+				perror("minishell ");
+		}
 	}
 }
 

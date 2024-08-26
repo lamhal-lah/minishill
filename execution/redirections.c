@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:49:37 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 22:56:12 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/25 20:09:36 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	red_app_ambg(t_cmds *cmds, t_list *red)
 		(cmds->fdin > 0) && (close(cmds->fdin));
 		printf("herdoc = %d\n", red->fd);
 		cmds->fdin = red->fd;
-		//close(red->fd);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lst2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 06:50:25 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/18 18:11:17 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/23 16:40:46 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,42 +33,30 @@ char	*ft_strndup(const char *s1, size_t n)
 t_env	*ft_lstnew_env(char *env)
 {
 	t_env	*new;
-	char	*equal_sign;
+	char	*equal;
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	equal_sign = ft_strchr(env, '=');
-	if (equal_sign)
+	equal = ft_strchr(env, '=');
+	if (equal)
 	{
-		if (ft_strchr(env, '+'))
-			new->key = ft_strndup(env, equal_sign - env - 1);
-		else
-			new->key = ft_strndup(env, equal_sign - env);
-		new->value = ft_strdup(equal_sign + 1);
+		(ft_strchr(env, '+')) && (new->key = ft_strndup(env, equal - env - 1));
+		(!ft_strchr(env, '+')) && (new->key = ft_strndup(env, equal - env));
+		new->value = ft_strdup(equal + 1);
 		if (ft_strncmp(new->key, "OLDPWD", 7) == 0)
-		{
-			free(new->value);
-			new->value = NULL;
-			new->printed = 0;
-			return (new->next = NULL, new);
-		}
+			return (free(new->value), new->value = NULL,
+				new->printed = 0, new->next = NULL, new);
 		if (!new->value || ft_strlen(new->value) == 0)
 		{
-			if (new->value)
-				free(new->value);
+			(new->value) && (free(new->value), 0);
 			new->value = NULL;
 		}
 		new->printed = 1;
 	}
 	else
-	{
-		new->key = ft_strdup(env);
-		new->value = NULL;
-		new->printed = 0;
-	}
-	new->next = NULL;
-	return (new);
+		(1) && (new->key = ft_strdup(env), new->value = NULL, new->printed = 0);
+	return (new->next = NULL, new);
 }
 
 t_env	*ft_lstlast_env(t_env *lst)
