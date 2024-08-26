@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
+#    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/08/26 02:02:02 by aboulakr         ###   ########.fr        #
+#    Updated: 2024/08/26 15:06:06 by lamhal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c builtin
 	parsing/ambgus_utils.c parsing/env.c parsing/expand.c parsing/expand_var.c parsing/get_args.c \
 	parsing/handl_cmd.c parsing/her_doc.c parsing/join_cmds.c parsing/parsing.c parsing/remove.c \
 	parsing/syntaxe_error.c parsing/token.c utils/ft_split.c utils/libft_utils.c utils/libft_utils2.c \
-	utils/linked_lst.c utils/linked_lst2.c utils/linked_lst3.c minishell.c
+	utils/linked_lst.c utils/linked_lst2.c utils/linked_lst3.c utils/ft_itoa.c minishell.c 
 
 OBJ = $(SRC:.c=.o)
 

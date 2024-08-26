@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/25 20:52:15 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:15:01 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,30 +75,28 @@ void	flag_limitter(t_list *lst)
 	}
 }
 
-void	add_to_list(t_list **lst, char *token, t_env *env)
+void	add_to_list(t_list **lst, char *token, t_pars *parsg)
 {
 	t_list	*node;
 
-	if(!token)
+	if (token && ft_strncmp(token, "$?", 3) == 0)
 	{
-		ft_lstclear(lst);
-		ft_lstclear_env(&env);
-		ft_putstr_fd("mallac failed\n", 2);
-		exit(1);
+		free(token);
+		token = ft_itoa(parsg->status);
 	}
+	if(!token)
+		ft_free_exit(parsg, "failled malloc\n");
 	node = ft_lstnew(token);
 	if (!node)
 	{
-		ft_lstclear(lst);
-		ft_lstclear_env(&env);
-		ft_putstr_fd("mallac failed\n", 2);
-		exit(1);
+		free(token);
+		ft_free_exit(parsg, "failled malloc\n");
 	}
 	node->type = find_type(token);
 	ft_lstadd_back(lst, node);
 }
 
-void	tokonisation(t_list **lst, char *line, t_env *env)
+void	tokonisation(t_list **lst, char *line, t_pars *parsg)
 {
 	char	*token;
 	int		i;
@@ -110,7 +108,7 @@ void	tokonisation(t_list **lst, char *line, t_env *env)
 	while (line && line[i])
 	{
 		token = get_token(line, &i);
-		add_to_list(lst, token, env);
+		add_to_list(lst, token, parsg);
 		if (line[i] && (line[i] == ' ' || line [i] == '\t'))
 		{
 			while (line[i] == ' ' || line [i] == '\t')
@@ -118,21 +116,39 @@ void	tokonisation(t_list **lst, char *line, t_env *env)
 			if (line[i] != '\0')
 			{
 				token = ft_strdup(" ");
-				add_to_list(lst, token, env);
+				add_to_list(lst, token, parsg);
 			}
 		}
 	}
 }
 
-t_cmds	*proccess_line(char *line, t_env *env)
+t_pars	*alloc_intaillese(char **line, t_list **lst, t_env **env, int status)
+{
+	t_pars	*parsg;
+
+	parsg = malloc(sizeof(t_pars));
+	if (!parsg)
+		(free(line), ft_lstclear(lst), ft_lstclear_env(env),
+			ft_putstr_fd("failled malloc\2", 2), exit(1));
+	parsg->line = *line;
+	parsg->lst = *lst;
+	parsg->env = *env;
+	parsg->cmds = NULL;
+	parsg->status = status;
+	return (parsg);
+}
+
+t_cmds	*proccess_line(char *line, int status, t_env *env)
 {
 	t_list	*lst;
 	t_list	*node;
 	t_cmds	*cmds;
 
+	t_pars	*parsg;
+	parsg = alloc_intaillese(&line, &lst, &env, status);
 	lst = NULL;
 	node = NULL;
-	tokonisation(&lst, line, env);
+	tokonisation(&lst, line, parsg);
 	printf("**********************************************\n");
 	t_list *tmp;
 	tmp = lst;
@@ -147,10 +163,10 @@ t_cmds	*proccess_line(char *line, t_env *env)
 		ft_lstclear(&lst);
 		return (NULL);
 	}
-	remove_quotes(lst, env);
+	remove_quotes(lst, parsg);
 	flag_limitter(lst);
-	flag_ambigus(lst, env);
-	expand(lst, env);
+	flag_ambigus(lst, env, parsg);
+	expand(lst, env, parsg);
 	tmp = lst;
 	while (tmp)
 	{
@@ -158,7 +174,7 @@ t_cmds	*proccess_line(char *line, t_env *env)
 		tmp = tmp->next;
 	}
 	printf("**********************************************\n");
-	ft_lst_join(&lst, env);//
+	ft_lst_join(&lst, parsg);//
 	tmp = lst;
 	while (tmp)
 	{
@@ -166,7 +182,7 @@ t_cmds	*proccess_line(char *line, t_env *env)
 		tmp = tmp->next;
 	}
 	printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
-	cmds = list_cmds(lst, env);//
+	cmds = list_cmds(lst, parsg);//
 	int	i;
 	t_cmds	*tmp1;
 	t_list	*tmp2;

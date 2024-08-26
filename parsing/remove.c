@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:53:05 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/22 22:42:02 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 11:40:51 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_remove_node(t_list **lst)
 	free(tmp);
 }
 
-void	remove_quotes(t_list *list, t_env *env)
+void	remove_quotes(t_list *list, t_pars *parsg)
 {
 	t_list	*tmp;
 	char	*tmp_var;
@@ -40,8 +40,7 @@ void	remove_quotes(t_list *list, t_env *env)
 			tmp->content = ft_substr(tmp->content, 1,
 					ft_strlen(tmp->content) - 2);
 			if (!tmp->content)
-				(ft_lstclear(&list), ft_lstclear_env(&env),
-					ft_putstr_fd("malloc failed", 2), exit(1));
+				ft_free_exit(parsg, "failled malloc\n");
 			free(tmp_var);
 		}
 		tmp = tmp->next;

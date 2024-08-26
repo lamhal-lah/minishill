@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 17:56:43 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/18 18:23:10 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 15:10:18 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	handell_varaibl(char *line, int *i)
 	len = *i;
 	if (line[len] == '$' && line[len + 1] >= '0' && line[len + 1] <= '9')
 		return (2);
-	//else if (line[len] == '$' && line[len + 1] >= '?')
-	//	return (2);
+	else if (line[len] == '$' && line[len + 1] == '?')
+		return (2);
 	else if (line[len] == '$' && line[len + 1] == '$')
 	{
 		while (line[len] == '$')

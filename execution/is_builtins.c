@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 13:16:44 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 03:11:30 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:26:46 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	check_if_builtin(t_cmds *cmds)
 {
 	if (!cmds)
-		exit(0);
-	if (cmds->args[0])
+		return (0);
+	if (cmds->args && cmds->args[0])
 	{
 		if (ft_strncmp(cmds->args[0], "echo", 5) == 0)
 			return (1);

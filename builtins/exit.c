@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 19:59:22 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 03:10:45 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:50:29 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-long	ft_atoi(const char *str)
+long	ft_atoi(char *str)
 {
 	int				i;
 	int				sign;
@@ -27,6 +27,11 @@ long	ft_atoi(const char *str)
 			sign = -1;
 	while (str[i] >= 48 && str[i] <= 57)
 		res = res * 10 + str[i++] - '0';
+	if (str[i] != '\0')
+	{
+		(1) && (ft_putstr_fd("minishell: exit: ", 2), ft_putstr_fd(str,
+			2), ft_putstr_fd(": numeric argument required\n", 2), exit(255), 0);
+	}
 	return (res * sign);
 }
 
@@ -49,6 +54,8 @@ int	check_digit(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '-'  || str[i] == '+')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))

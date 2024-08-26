@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 03:23:05 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:17:08 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	sig_handler(int signo)
 {
+	printf("hi from sighandler\n");
+	printf("g_i = %d\n", g_i);
 	printf("\n");
 	if (signo == SIGINT && g_i == 0)
 	{
@@ -21,6 +23,8 @@ void	sig_handler(int signo)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	else if (g_i == 1)
+		close (0);
 }
 
 int	main(int ac, char **args, char **env)
@@ -34,14 +38,14 @@ int	main(int ac, char **args, char **env)
 	(1) && (g_i = 0, rl_catch_signals = 0);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	(1) && ((void)ac, (void)args, lst = NULL, cmds = NULL,
+	(1) && ((void)ac, (void)args, lst = NULL, cmds = NULL, exec.status = 0,
 	lol.env_lst = ft_env(env), lol.line = readline("minishell:  "));
 	while (lol.line)
 	{
 		if (ft_strlen(lol.line) > 0)
 			add_history(lol.line);
-		(count_words(lol.line) > 0) && (cmds = proccess_line(lol.line, lol.env_lst));
-		if (cmds && cmds->args && !ft_strncmp(cmds->args[0],
+		(count_words(lol.line) > 0) && (cmds = proccess_line(lol.line, exec.status, lol.env_lst));
+		if (cmds && cmds->args && cmds->args[0] && ft_strlen(lol.line) == 4 && !ft_strncmp(cmds->args[0],
 				"exit", 5) && cmds->args[1] == NULL)
 			exit(i);
 		if (cmds && cmds->args && cmds->red)

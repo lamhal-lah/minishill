@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 03:10:20 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:13:14 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)
 				&fd, &pid), printf("status parent =  %d\n", exec->status), btn(exec), exec->status);
 	while (tmp)
 	{
-		(1) && (g_i = 1, signal(SIGQUIT, SIG_IGN), pid[i] = fork());
+		(1) && (/*g_i = 1,*/ signal(SIGQUIT, SIG_IGN), pid[i] = fork());
 		(pid[i] < 0) && (perror(""), free_pipes(&cmd, &fd, &pid), exit(1), 0);
 		if (pid[i] == 0)
 			(1) && (rl_catch_signals = 1, signal(SIGQUIT,

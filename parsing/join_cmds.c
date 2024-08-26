@@ -6,13 +6,13 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 22:39:48 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/23 15:43:33 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 12:01:55 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	lst_jion(t_list *tmp, t_list **lst, t_env *env)
+void	lst_jion(t_list *tmp, t_pars *pars)
 {
 	char	*tmp_content;
 
@@ -21,14 +21,14 @@ void	lst_jion(t_list *tmp, t_list **lst, t_env *env)
 	{
 		tmp->content = ft_strjoin(tmp->content, tmp->next->content);
 		if (tmp->content == NULL)
-			ft_free_exit(lst, &env, NULL, "failled malloc\n");
+			ft_free_exit(pars, "failled malloc\n");
 	}
 	free(tmp_content);
 	if (tmp->type == limtr && tmp->next->type == limtr_qt)
 		tmp->type = limtr_qt;
 }
 
-void	ft_lst_join(t_list **lst, t_env *env)
+void	ft_lst_join(t_list **lst, t_pars *pars)
 {
 	t_list	*tmp;
 
@@ -40,7 +40,7 @@ void	ft_lst_join(t_list **lst, t_env *env)
 			while (tmp && tmp->next && tmp->next->type != space
 				&& tmp->next->type > 4)
 			{
-				lst_jion(tmp, lst, env);
+				lst_jion(tmp, pars);
 				ft_remove_node(&tmp->next);
 			}
 		}
