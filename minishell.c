@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 19:17:08 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 22:07:40 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	sig_handler(int signo)
 {
-	printf("hi from sighandler\n");
-	printf("g_i = %d\n", g_i);
-	printf("\n");
 	if (signo == SIGINT && g_i == 0)
 	{
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

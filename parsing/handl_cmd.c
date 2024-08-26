@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 19:08:23 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 22:02:36 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_list	*lstnew_red(t_list *lst_node, t_pars *pars)
 	char	*str;
 
 	node = NULL;
-	if (lst_node->type == herdoc )
+	if (lst_node->type == herdoc && g_i == 0)
 	{
 		node = ft_lstnew(NULL);
 		if (!node)
@@ -123,8 +123,8 @@ t_cmds	*list_cmds(t_list *lst, t_pars *pars)
 			lst_addback_cmd(NULL, pars, &cmds);
 		tmp && (tmp = tmp->next);
 	}
-	// if (g_i == 1)
-	// 	(ft_lstclear_cmd(&cmds), cmds = NULL);
-	// g_i = 0;
+	if (g_i == 1)
+		(ft_lstclear_cmd(&cmds), cmds = NULL);
+	g_i = 0;
 	return (cmds);
 }

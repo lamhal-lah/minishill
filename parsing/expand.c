@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 16:37:02 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 21:59:40 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ char	*get_str(char *str, int *indx, t_env *env, t_pars *parsg)
 
 	i = *indx;
 	k = str_len(str, &i);
-	printf("d = %d\n", k);
 	str1 = ft_substr(str, *indx, k);
-	printf("str1 = %s\n", str1);
 	if (str1 && ft_strncmp(str1, "$?", 3) == 0)
 	{
 		free(str1);
