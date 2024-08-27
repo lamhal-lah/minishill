@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/27 20:11:44 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/27 23:31:25 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_list	*lstnew_red(t_list *lst_node, t_pars *pars)
 	if (lst_node->type == herdoc)
 	{
 		if (g_i == 3)
-			return (ft_lstclear(&pars->lst), g_i = 0, pars->lst = NULL, NULL);
+			return (ft_lstclear(&pars->lst), pars->lst = NULL, NULL);
 		node = ft_lstnew(NULL);
 		if (!node)
 			ft_free_exit(pars, "failed malloc\n");
@@ -125,8 +125,10 @@ t_cmds	*list_cmds(t_list *lst, t_pars *pars)
 			lst_addback_cmd(NULL, pars, &cmds);
 		tmp && (tmp = tmp->next);
 	}
-	// if (g_i == 1)
-	// 	(ft_lstclear_cmd(&cmds), cmds = NULL);
-	// g_i = 0;
+	if (g_i == 3)
+	{
+		(ft_lstclear_cmd(&cmds), cmds = NULL);
+		g_i = 2;
+	}
 	return (cmds);
 }

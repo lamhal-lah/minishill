@@ -6,12 +6,12 @@
 #    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/08/27 20:09:31 by aboulakr         ###   ########.fr        #
+#    Updated: 2024/08/28 00:43:48 by aboulakr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc -g  #-fsanitize=address 
+CC = cc -g # -fsanitize=address 
 CFLAGS = -Wall -Werror -Wextra 
 
 READLINEDIR = $(shell brew --prefix readline)

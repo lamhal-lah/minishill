@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 23:23:53 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/27 23:56:22 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/stat.h>
 # include <signal.h>
+# include <termios.h>
 
 int	g_i;
 
@@ -79,8 +80,9 @@ typedef struct s_export
 
 typedef struct s_line
 {
-	char	*line;
-	t_env	*env_lst;
+	char			*line;
+	t_env			*env_lst;
+	struct termios	term;
 }	t_line;
 
 typedef struct s_execute

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/27 19:42:43 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 00:44:57 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,7 @@ void	add_to_list(t_list **lst, char *token, t_pars *parsg)
 	if (token && ft_strncmp(token, "$?", 3) == 0)
 	{
 		free(token);
-		if (g_i == 2)
-		{
-			token = ft_strdup("1");
-			g_i = 0;
-		}
-		else
-			token = ft_itoa(parsg->status);
+		token = ft_itoa(parsg->status);
 	}
 	if(!token)
 		ft_free_exit(parsg, "failled malloc\n");
@@ -149,8 +143,10 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 	t_list	*lst;
 	t_list	*node;
 	t_cmds	*cmds;
-
 	t_pars	*parsg;
+	
+	if (count_words(line) == 0)
+		return (NULL);	
 	parsg = alloc_intaillese(&line, &lst, &env, status);
 	lst = NULL;
 	node = NULL;
@@ -167,6 +163,7 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 	if (check_syntaxe_error(lst))
 	{
 		ft_lstclear(&lst);
+		free(parsg);
 		return (NULL);
 	}
 	remove_quotes(lst, parsg);
