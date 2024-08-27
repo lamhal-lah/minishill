@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 13:16:44 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 18:26:46 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 23:27:18 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_is_builtin(t_cmds *cmds, t_env **env)
 		else if (ft_strncmp(cmds->args[0], "cd", 3) == 0)
 			k = cd(cmds->args, *env);
 		else if (ft_strncmp(cmds->args[0], "pwd", 4) == 0)
-			k = pwd();
+			k = pwd(*env);
 		else if (ft_strncmp(cmds->args[0], "export", 7) == 0)
 			k = export(cmds->args, env, 0, &tmp);
 		else if (ft_strncmp(cmds->args[0], "unset", 6) == 0)

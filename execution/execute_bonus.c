@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 18:04:07 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 23:26:17 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i)
 	{
 		if (cmd->args && cmd->args[0] == NULL)
 		{
-				ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd("command not found\n", 2);
 			exit(127);
 		}

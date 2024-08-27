@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 22:07:40 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/27 20:46:29 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	sig_handler(int signo)
 {
-	if (signo == SIGINT && g_i == 0)
+	printf("hi from sighandler\n");
+	printf("\n");
+	if (signo == SIGINT)
 	{
-		printf("\n");
+		printf("g_i = %d\n", g_i);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_i = 2;
 	}
-	else if (g_i == 1)
-		close (0);
 }
 
 int	main(int ac, char **args, char **env)
@@ -34,7 +35,8 @@ int	main(int ac, char **args, char **env)
 	static int	i;
 
 	(1) && (g_i = 0, rl_catch_signals = 0);
-	signal(SIGINT, sig_handler);
+	if (g_i == 0)
+		signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	(1) && ((void)ac, (void)args, lst = NULL, cmds = NULL, exec.status = 0,
 	lol.env_lst = ft_env(env), lol.line = readline("minishell:  "));

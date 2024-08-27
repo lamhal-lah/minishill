@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 19:13:14 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 23:43:54 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	wait_pids(t_cmds *cmd, int **fd, int *pid, t_execute *exec)
 	i = -1;
 	while (++i < ft_cmdsize(cmd))
 		waitpid(pid[i], &exec->status, 0);
+	if (g_i == 2)
+		return (printf("herer\n"), exec->status = 1, g_i = 0, exec->status);
 	if (WIFSIGNALED(exec->status))
 	{
 		if (WTERMSIG(exec->status) == 3)

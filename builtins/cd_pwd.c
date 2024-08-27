@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:59:07 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/21 16:50:43 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:54:44 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	change_env_value(char *key, char *value, t_env **env)
 			tmp->value = ft_strdup(value);
 			return ;
 		}
+		else if (!ft_strncmp(tmp->key, "PWD", 4))
+			ft_lstadd_back_env(env, ft_lstnew_env(key));
 		tmp = tmp->next;
 	}
 }
@@ -51,6 +53,7 @@ int	cd(char **av, t_env *env)
 	else
 	{
 		tmp = getcwd(NULL, 0);
+		printf("tmp = %s\n", tmp);
 		change_env_value("OLDPWD", old_path, &env);
 		change_env_value("PWD", tmp, &env);
 	}
@@ -58,14 +61,14 @@ int	cd(char **av, t_env *env)
 		path = NULL, tmp = NULL, old_path = NULL, 0);
 }
 
-int	pwd(void)
+int	pwd(t_env *env)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		perror("pwd");
-	else
+		path = ft_getenv("PWD", env);
+	if (path != NULL)
 		printf("%s\n", path);
 	free(path);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 21:59:40 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/27 20:16:49 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,13 @@ char	*get_str(char *str, int *indx, t_env *env, t_pars *parsg)
 	if (str1 && ft_strncmp(str1, "$?", 3) == 0)
 	{
 		free(str1);
-		str1 = ft_itoa(parsg->status);
+		if (g_i == 2)
+		{
+			str1 = ft_strdup("1");
+			g_i = 0;
+		}
+		else
+			str1 = ft_itoa(parsg->status);
 	}
 	if (!str)
 		ft_free_exit(parsg, "failled malloc\n");

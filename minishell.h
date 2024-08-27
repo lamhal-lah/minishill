@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 15:13:19 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/26 23:23:53 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i);
 void	error_management(t_cmds *cmds, t_env *env, int **fd, int i);
 int		handle_rediractions(t_cmds *cmds);
 int		ft_is_builtin(t_cmds *cmds, t_env **env);
-int		pwd(void);
+int		pwd(t_env *env);
 char	*ft_strndup(const char *s1, size_t n);
 int		ft_print_env(t_env *env);
 char	*ft_getenv(char *name, t_env *env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 15:15:01 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/27 19:42:43 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,13 @@ void	add_to_list(t_list **lst, char *token, t_pars *parsg)
 	if (token && ft_strncmp(token, "$?", 3) == 0)
 	{
 		free(token);
-		token = ft_itoa(parsg->status);
+		if (g_i == 2)
+		{
+			token = ft_strdup("1");
+			g_i = 0;
+		}
+		else
+			token = ft_itoa(parsg->status);
 	}
 	if(!token)
 		ft_free_exit(parsg, "failled malloc\n");
@@ -209,5 +215,6 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 		tmp1 = tmp1->next;
 	}
 	ft_lstclear(&lst);//
+	free(parsg);
 	return (cmds);
 }
