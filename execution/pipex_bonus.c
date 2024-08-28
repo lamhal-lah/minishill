@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/28 06:36:42 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:31:52 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,6 @@ void	free_pipes(t_cmds **cmd, int ***fd, int **pid)
 	}
 	free(*pid);
 	ft_lstclear_cmd(cmd);
-}
-
-void	ctrl_c(int signo)
-{
-	(void)signo;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
 }
 
 int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)

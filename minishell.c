@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 05:37:13 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:05:22 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int ac, char **args, char **env)
 
 	initialize(&lol, &exec, env);
 	(1) && ((void)ac, (void)args, lst = NULL, cmds = NULL);
-	while (lol.line)
+	while (lol.line && isatty(0))
 	{
 		(g_i == 2) && (exec.status = 1, g_i = 0);
 		if (ft_strlen(lol.line) > 0)

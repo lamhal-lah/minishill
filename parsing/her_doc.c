@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_doc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 09:36:27 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 07:04:53 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 20:55:58 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	handel_herdoc(char *str, int type, t_env *env, t_pars *pars)
 	line = readline(">");
 	while (1)
 	{
-		if (!line || ft_strncmp(line, str, ft_strlen(str)) == 0)
+		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0)
 			break ;
 		if (type == limtr)
 		{

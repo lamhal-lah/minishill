@@ -6,7 +6,7 @@
 #    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/08/28 08:46:10 by aboulakr         ###   ########.fr        #
+#    Updated: 2024/08/28 23:12:35 by aboulakr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LDFLAGS = -L$(READLINEDIR)/lib -lreadline
 CPPFLAGS = -I$(READLINEDIR)/include
 
 SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c builtins/unset.c  builtins/exit.c \
-	builtins/utils.c builtins/utils2.c execution/execute_bonus.c execution/is_builtins.c \
+	builtins/utils.c builtins/utils2.c execution/execute_bonus.c execution/is_builtins.c execution/error.c\
 	execution/pipex_bonus.c execution/redirections.c execution/search_for_path.c parsing/ambgus.c \
 	parsing/ambgus_utils.c parsing/env.c parsing/expand.c parsing/expand_var.c parsing/get_args.c \
 	parsing/handl_cmd.c parsing/her_doc.c parsing/join_cmds.c parsing/parsing.c parsing/remove.c \
