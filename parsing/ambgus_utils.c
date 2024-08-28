@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:46:38 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 11:49:10 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 02:42:05 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	space_at_bgn(char *str, t_env *env, t_pars *parsg)
 
 	varaib = expand_dquot(str, env, parsg);
 	if (varaib && (varaib[0] == ' ' || varaib[0] == '\t'))
-		return (1);
+		return (free(varaib), 1);
+	free(varaib);
 	return (0);
 }
 
@@ -52,6 +53,7 @@ int	space_at_end(char *str, t_env *env, t_pars *parsg)
 	varaib = expand_dquot(str, env, parsg);
 	id_p_nl = ft_strlen(varaib) - 1;
 	if (varaib && (varaib[id_p_nl] == ' ' || varaib[id_p_nl] == '\t'))
-		return (1);
+		return (free(varaib), 1);
+	free(varaib);
 	return (0);
 }

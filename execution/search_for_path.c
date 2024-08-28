@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_for_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 03:10:10 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:05:30 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	error_management(t_cmds *cmds, t_env *env, int **fd, int i)
 			(check_if_builtin(cmds)) && (exit(ft_is_builtin(cmds, &env)), 0);
 			if (!access(cmds->args[0], F_OK) || !access(cmds->args[0], X_OK))
 				(execve(cmds->args[0], cmds->args, environement(env)) < 0)
-				&& (perror("minishell"), 0);
+				&& (perror("minishell "), 0);
 			else if (execve(find_path(cmds->args[0], env),
 					cmds->args, environement(env)) == -1)
 				perror("minishell");

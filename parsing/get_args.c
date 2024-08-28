@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 22:37:27 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/26 18:24:38 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 05:08:34 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ char	*get_av(char *str, t_pars *pars)
 	return (str1);
 }
 
+t_list	*handl_emptyav(t_list *lst, int count)
+{
+	if (count == 0)
+	{
+		while (lst && lst->type != Pipe)
+			lst = lst->next;
+	}
+	return (lst);
+}
 
 char	**get_args(t_list **lst, t_pars *pars)
 {
@@ -60,11 +69,7 @@ char	**get_args(t_list **lst, t_pars *pars)
 	tmp = *lst;
 	count = count_arg(*lst);
 	if (count == 0)
-	{
-		while (tmp && tmp->type != Pipe)
-			tmp = tmp->next;
-		return ((*lst = tmp), NULL);
-	}
+		return (*lst = handl_emptyav(tmp, count), NULL);
 	i = 0;
 	args = malloc((count + 1) * sizeof(char **));
 	if (!args)
@@ -79,7 +84,6 @@ char	**get_args(t_list **lst, t_pars *pars)
 			tmp = tmp->next;
 		}
 	}
-	*lst = tmp;
 	args[i] = NULL;
-	return (args);
+	return (*lst = tmp, args);
 }

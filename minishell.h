@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/27 23:56:22 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:53:24 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,8 @@ void	ft_free_exit(t_pars *parsg, char *str);//
 char	*ft_itoa(int n);
 
 //----------------------------------parsing-----------------------------------//
-
+int		find_type(char *str);
+void	flag_limitter(t_list *lst);
 void	expand(t_list *lst, t_env *env, t_pars *parsg);
 char	**ft_split(char *str);
 void	ft_lst_join(t_list **lst, t_pars *pars);
