@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/26 23:26:17 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 07:00:43 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i)
 		(fd[x][0] != -1) && (close(fd[x][0]), fd[x][0] = -1);
 		(fd[x][1] != -1) && (close(fd[x][1]), fd[x][1] = -1);
 	}
-	error_management(cmd, env, fd, i);
+	error_management(cmd, env);
 }
 
 void	ft_handle_dot(t_cmds *cmds, t_env *env)
@@ -65,31 +65,29 @@ void	ft_handle_dot(t_cmds *cmds, t_env *env)
 	}
 }
 
-void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i)
+void	slash_condition(t_cmds *cmds, t_env *env)
 {
 	struct stat	buf;
 
-	if (stat(cmds->args[0], &buf) == 0)
+	if (execve(cmds->args[0], cmds->args, environement(env)) < 0)
 	{
-		if (S_ISDIR(buf.st_mode))
-			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
-				2), ft_putstr_fd(": is a directory\n", 2), exit(126), 0);
-	}
-	if (!find_path(cmds->args[0], env) && access(cmds->args[1], F_OK) == -1)
-		(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0], 2),
-			ft_putstr_fd(": No such file or directory\n", 2), exit(127), 0);
-	else
-	{
-		ft_check_redirections(cmds, fd, i);
-		if (execve(cmds->args[0], cmds->args, environement(env)) < 0)
+		if (stat(cmds->args[0], &buf) == 0)
 		{
-			if (errno == 2)
+			if (S_ISDIR(buf.st_mode))
 				(1) && (ft_putstr_fd("minishell: ", 2),
-				ft_putstr_fd(cmds->args[0], 2), ft_putstr_fd
-				(": No such file or directo0ry\n", 2), exit(127), 0);
-			else
-				perror("minishell ");
+					ft_putstr_fd(cmds->args[0], 2),
+					ft_putstr_fd(": is a directory\n", 2), exit(126), 0);
 		}
+		else if (errno == 2)
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
+				2), ft_putstr_fd(": No such file or directory\n",
+					2), exit(127), 0);
+		else if (errno == 13)
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
+				2), ft_putstr_fd(": Permission denied\n", 2), exit(126), 0);
+		else
+			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
+				2), ft_putstr_fd(": command not found\n", 2), exit(127), 0);
 	}
 }
 

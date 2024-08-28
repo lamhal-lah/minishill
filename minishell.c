@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 00:49:28 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 05:37:13 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static void	ft_free_line_prompt(t_line *lol, t_cmds *cmds, t_list *lst)
 	free(lol->line);
 	ft_lstclear(&lst);
 	cmds = NULL;
-	lol->line = readline("minishell:  ");
 	rl_catch_signals = 0;
-	tcsetattr(0, TCSANOW, &lol->term);
+	tcsetattr(0, 0, &lol->term);
+	lol->line = readline("minishell:  ");
 }
 
 int	main(int ac, char **args, char **env)

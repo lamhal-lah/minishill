@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 04:53:24 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 08:44:47 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ int		handle_one_cmd(t_cmds *cmd, t_env **env);
 int		open_rediractions_parent(t_cmds *cmds);
 int		check_if_builtin(t_cmds *cmds);
 void	ft_handle_dot(t_cmds *cmds, t_env *env);
-void	slash_condition(t_cmds *cmds, t_env *env, int **fd, int i);
-void	error_management(t_cmds *cmds, t_env *env, int **fd, int i);
+void	slash_condition(t_cmds *cmds, t_env *env);
+void	error_management(t_cmds *cmds, t_env *env);
 int		handle_rediractions(t_cmds *cmds);
 int		ft_is_builtin(t_cmds *cmds, t_env **env);
 int		pwd(t_env *env);
@@ -182,6 +182,7 @@ void	ft_free_exit(t_pars *parsg, char *str);//
 char	*ft_itoa(int n);
 
 //----------------------------------parsing-----------------------------------//
+
 int		find_type(char *str);
 void	flag_limitter(t_list *lst);
 void	expand(t_list *lst, t_env *env, t_pars *parsg);
