@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:23:54 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/29 11:41:59 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:51:21 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	unset(char **av, t_env **env, int i, int k)
 	t_env	*tmp;
 	t_env	*prev;
 
-	while (av[++i] && ft_strncmp(av[i], "-", 2) == 0)
+	while (av[++i] && ft_strncmp(av[i], "_", 2) != 0)
 	{
 		(1) && (tmp = *env, prev = NULL);
 		if (!ft_check_first_char(av[i]))
