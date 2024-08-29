@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/28 07:04:10 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:37:29 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	another_condition(t_cmds *cmds)
 void	error_management(t_cmds *cmds, t_env *env)
 {
 	another_condition(cmds);
-	if (!ft_strchr(cmds->args[0], '/'))
+	if (!ft_strchr(cmds->args[0], '/') && !check_if_builtin(cmds))
 	{
 		if (!cmds->args[0] || !ft_strlen(cmds->args[0]))
 			(1) && (ft_putstr_fd("minishell: : command not found\n", 2),
@@ -31,38 +31,12 @@ void	error_management(t_cmds *cmds, t_env *env)
 		(!ft_strncmp(cmds->args[0], ".", ft_strlen(cmds->args[0]) + 1)
 			&& ft_strlen(cmds->args[0]) == 1) && (ft_handle_dot(cmds, env), 0);
 		if (!check_if_builtin(cmds))
-		{
-			if (!access(cmds->args[0], X_OK) || find_path(cmds->args[0], env))
-			{
-				if (execve(find_path(cmds->args[0], env), cmds->args,
-						environement(env)) == -1)
-				{
-					if (errno == 2)
-						(1) && (ft_putstr_fd("minishell: ",	2), ft_putstr_fd(cmds->args[0],
-						2), ft_putstr_fd(": No such file or directory\n", 2), exit(127), 0);
-					else if (errno == 13)
-						(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
-						2), ft_putstr_fd(": Permission denied\n", 2), exit(126), 0);
-					else
-					{
-						(!ft_getenv("PATH", env)) && (cmds->args[0] = ft_strjoin("./", cmds->args[0]),
-						slash_condition(cmds, env), 0);
-						(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
-						2), ft_putstr_fd(": command not found\n", 2), exit(127), 0);
-					}
-				}
-			}
-			else if (!find_path(cmds->args[0], env)
-				&& access(cmds->args[0], X_OK) == -1)
-				(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
-					2), ft_putstr_fd(": command not found\n", 2), exit(127), 0);
-		}
+			handle(cmds, env);
 	}
 	else
 		(check_if_builtin(cmds)) && (exit(ft_is_builtin(cmds, &env)), 0);
 	(ft_strchr(cmds->args[0], '/')) && (slash_condition(cmds, env), 0);
 }
-
 
 int	ft_lstsize(t_env *lst)
 {
