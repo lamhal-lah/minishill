@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:46:38 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 02:42:05 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/29 13:17:23 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,33 @@ int	space_at_end(char *str, t_env *env, t_pars *parsg)
 	if (varaib && (varaib[id_p_nl] == ' ' || varaib[id_p_nl] == '\t'))
 		return (free(varaib), 1);
 	free(varaib);
+	return (0);
+}
+
+int	check_ambigus_word2(t_list *tmp, t_env *env, t_pars *parsg)
+{
+	while (tmp && tmp->type != space && tmp->type > 4)
+	{
+		if (count_lenght(tmp, env, parsg) == 1)
+		{
+			tmp = tmp->next;
+			while (tmp && tmp->type != space && tmp->type > 4)
+			{
+				if (tmp->type == var && count_lenght(tmp, env, parsg) == 0)
+				{
+					tmp = tmp->next;
+					while (tmp && tmp->type != space && tmp->type > 4)
+					{
+						if (count_lenght(tmp, env, parsg) == 1)
+							return (1);
+						tmp = tmp->next;
+					}
+				}
+				tmp && (tmp->type != space && tmp->type > 4)
+				&& (tmp = tmp->next);
+			}
+		}
+		tmp && (tmp->type != space && tmp->type > 4) && (tmp = tmp->next);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 07:12:37 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 09:52:56 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,15 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 	lst = NULL;
 	node = NULL;
 	tokonisation(&lst, line, parsg);
-	// printf("**********************************************\n");
-	// t_list *tmp;
-	// tmp = lst;
-	// while (tmp)
-	// {
-	// 	printf("%s %d\n", tmp->content, tmp->type);
-	// 	tmp = tmp->next;
-	// }
-	// printf("**********************************************\n");
+	printf("**********************************************\n");
+	t_list *tmp;
+	tmp = lst;
+	while (tmp)
+	{
+		printf("%s %d\n", tmp->content, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("**********************************************\n");
 	if (check_syntaxe_error(lst))
 	{
 		ft_lstclear(&lst);
@@ -107,47 +107,47 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 	flag_limitter(lst);
 	flag_ambigus(lst, env, parsg);
 	expand(lst, env, parsg);
-	// tmp = lst;
-	// while (tmp)
-	// {
-	// 	printf("%s %d\n", tmp->content, tmp->type);
-	// 	tmp = tmp->next;
-	// }
-	// printf("**********************************************\n");
+	tmp = lst;
+	while (tmp)
+	{
+		printf("%s %d\n", tmp->content, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("**********************************************\n");
 	ft_lst_join(&lst, parsg);//
-	// tmp = lst;
-	// while (tmp)
-	// {
-	// 	printf("%s %d\n", tmp->content, tmp->type);
-	// 	tmp = tmp->next;
-	// }
-	// printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
+	tmp = lst;
+	while (tmp)
+	{
+		printf("%s %d\n", tmp->content, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
 	cmds = list_cmds(lst, parsg);//
-	// int	i;
-	// t_cmds	*tmp1;
-	// t_list	*tmp2;
-	// tmp1 = cmds;
-	// while (tmp1)
-	// {
-	// 	i = 0;
-	// 	if (!tmp1->args)
-	// 		printf("args = NULL\n");
-	// 		while(tmp1 && tmp1->args && tmp1->args[i])
-	// 	{
-	// 		printf("args[%d] = %s\n", i, tmp1->args[i]);
-	// 		i++;
-	// 	}
-	// 	tmp2 = tmp1->red;
-	// 	if (!tmp2)
-	// 		printf("red = NULL\n");
-	// 	while (tmp2)
-	// 	{
-	// 		printf("%s-- %d\n", tmp2->content, tmp2->type);
-	// 		tmp2 = tmp2->next;
-	// 	}
-	// 	printf("------------------\n");
-	// 	tmp1 = tmp1->next;
-	// }
+	int	i;
+	t_cmds	*tmp1;
+	t_list	*tmp2;
+	tmp1 = cmds;
+	while (tmp1)
+	{
+		i = 0;
+		if (!tmp1->args)
+			printf("args = NULL\n");
+			while(tmp1 && tmp1->args && tmp1->args[i])
+		{
+			printf("args[%d] = %s\n", i, tmp1->args[i]);
+			i++;
+		}
+		tmp2 = tmp1->red;
+		if (!tmp2)
+			printf("red = NULL\n");
+		while (tmp2)
+		{
+			printf("%s-- %d\n", tmp2->content, tmp2->type);
+			tmp2 = tmp2->next;
+		}
+		printf("------------------\n");
+		tmp1 = tmp1->next;
+	}
 	ft_lstclear(&lst);//
 	free(parsg);
 	//system("leaks minishell");

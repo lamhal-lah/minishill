@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 19:02:37 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:25:41 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,68 +101,50 @@ typedef struct s_pars
 	int		status;
 }	t_pars;
 
-//----------------------------------builtin-----------------------------------//
-
-int		ft_exit(char **av);
-int		check_if_builtin(t_cmds *cmds);
-int		ft_is_builtin(t_cmds *cmds, t_env **env);
-int		pwd(t_env *env);
-int		ft_print_env(t_env *env);
-t_env	*ft_env(char **env);
-int		cd(char **av, t_env *env);
-int		echo(char **av);
-int		unset(char **av, t_env **env, int i, int k);
-int		export(char **av, t_env **env, int i, t_export *exp);
-void	ft_print_export(char **av, t_env *env);
-
-//-----------------------------utils-builtin----------------------------------//
-
-int		chekc_string(char *str, char c);
-int		check_first_char(char *str);
-int		ft_check_key(char *str, char c);
-int		ft_fill(char **key, char **value, char *str);
-int		help_export(t_env **env, t_env **new, char *av);
-
 //----------------------------execution---------------------------------------//
-
-void	ctrl_c(int signo);
+int		ft_exit(char **av);
 void	sig_handler2(int signo);
 void	sig_handler(int signo);
 int		red_app_ambg(t_cmds *cmds, t_list *red);
 int		red_in_out(t_cmds *cmds, t_list *red);
+char	**free_split_execution(char **split, size_t size);
+int		fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
 int		handle_one_cmd(t_cmds *cmd, t_env **env);
 int		open_rediractions_parent(t_cmds *cmds);
-int		handle_rediractions(t_cmds *cmds);
-void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
-void	ft_check_redirections_parent(t_cmds *cmd);
-char	**environement(t_env *env);
-int		execute(t_cmds *cmd, t_env **env, int i, t_execute *exec);
-void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
-
-//----------------------------------Erorr-execution---------------------------//
-
-void	error_management(t_cmds *cmds, t_env *env);
-void	slash_condition(t_cmds *cmds, t_env *env);
+int		check_if_builtin(t_cmds *cmds);
 void	ft_handle_dot(t_cmds *cmds, t_env *env);
-void	handle(t_cmds *cmds, t_env *env);
-void	print_error_and_exit(t_cmds *cmds, char *error_msg, int exit_code);
-void	handle_other_error(t_cmds *cmds, t_env *env);
-void	handle_execve_error(t_cmds *cmds, t_env *env);
-
-//----------------------------------utils-execution---------------------------//
-
-int		fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
-char	**free_split_execution(char **split, size_t size);
+void	slash_condition(t_cmds *cmds, t_env *env);
+void	error_management(t_cmds *cmds, t_env *env);
+int		handle_rediractions(t_cmds *cmds);
+int		ft_is_builtin(t_cmds *cmds, t_env **env);
+int		pwd(t_env *env);
 char	*ft_strndup(const char *s1, size_t n);
+int		ft_print_env(t_env *env);
 char	*ft_getenv(char *name, t_env *env);
+t_env	*ft_env(char **env);
 t_env	*ft_lstnew_env(char *env);
+int		cd(char **av, t_env *env);
+int		chekc_string(char *str, char c);
+int		echo(char **av);
+int		unset(char **av, t_env **env, int i, int k);
+int		export(char **av, t_env **env, int i, t_export *exp);
+int		ft_check_key(char *str, char c);
+int		check_first_char(char *str);
 int		ft_isalpha(int c);
+void	ft_print_export(char **av, t_env *env);
+int		ft_fill(char **key, char **value, char *str);
 int		ft_isdigit(int c);
+int		help_export(t_env **env, t_env **new, char *av);
 char	**free_split(char **split, size_t size);
 t_cmds	*ft_lstlast_cmd(t_cmds *lst);
+void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
+void	ft_check_redirections_parent(t_cmds *cmd);
 char	**ft_split_execution(char *str, char c);
 int		ft_lstsize(t_env *lst);
 char	*find_path(char *cmd, t_env *env);
+char	**environement(t_env *env);
+int		execute(t_cmds *cmd, t_env **env, int i, t_execute *exec);
+void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 int		ft_cmdsize(t_cmds *cmd);
 
 //---------------------------------utils--------------------------------------//
@@ -203,6 +185,10 @@ char	*ft_itoa(int n);
 
 int		find_type(char *str);
 void	flag_limitter(t_list *lst);
+int		check_ambigus_word2(t_list *tmp, t_env *env, t_pars *parsg);
+void	lst_jion(t_list *tmp, t_pars *pars);
+void	mark_spaces(t_list *lst);
+void	expand_join_infile(t_env *env, t_list **lst , t_pars *pars);
 void	expand(t_list *lst, t_env *env, t_pars *parsg);
 char	**ft_split(char *str);
 void	ft_lst_join(t_list **lst, t_pars *pars);

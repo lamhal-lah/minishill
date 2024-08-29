@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:20:38 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 04:45:44 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 10:45:02 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,16 @@ int	check_ambigus_word(t_list *lst, t_env *env, t_pars *parsg)
 
 int	check_ambigus(t_list *lst, t_env *env, t_pars *parsg)
 {
+	t_list	*tmp;
+
+	tmp = lst;
 	if (check_ambigus_one(lst, env, parsg))
 		return (1);
 	if (check_ambigus_var(lst, env, parsg))
 		return (1);
 	if (check_ambigus_word(lst, env, parsg))
+		return (1);
+	if (check_ambigus_word2(tmp, env, parsg))
 		return (1);
 	return (0);
 }
