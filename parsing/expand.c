@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:39:09 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/29 15:53:29 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ char	*expand_dquot(char *str, t_env *env, t_pars *parsg)
 			if (!str1)
 				ft_free_exit(parsg, "failed malloc\n");
 		}
+	}
+	if(!str1)
+	{
+		ft_strdup("");
+		if (!str1)
+				ft_free_exit(parsg, "failed malloc\n");
 	}
 	return (str1);
 }
