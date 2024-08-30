@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/30 18:49:13 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/31 00:31:15 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int ac, char **args, char **env)
 		(g_i == 2) && (exec.status = 1, g_i = 0);
 		if (ft_strlen(lol.line) > 0)
 			add_history(lol.line);
-		cmds = proccess_line(lol.line, exec.status, lol.env_lst);
+		cmds = proccess_line(lol.line, &exec.status, lol.env_lst);
 		ft_exit_now(cmds, &lol, i);
 		(cmds) && (i = execute(cmds, &lol.env_lst, 0, &exec));
 		ft_free_line_prompt(&lol, cmds, lst);

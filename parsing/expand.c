@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/27 23:22:29 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:08:50 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 	tmp = lst;
 	while (tmp)
 	{
+		if (tmp->type == red_in || tmp->type == red_out || tmp->type == append)
+			expand_join_infile(env, &lst, parsg);
 		if (tmp->type == var)
 			expand_var(tmp->content, env, &tmp, &lst);
 		if (tmp->type == dquot)
@@ -120,5 +122,6 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 		}
 		tmp && (tmp = tmp->next);
 	}
+	mark_spaces(tmp);
 	remove_empty_node(&lst);
 }

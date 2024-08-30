@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/30 10:43:08 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/31 00:35:15 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,10 +204,14 @@ char	*ft_itoa(int n);
 
 int		find_type(char *str);
 void	flag_limitter(t_list *lst);
+int		check_ambigus_word2(t_list *tmp, t_env *env, t_pars *parsg);
+void	lst_jion(t_list *tmp, t_pars *pars);
+void	mark_spaces(t_list *lst);
+void	expand_join_infile(t_env *env, t_list **lst, t_pars *pars);
 void	expand(t_list *lst, t_env *env, t_pars *parsg);
 char	**ft_split(char *str);
 void	ft_lst_join(t_list **lst, t_pars *pars);
-t_cmds	*proccess_line(char *line, int status, t_env *env);
+t_cmds	*proccess_line(char *line, int *status, t_env *env);
 int		check_syntaxe_error(t_list *lst);
 //t_env	*ft_env(char **env);
 void	remove_quotes(t_list *list, t_pars *parsg);

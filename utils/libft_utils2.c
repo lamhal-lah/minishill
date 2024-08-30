@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 23:19:19 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:08:18 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_free_exit(t_pars *parsg, char *str)
 	if (parsg->cmds)
 		ft_lstclear_cmd(&parsg->cmds);
 	if (parsg->line)
-		free(&parsg->line);
+		free(parsg->line);
 	ft_putstr_fd(str, 2);
 	free(parsg);
 	exit(EXIT_FAILURE);

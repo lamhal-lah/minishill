@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/28 07:12:37 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/31 00:30:48 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_pars	*alloc_intaillese(char **line, t_list **lst, t_env **env, int status)
 	return (parsg);
 }
 
-t_cmds	*proccess_line(char *line, int status, t_env *env)
+t_cmds	*proccess_line(char *line, int *status, t_env *env)
 {
 	t_list	*lst;
 	t_list	*node;
@@ -84,7 +84,7 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 
 	if (count_words(line) == 0)
 		return (NULL);
-	parsg = alloc_intaillese(&line, &lst, &env, status);
+	parsg = alloc_intaillese(&line, &lst, &env, *status);
 	lst = NULL;
 	node = NULL;
 	tokonisation(&lst, line, parsg);
@@ -101,6 +101,7 @@ t_cmds	*proccess_line(char *line, int status, t_env *env)
 	{
 		ft_lstclear(&lst);
 		free(parsg);
+		*status = 258;
 		return (NULL);
 	}
 	remove_quotes(lst, parsg);

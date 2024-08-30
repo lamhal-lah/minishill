@@ -3,29 +3,29 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
+#    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/08/29 17:10:53 by aboulakr         ###   ########.fr        #
+#    Updated: 2024/08/30 16:45:34 by lamhal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc -g  #-fsanitize=address 
+CC = cc -g  -fsanitize=address 
 CFLAGS = -Wall -Werror -Wextra 
 
 READLINEDIR = $(shell brew --prefix readline)
 LDFLAGS = -L$(READLINEDIR)/lib -lreadline
 CPPFLAGS = -I$(READLINEDIR)/include
 
-SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/export.c builtins/unset.c  builtins/exit.c \
-	builtins/utils.c builtins/utils2.c execution/execute.c execution/is_builtins.c execution/error.c\
-	execution/pipes.c execution/redirections.c execution/search_for_path.c parsing/ambgus.c \
-	parsing/ambgus_utils.c parsing/env.c parsing/expand.c parsing/expand_var.c parsing/get_args.c \
-	parsing/handl_cmd.c parsing/her_doc.c parsing/join_cmds.c parsing/parsing.c parsing/remove.c \
-	parsing/syntaxe_error.c parsing/token.c utils/ft_split.c utils/libft_utils.c utils/libft_utils2.c \
-	utils/linked_lst.c utils/linked_lst2.c utils/linked_lst3.c utils/ft_itoa.c minishell.c \
-	parsing/utils_pars.c
+SRC = builtins/cd_pwd.c builtins/echo.c builtins/env.c builtins/exit.c builtins/export.c \
+	builtins/unset.c builtins/utils.c builtins/utils2.c execution/error.c execution/execute.c \
+	execution/is_builtins.c execution/pipes.c execution/redirections.c execution/search_for_path.c \
+	parsing/ambgus.c parsing/ambgus_utils.c parsing/env.c parsing/expand.c parsing/expand_var.c \
+	parsing/get_args.c parsing/handl_cmd.c parsing/her_doc.c parsing/join_cmds.c \
+	parsing/join_redirection.c parsing/parsing.c parsing/remove.c parsing/syntaxe_error.c \
+	parsing/token.c parsing/utils_pars.c utils/ft_itoa.c utils/ft_split.c utils/libft_utils.c \
+	utils/libft_utils2.c utils/linked_lst.c utils/linked_lst2.c utils/linked_lst3.c minishell.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -47,6 +47,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean
-
-
-# syntaxe_error exit status

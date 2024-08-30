@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handl_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/30 17:02:40 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/31 00:32:57 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_list	*lstnew_red(t_list *lst_node, t_pars *pars)
 	}
 	else
 	{
+		(!lst_node->next->content) && (lst_node->next->content = ft_strdup(""));
 		str = ft_strdup(lst_node->next->content);
 		if (!str)
 			ft_free_exit(pars, "failed malloc\n");
