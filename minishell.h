@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:25:41 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/30 10:43:08 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ typedef struct s_line
 {
 	char			*line;
 	t_env			*env_lst;
-	struct termios	term;
+	struct termios	original_term;
+	struct termios	current_term;
 }	t_line;
 
 typedef struct s_execute
@@ -103,67 +104,67 @@ typedef struct s_pars
 
 //----------------------------------builtin-----------------------------------//
 
-int        ft_exit(char **av);
-int        check_if_builtin(t_cmds *cmds);
-int        ft_is_builtin(t_cmds *cmds, t_env **env);
-int        pwd(t_env *env);
-int        ft_print_env(t_env *env);
-t_env    *ft_env(char **env);
-int        cd(char **av, t_env *env);
-int        echo(char **av);
-int        unset(char **av, t_env **env, int i, int k);
-int        export(char **av, t_env **env, int i, t_export *exp);
-void    ft_print_export(char **av, t_env *env);
+int		ft_exit(char **av);
+int		check_if_builtin(t_cmds *cmds);
+int		ft_is_builtin(t_cmds *cmds, t_env **env);
+int		pwd(t_env *env);
+int		ft_print_env(t_env *env);
+t_env	*ft_env(char **env);
+int		cd(char **av, t_env *env);
+int		echo(char **av);
+int		unset(char **av, t_env **env, int i, int k);
+int		export(char **av, t_env **env, int i, t_export *exp);
+void	ft_print_export(char **av, t_env *env);
 
 //-----------------------------utils-builtin----------------------------------//
 
-int        chekc_string(char *str, char c);
-int        check_first_char(char *str);
-int        ft_check_key(char *str, char c);
-int        ft_fill(char **key, char **value, char *str);
-int        help_export(t_env **env, t_env **new, char *av);
+int		chekc_string(char *str, char c);
+int		check_first_char(char *str);
+int		ft_check_key(char *str, char c);
+int		ft_fill(char **key, char **value, char *str);
+int		help_export(t_env **env, t_env **new, char *av);
 
 //----------------------------execution---------------------------------------//
 
-void    ctrl_c(int signo);
-void    sig_handler2(int signo);
-void    sig_handler(int signo);
-int        red_app_ambg(t_cmds *cmds, t_list *red);
-int        red_in_out(t_cmds *cmds, t_list *red);
-int        handle_one_cmd(t_cmds *cmd, t_env **env);
-int        open_rediractions_parent(t_cmds *cmds);
-int        handle_rediractions(t_cmds *cmds);
-void    ft_check_redirections(t_cmds *cmd, int **fd, int i);
-void    ft_check_redirections_parent(t_cmds *cmd);
-char    **environement(t_env *env);
-int        execute(t_cmds *cmd, t_env **env, int i, t_execute *exec);
-void    middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
+void	ctrl_c(int signo);
+void	sig_handler2(int signo);
+void	sig_handler(int signo);
+int		red_app_ambg(t_cmds *cmds, t_list *red);
+int		red_in_out(t_cmds *cmds, t_list *red);
+int		handle_one_cmd(t_cmds *cmd, t_env **env);
+int		open_rediractions_parent(t_cmds *cmds);
+int		handle_rediractions(t_cmds *cmds);
+void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
+void	ft_check_redirections_parent(t_cmds *cmd);
+char	**environement(t_env *env);
+int		execute(t_cmds *cmd, t_env **env, int i, t_execute *exec);
+void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 
 //----------------------------------utils-execution---------------------------//
 
-int        fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
-char    **free_split_execution(char **split, size_t size);
-char    *ft_strndup(const char *s1, size_t n);
-char    *ft_getenv(char *name, t_env *env);
-t_env    *ft_lstnew_env(char *env);
-int        ft_isalpha(int c);
-int        ft_isdigit(int c);
-char    **free_split(char **split, size_t size);
-t_cmds    *ft_lstlast_cmd(t_cmds *lst);
-char    **ft_split_execution(char *str, char c);
-int        ft_lstsize(t_env *lst);
-char    *find_path(char *cmd, t_env *env);
-int        ft_cmdsize(t_cmds *cmd);
+int		fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
+char	**free_split_execution(char **split, size_t size);
+char	*ft_strndup(const char *s1, size_t n);
+char	*ft_getenv(char *name, t_env *env);
+t_env	*ft_lstnew_env(char *env);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+char	**free_split(char **split, size_t size);
+t_cmds	*ft_lstlast_cmd(t_cmds *lst);
+char	**ft_split_execution(char *str, char c);
+int		ft_lstsize(t_env *lst);
+char	*find_path(char *cmd, t_env *env);
+int		ft_cmdsize(t_cmds *cmd);
 
 //----------------------------------Erorr-execution---------------------------//
 
-void    error_management(t_cmds *cmds, t_env *env);
-void    slash_condition(t_cmds *cmds, t_env *env);
-void    ft_handle_dot(t_cmds *cmds, t_env *env);
-void    handle(t_cmds *cmds, t_env *env);
-void    print_error_and_exit(t_cmds *cmds, char *error_msg, int exit_code);
-void    handle_other_error(t_cmds *cmds, t_env *env);
-void    handle_execve_error(t_cmds *cmds, t_env *env);
+void	error_management(t_cmds *cmds, t_env *env);
+void	slash_condition(t_cmds *cmds, t_env *env);
+void	ft_handle_dot(t_cmds *cmds, t_env *env);
+void	handle(t_cmds *cmds, t_env *env);
+void	print_error_and_exit(t_cmds *cmds, char *error_msg, int exit_code);
+void	handle_other_error(t_cmds *cmds, t_env *env);
+void	handle_execve_error(t_cmds *cmds, t_env *env);
 
 //---------------------------------utils--------------------------------------//
 
@@ -203,10 +204,6 @@ char	*ft_itoa(int n);
 
 int		find_type(char *str);
 void	flag_limitter(t_list *lst);
-int		check_ambigus_word2(t_list *tmp, t_env *env, t_pars *parsg);
-void	lst_jion(t_list *tmp, t_pars *pars);
-void	mark_spaces(t_list *lst);
-void	expand_join_infile(t_env *env, t_list **lst , t_pars *pars);
 void	expand(t_list *lst, t_env *env, t_pars *parsg);
 char	**ft_split(char *str);
 void	ft_lst_join(t_list **lst, t_pars *pars);

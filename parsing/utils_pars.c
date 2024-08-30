@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 04:49:02 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:39:53 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/28 07:05:51 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,5 @@ void	flag_limitter(t_list *lst)
 			}
 		}
 		tmp && (tmp->type != herdoc) && (tmp = tmp->next);
-	}
-}
-
-void	mark_spaces(t_list *lst)
-{
-	t_list	*tmp;
-
-	tmp = lst;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->content, " ", 2))
-			tmp->type = space;
-		tmp = tmp->next;
 	}
 }

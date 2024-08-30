@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   her_doc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 09:36:27 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:14:36 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/30 18:28:28 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	handel_herdoc(char *str, int type, t_env *env, t_pars *pars)
 	char	*tmp;
 
 	fd = open("/tmp/tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	rl_catch_signals = 0;
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	line = readline(">");
 	while (1)
 	{
@@ -38,7 +40,7 @@ int	handel_herdoc(char *str, int type, t_env *env, t_pars *pars)
 		free(line);
 		line = readline(">");
 	}
-	return (free(line), fd);
+	return (rl_catch_signals = 0, free(line), fd);
 }
 
 int	process_herdoc(char	*str, int type, t_env *env, t_pars *pars)

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 18:12:27 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/18 17:54:28 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:04:10 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	echo(char **av)
 	while (av && av[i])
 	{
 		ft_putstr_fd(av[i], 1);
-		(av[i + 1]) && (printf(" "));
+		(av[i + 1]) && (ft_putstr_fd(" ", 1), 0);
 		i++;
 	}
 	(k == 0) && (printf("\n"));
