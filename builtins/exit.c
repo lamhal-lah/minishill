@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 19:59:22 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/30 16:32:21 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 00:44:05 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ long	ft_atoi(char *str)
 	long			res;
 	long			tmp;
 
-	(1) && (sign = 1, i = 0);
+	(1) && (sign = 1, i = 0, res = 0, tmp = 0);
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '-' || str[i] == '+')

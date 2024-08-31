@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:26:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:39:32 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 00:17:45 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	ft_lst_join_infile(t_list **lst, t_pars *pars)
 		lst_jion(tmp, pars);
 		ft_remove_node(&tmp->next);
 	}
-	tmp->type = word;
+	if (tmp->type != ambigus)
+		tmp->type = word;
 }
 
 void	expand_join_infile(t_env *env, t_list **lst, t_pars *pars)
@@ -38,7 +39,7 @@ void	expand_join_infile(t_env *env, t_list **lst, t_pars *pars)
 	while (tmp && tmp->type != space && tmp->type > 4)
 	{
 		if (tmp->type == var)
-			expand_var(tmp->content, env, &tmp, lst);
+			expand_var(tmp->content, env, &tmp, pars);
 		else if (tmp->type == dquot)
 		{
 			tmp_char = tmp->content;

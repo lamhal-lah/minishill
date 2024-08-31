@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/30 17:08:50 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/31 23:24:59 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 		if (tmp->type == red_in || tmp->type == red_out || tmp->type == append)
 			expand_join_infile(env, &lst, parsg);
 		if (tmp->type == var)
-			expand_var(tmp->content, env, &tmp, &lst);
+			expand_var(tmp->content, env, &tmp, parsg);
 		if (tmp->type == dquot)
 		{
 			str_tmp = tmp->content;
@@ -122,6 +122,7 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 		}
 		tmp && (tmp = tmp->next);
 	}
+	tmp = lst;
 	mark_spaces(tmp);
 	remove_empty_node(&lst);
 }

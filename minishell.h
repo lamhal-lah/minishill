@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/31 00:35:15 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/08/31 21:56:00 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void	ft_free(char **str, int n);
 int		count_lenght(t_list *node, t_env *env, t_pars *parsg);
 int		space_at_bgn(char *str, t_env *env, t_pars *parsg);
 int		space_at_end(char *str, t_env *env, t_pars *parsg);
-void	expand_var(char *var, t_env *env, t_list **node, t_list **lst);
+void	expand_var(char *var, t_env *env, t_list **node, t_pars *pars);
 void	remove_spaces(t_list **lst);
 char	**get_args(t_list **lst, t_pars *pars);
 

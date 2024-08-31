@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 04:49:02 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 13:39:53 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 00:31:40 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	mark_spaces(t_list *lst)
 	tmp = lst;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->content, " ", 2))
+		if (tmp->content && ft_strncmp(tmp->content, " ", 2) == 0)
 			tmp->type = space;
 		tmp = tmp->next;
 	}

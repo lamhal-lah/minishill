@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:53:57 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/29 12:27:58 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 00:32:28 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	expand_in_token(char *var, t_env *env, t_list **node, t_list **lst)
 	int		i;
 
 	strs = split_var(var, node, env, lst);
-	i = (ft_strncmp((*node)->content, " ", 2));
+	i = (ft_strncmp((*node)->content, " ", 2) != 0);
 	while (strs[i])
 	{
 		if (i != 0)
@@ -70,7 +70,7 @@ void	expand_in_token(char *var, t_env *env, t_list **node, t_list **lst)
 	ft_free(strs, i);
 }
 
-void	expand_var(char *var, t_env *env, t_list **node, t_list **lst)
+void	expand_var(char *var, t_env *env, t_list **node, t_pars *pars)
 {
 	char	*tmp;
 
@@ -83,5 +83,5 @@ void	expand_var(char *var, t_env *env, t_list **node, t_list **lst)
 		return ;
 	}
 	free(tmp);
-	expand_in_token(var, env, node, lst);
+	expand_in_token(var, env, node, &pars->lst);
 }
