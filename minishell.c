@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 01:42:27 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 06:23:06 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ static void	ft_free_line_prompt(t_line *lol, t_cmds *cmds, t_list *lst)
 	ft_lstclear(&lst);
 	cmds = NULL;
 	rl_catch_signals = 0;
+	if (g_i == 2)
+	{
+		lol->line = readline("minishell:  ");
+		tcsetattr(0, TCSANOW, &lol->original_term);
+	}
+	else
+	{
+		tcsetattr(0, TCSANOW, &lol->original_term);
+		lol->line = readline("minishell:  ");
+	}
 }
 
 int	main(int ac, char **args, char **env)
@@ -76,15 +86,5 @@ int	main(int ac, char **args, char **env)
 		ft_exit_now(cmds, &lol, i);
 		(cmds) && (i = execute(cmds, &lol.env_lst, 0, &exec));
 		ft_free_line_prompt(&lol, cmds, lst);
-		if (g_i == 2)
-		{
-			lol.line = readline("minishell:  ");
-			tcsetattr(0, TCSANOW, &lol.original_term);
-		}
-		else 
-		{
-			tcsetattr(0, TCSANOW, &lol.original_term);
-			lol.line = readline("minishell:  ");
-		}
 	}
 }

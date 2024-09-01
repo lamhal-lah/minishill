@@ -6,12 +6,12 @@
 #    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/09/01 00:07:26 by lamhal           ###   ########.fr        #
+#    Updated: 2024/09/01 03:07:10 by lamhal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc -g  #-fsanitize=address 
+CC = cc -g  -fsanitize=address 
 CFLAGS = -Wall -Werror -Wextra 
 
 READLINEDIR = $(shell brew --prefix readline)

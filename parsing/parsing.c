@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:45:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 00:31:55 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 06:23:35 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ t_pars	*alloc_intaillese(char **line, t_list **lst, t_env **env, int status)
 
 	parsg = malloc(sizeof(t_pars));
 	if (!parsg)
-		(free(line), ft_lstclear(lst), ft_lstclear_env(env),
-			ft_putstr_fd("failled malloc\2", 2), exit(1));
+		(free(*line), ft_lstclear(lst), ft_lstclear_env(env),
+			ft_putstr_fd("failled malloc\n", 2), exit(1));
 	parsg->line = *line;
 	parsg->lst = *lst;
 	parsg->env = *env;
@@ -82,12 +82,13 @@ t_cmds	*proccess_line(char *line, int *status, t_env *env)
 	t_cmds	*cmds;
 	t_pars	*parsg;
 
+	lst = NULL;
+	parsg = NULL;
 	if (count_words(line) == 0)
 		return (NULL);
-	parsg = alloc_intaillese(&line, &lst, &env, *status);
-	lst = NULL;
 	node = NULL;
 	tokonisation(&lst, line, parsg);
+	parsg = alloc_intaillese(&line, &lst, &env, *status);
 	if (check_syntaxe_error(lst))
 		return (ft_lstclear(&lst), free(parsg), *status = 258, NULL);
 	remove_quotes(lst, parsg);
@@ -100,83 +101,3 @@ t_cmds	*proccess_line(char *line, int *status, t_env *env)
 	free(parsg);
 	return (cmds);
 }
-
-// t_cmds	*proccess_line(char *line, int *status, t_env *env)
-// {
-// 	t_list	*lst;
-// 	t_list	*node;
-// 	t_cmds	*cmds;
-// 	t_pars	*parsg;
-
-// 	if (count_words(line) == 0)
-// 		return (NULL);
-// 	parsg = alloc_intaillese(&line, &lst, &env, *status);
-// 	lst = NULL;
-// 	node = NULL;
-// 	tokonisation(&lst, line, parsg);
-// 	printf("**********************************************\n");
-// 	t_list *tmp;
-// 	tmp = lst;
-// 	while (tmp)
-// 	{
-// 		printf("%s %d\n", tmp->content, tmp->type);
-// 		tmp = tmp->next;
-// 	}
-// 	printf("**********************************************\n");
-// 	if (check_syntaxe_error(lst))
-// 	{
-// 		ft_lstclear(&lst);
-// 		free(parsg);
-// 		*status = 258;
-// 		return (NULL);
-// 	}
-// 	remove_quotes(lst, parsg);
-// 	flag_limitter(lst);
-// 	flag_ambigus(lst, env, parsg);
-// 	expand(lst, env, parsg);
-// 	tmp = lst;
-// 	while (tmp)
-// 	{
-// 		printf("%s %d\n", tmp->content, tmp->type);
-// 		tmp = tmp->next;
-// 	}
-// 	printf("**********************************************\n");
-// 	ft_lst_join(&lst, parsg);//
-// 	tmp = lst;
-// 	while (tmp)
-// 	{
-// 		printf("%s %d\n", tmp->content, tmp->type);
-// 		tmp = tmp->next;
-// 	}
-// 	printf("+++++++++++++++++++++++++++++++++++++++++++++++\n");
-// 	cmds = list_cmds(lst, parsg);//
-// 	int	i;
-// 	t_cmds	*tmp1;
-// 	t_list	*tmp2;
-// 	tmp1 = cmds;
-// 	while (tmp1)
-// 	{
-// 		i = 0;
-// 		if (!tmp1->args)
-// 			printf("args = NULL\n");
-// 			while(tmp1 && tmp1->args && tmp1->args[i])
-// 		{
-// 			printf("args[%d] = %s\n", i, tmp1->args[i]);
-// 			i++;
-// 		}
-// 		tmp2 = tmp1->red;
-// 		if (!tmp2)
-// 			printf("red = NULL\n");
-// 		while (tmp2)
-// 		{
-// 			printf("%s-- %d\n", tmp2->content, tmp2->type);
-// 			tmp2 = tmp2->next;
-// 		}
-// 		printf("------------------\n");
-// 		tmp1 = tmp1->next;
-// 	}
-// 	ft_lstclear(&lst);//
-// 	free(parsg);
-// 	//system("leaks minishell");
-// 	return (cmds);
-// }
