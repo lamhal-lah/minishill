@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/31 23:24:59 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 06:10:12 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 	while (tmp)
 	{
 		if (tmp->type == red_in || tmp->type == red_out || tmp->type == append)
-			expand_join_infile(env, &lst, parsg);
+			expand_join_infile(env, &tmp, parsg);
 		if (tmp->type == var)
 			expand_var(tmp->content, env, &tmp, parsg);
 		if (tmp->type == dquot)

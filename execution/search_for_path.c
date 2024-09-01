@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 01:16:05 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:37:29 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ char	**environement(t_env *env)
 	i = 0;
 	tmp = env;
 	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
-	if (!envp)
-		return (perror("malloc"), exit(1), NULL);
 	while (tmp)
 	{
 		envp[i] = ft_strjoin(tmp->key, "=");

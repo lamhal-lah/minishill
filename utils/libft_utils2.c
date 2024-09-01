@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:05:34 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 01:34:02 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 01:24:48 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	txt = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!txt)
-		return (write(2, "allocation failed\n", 19), NULL);
+		return (NULL);
 	while (s1[j])
 		txt[i++] = s1[j++];
 	j = 0;
