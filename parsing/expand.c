@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 18:58:19 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 06:10:12 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/03 10:08:20 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*expand_var_dqout(char *varaible, t_env *env, t_pars *pars)
 {
 	char	*tmp;
 
-	if (varaible && !varaible[1])
+	if (varaible && !varaible[0])
 		return (varaible);
 	tmp = varaible;
 	varaible = ft_getenv(varaible + 1, env);
@@ -109,8 +109,6 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->type == red_in || tmp->type == red_out || tmp->type == append)
-			expand_join_infile(env, &tmp, parsg);
 		if (tmp->type == var)
 			expand_var(tmp->content, env, &tmp, parsg);
 		if (tmp->type == dquot)
@@ -120,6 +118,8 @@ void	expand(t_list *lst, t_env *env, t_pars *parsg)
 			free(str_tmp);
 			str_tmp = NULL;
 		}
+		if (tmp->type == red_in || tmp->type == red_out || tmp->type == append)
+			expand_join_infile(env, &tmp, parsg);
 		tmp && (tmp = tmp->next);
 	}
 	tmp = lst;

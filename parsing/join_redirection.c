@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_redirection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:26:24 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 06:10:53 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/02 01:17:30 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ void	expand_join_infile(t_env *env, t_list **lst, t_pars *pars)
 		}
 		tmp = tmp->next;
 	}
-	*lst = tmp; 
+	*lst = tmp;
 	ft_lst_join_infile(&tmp1, pars);
 }

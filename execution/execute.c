@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_bonus.c                                    :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/28 07:00:43 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 23:53:38 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,17 @@ void	slash_condition(t_cmds *cmds, t_env *env)
 {
 	struct stat	buf;
 
+	if (stat(cmds->args[0], &buf) == 0)
+	{
+		if (S_ISDIR(buf.st_mode))
+			(1) && (ft_putstr_fd("minishell: ", 2),
+				ft_putstr_fd(cmds->args[0], 2),
+				ft_putstr_fd(": is a directory\n", 2), exit(126), 0);
+	}
 	if (execve(cmds->args[0], cmds->args, environement(env)) < 0)
 	{
-		if (stat(cmds->args[0], &buf) == 0)
-		{
-			if (S_ISDIR(buf.st_mode))
-				(1) && (ft_putstr_fd("minishell: ", 2),
-					ft_putstr_fd(cmds->args[0], 2),
-					ft_putstr_fd(": is a directory\n", 2), exit(126), 0);
-		}
-		else if (errno == 2)
+		accessebility(cmds);
+		if (errno == 2)
 			(1) && (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmds->args[0],
 				2), ft_putstr_fd(": No such file or directory\n",
 					2), exit(127), 0);

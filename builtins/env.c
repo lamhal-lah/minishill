@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/25 18:12:47 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:56:27 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	prepare(t_execute *exec)
 {
 	(1) && (exec->fake_in = dup(0), exec->fake_out = dup(1), exec->status = 0);
+	if (exec->fake_in < 0 || exec->fake_out < 0)
+		return (perror("dup"), exit(1), 1);
 	return (0);
 }
 

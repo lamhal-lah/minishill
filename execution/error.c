@@ -6,11 +6,22 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:45:24 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/28 19:04:32 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:37:21 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	accessebility(t_cmds *cmds)
+{
+	if (access(cmds->args[0], X_OK) == -1)
+	{
+		if (errno == 13)
+			print_error_and_exit(cmds, "Permission denied\n", 126);
+		else
+			print_error_and_exit(cmds, "command not found\n", 127);
+	}
+}
 
 void	handle(t_cmds *cmds, t_env *env)
 {
@@ -20,7 +31,8 @@ void	handle(t_cmds *cmds, t_env *env)
 				cmds->args, environement(env)) == -1)
 			handle_execve_error(cmds, env);
 	}
-	else if (!find_path(cmds->args[0], env)
+	accessebility(cmds);
+	if (!find_path(cmds->args[0], env)
 		&& access(cmds->args[0], X_OK) == -1)
 		print_error_and_exit(cmds, "command not found\n", 127);
 }

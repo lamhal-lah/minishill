@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:17:46 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/25 21:31:38 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:58:54 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	ft_fill(char **key, char **value, char *str)
 			return (1);
 		*value = NULL;
 	}
-	if (ft_check_key(*key, '+') > 1 || !check_first_char(*key))
+	if ((ft_check_key(*key, '+') > 1 || !check_first_char(*key))
+		|| (ft_strchr(*key, '+') && !ft_strchr(str, '=')))
 		return (ft_putstr_fd("minishell: export: `", 2), ft_putstr_fd(str, 2),
 			ft_putstr_fd("': not a valid identifier\n", 2), free(*key),
 			free(*value), 1);
@@ -73,9 +74,6 @@ int	ft_if(char *str, char **new_key, char **new_value, t_env **env)
 		(1) && ((*env)->value = ft_strjoin_free((*env)->value, *new_value));
 		return ((*env)->printed = 1, 0);
 	}
-	else if (!ft_strchr(str, '=') && ft_strchr(*new_key, '+'))
-		return (ft_putstr_fd("minishell: export: `", 2), ft_putstr_fd(str,
-				2), ft_putstr_fd("': not a valid identifier\n", 2), 0);
 	else if (!ft_strchr(str, '=')
 		&& !ft_strncmp_ex(*new_key, (*env)->key, ft_strlen((*env)->key)))
 	{
@@ -95,13 +93,12 @@ int	export(char **av, t_env **env, int i, t_export *exp)
 	{
 		(1) && (exp->tmp = *env, exp->new_key = NULL, exp->new_value = NULL);
 		if (ft_fill(&exp->new_key, &exp->new_value, av[i]))
-			exp->new_key = NULL;
+			(1) && (k = 1, exp->new_key = NULL);
 		else
 		{
 			while (exp->tmp && ft_if(av[i],
 					&exp->new_key, &exp->new_value, &exp->tmp))
 				exp->tmp = exp->tmp->next;
-			(exp->tmp != NULL) && (k = 1);
 			if (!exp->tmp)
 			{
 				if (help_export(env, &exp->new, av[i]))

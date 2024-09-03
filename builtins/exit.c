@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 19:59:22 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 00:44:05 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/01 21:07:56 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	ft_exit(char **av)
 				("minishell: exit: too many arguments\n", 2), 1);
 		else if (i == 2 && !check_digit(av[1]))
 		{
-			printf("exit\n");
+			ft_putstr_fd("exit\n", 1);
 			exit_code = (unsigned char)ft_atoi(av[1]);
 			exit(exit_code);
 		}

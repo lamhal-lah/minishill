@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 00:56:21 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/03 10:24:52 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef enum e_type
 	limtr,
 	limtr_qt,
 	ambigus,
-	nofile
+	nofile,
+	exprt
 }	t_type;
 
 typedef struct s_list
@@ -127,15 +128,12 @@ int		help_export(t_env **env, t_env **new, char *av);
 //----------------------------execution---------------------------------------//
 
 void	ctrl_c(int signo);
-void	sig_handler2(int signo);
 void	sig_handler(int signo);
 int		red_app_ambg(t_cmds *cmds, t_list *red);
 int		red_in_out(t_cmds *cmds, t_list *red);
 int		handle_one_cmd(t_cmds *cmd, t_env **env);
 int		open_rediractions_parent(t_cmds *cmds);
-int		handle_rediractions(t_cmds *cmds);
 void	ft_check_redirections(t_cmds *cmd, int **fd, int i);
-void	ft_check_redirections_parent(t_cmds *cmd);
 char	**environement(t_env *env);
 int		execute(t_cmds *cmd, t_env **env, int i, t_execute *exec);
 void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
@@ -143,13 +141,11 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 //----------------------------------utils-execution---------------------------//
 
 int		fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
-char	**free_split_execution(char **split, size_t size);
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_getenv(char *name, t_env *env);
 t_env	*ft_lstnew_env(char *env);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
-char	**free_split(char **split, size_t size);
 t_cmds	*ft_lstlast_cmd(t_cmds *lst);
 char	**ft_split_execution(char *str, char c);
 int		ft_lstsize(t_env *lst);
@@ -160,6 +156,7 @@ int		ft_cmdsize(t_cmds *cmd);
 
 void	error_management(t_cmds *cmds, t_env *env);
 void	slash_condition(t_cmds *cmds, t_env *env);
+void	accessebility(t_cmds *cmds);
 void	ft_handle_dot(t_cmds *cmds, t_env *env);
 void	handle(t_cmds *cmds, t_env *env);
 void	print_error_and_exit(t_cmds *cmds, char *error_msg, int exit_code);
@@ -175,18 +172,15 @@ size_t	ft_split_size(char **split);
 t_list	*ft_lstnew(char *content);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstadd_front(t_list **l, t_list *new);
 void	ft_remove_node(t_list **lst);
 void	ft_lstclear(t_list **lst);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-//t_env	*ft_lstnew_env(char *env);
 t_env	*ft_lstlast_env(t_env *lst);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 void	ft_lstadd_midl(t_list **lst, t_list *new);
-void	ft_lstadd_front_env(t_env **l, t_env *new);
 void	ft_lstclear_env(t_env **lst);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_free(char *str1, char *str2);
@@ -197,7 +191,7 @@ void	ft_lstclear_cmd(t_cmds **lst);
 t_cmds	*list_cmds(t_list *lst, t_pars *pars);
 int		count_words(char *str);
 int		open_rediractions(t_cmds *cmd);
-void	ft_free_exit(t_pars *parsg, char *str);//
+void	ft_free_exit(t_pars *parsg, char *str);
 char	*ft_itoa(int n);
 
 //----------------------------------parsing-----------------------------------//
@@ -213,9 +207,7 @@ char	**ft_split(char *str);
 void	ft_lst_join(t_list **lst, t_pars *pars);
 t_cmds	*proccess_line(char *line, int *status, t_env *env);
 int		check_syntaxe_error(t_list *lst);
-//t_env	*ft_env(char **env);
 void	remove_quotes(t_list *list, t_pars *parsg);
-//char	*ft_getenv(char *key, t_env *env);
 void	*get_token(char *line, int *i);
 void	flag_ambigus(t_list *lst, t_env *env, t_pars *parsg);
 char	*expand_dquot(char *str, t_env *env, t_pars *parsg);

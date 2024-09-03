@@ -6,7 +6,7 @@
 /*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/01 05:04:05 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/03 10:16:02 by lamhal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ t_list	*lstnew_red(t_list *lst_node, t_pars *pars)
 	node = NULL;
 	if (lst_node->type == herdoc)
 	{
-		if (g_i == 3)
-			return (ft_lstclear(&pars->lst), pars->lst = NULL, NULL);
+		// if (g_i == 3)
+		// 	return (ft_lstclear(&pars->lst), pars->lst = NULL, NULL);
 		node = ft_lstnew(NULL);
 		if (!node)
 			ft_free_exit(pars, "failed malloc\n");
-		node->fd = process_herdoc(lst_node->next->content,
+		if (g_i != 3)
+			node->fd = process_herdoc(lst_node->next->content,
 				lst_node->next->type, pars->env, pars);
 	}
 	else
@@ -54,7 +55,7 @@ t_list	*handll_red(t_list *lst, t_pars *pars)
 		if (tmp->type > 0 && tmp->type < 5)
 		{
 			node = lstnew_red(tmp, pars);
-			if (tmp->next && tmp->next->type == ambigus)
+			if (tmp && tmp->next && tmp->next->type == ambigus)
 				node->type = ambigus;
 			if (tmp->next && tmp->type != herdoc
 				&& tmp->next->content[0] == '\0')

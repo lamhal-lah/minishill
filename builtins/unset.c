@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:23:54 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/29 17:01:39 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:42:37 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static int	ft_check_first_char(char *str)
 	i = 1;
 	if (ft_strncmp(str, "_", 2) == 0)
 		return (2);
-	if (!ft_isalpha(str[0]))
+	if (!ft_isalpha(str[0]) && str[0] != '_')
 		return (0);
 	while (str[i])
 	{
-		if (ft_isalpha(str[i]) || ft_isdigit(str[i]))
+		if (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_')
 			i++;
 		else
 			return (0);

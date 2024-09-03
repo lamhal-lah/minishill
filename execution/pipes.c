@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 15:06:53 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/08/30 17:19:25 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/02 01:23:13 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ int	wait_pids(t_cmds *cmd, int **fd, int *pid, t_execute *exec)
 
 int	btn(t_execute *exec)
 {
-	dup2(exec->fake_in, 0);
-	dup2(exec->fake_out, 1);
+	if (dup2(exec->fake_in, 0) < 0)
+		return (perror("dup2"), exit(1), 0);
+	if (dup2(exec->fake_out, 1) < 0)
+		return (perror("dup2"), exit(1), 0);
 	close(exec->fake_in);
 	close(exec->fake_out);
 	return (0);
@@ -93,19 +95,19 @@ int	execute(t_cmds *cmd, t_env **env, int i, t_execute *exec)
 	t_cmds	*tmp;
 	int		*pid;
 
-	(1) && (i = 0, tmp = cmd);
-	signal(SIGINT, ctrl_c);
+	(1) && (i = 0, tmp = cmd, signal(SIGINT, ctrl_c));
 	(prepare(exec) || fill_pipes(cmd, &fd, i, &pid))
 	&& (free_pipes(&cmd, &fd, &pid), exit(1), 0);
 	if (ft_cmdsize(tmp) == 1 && check_if_builtin(tmp))
-		return (exec->status = handle_one_cmd(tmp, env), free_pipes(&cmd,
-				&fd, &pid), btn(exec), exec->status);
+		return (exec->status = handle_one_cmd(tmp, env), signal(SIGINT,
+				sig_handler), free_pipes(&cmd, &fd, &pid),
+			btn(exec), exec->status);
 	while (tmp)
 	{
 		(1) && (signal(SIGQUIT, SIG_IGN), pid[i] = fork());
 		(pid[i] < 0) && (perror(""), free_pipes(&cmd, &fd, &pid), exit(1), 0);
 		if (pid[i] == 0)
-			(1) && (rl_catch_signals = 1, signal(SIGQUIT, SIG_DFL),
+			(1) && (signal(SIGQUIT, SIG_DFL),
 				signal(SIGINT, SIG_DFL), middle_commands(tmp, *env, fd, i), 0);
 		else
 			if (i < ft_cmdsize(cmd) - 1)
