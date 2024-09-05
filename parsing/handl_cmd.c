@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handl_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:49:15 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/03 10:16:02 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/05 11:44:19 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ t_list	*lstnew_red(t_list *lst_node, t_pars *pars)
 	node = NULL;
 	if (lst_node->type == herdoc)
 	{
-		// if (g_i == 3)
-		// 	return (ft_lstclear(&pars->lst), pars->lst = NULL, NULL);
 		node = ft_lstnew(NULL);
 		if (!node)
 			ft_free_exit(pars, "failed malloc\n");
 		if (g_i != 3)
 			node->fd = process_herdoc(lst_node->next->content,
-				lst_node->next->type, pars->env, pars);
+					lst_node->next->type, pars->env, pars);
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 04:49:02 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/03 11:06:37 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/05 11:45:16 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	find_type(char *str)
 		return (7);
 	else if (str[0] == ' ')
 		return (8);
-	else if (ft_strncmp(str, "export", 7) == 0)
-		return (exprt);
 	return (9);
 }
 
@@ -85,7 +83,7 @@ void	mark_spaces(t_list *lst)
 	while (tmp)
 	{
 		if (tmp->content && tmp->type == word
-				&& ft_strncmp(tmp->content, " ", 2) == 0)
+			&& ft_strncmp(tmp->content, " ", 2) == 0)
 			tmp->type = space;
 		tmp = tmp->next;
 	}

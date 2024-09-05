@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 13:16:44 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 21:22:39 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:31:53 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_if_builtin(t_cmds *cmds)
 	return (0);
 }
 
-int	ft_is_builtin(t_cmds *cmds, t_env **env)
+int	ft_is_builtin(t_cmds *cmds, t_env **env, int factor)
 {
 	t_export	tmp;
 	int			k;
@@ -58,7 +58,7 @@ int	ft_is_builtin(t_cmds *cmds, t_env **env)
 		else if (ft_strncmp(cmds->args[0], "env", 4) == 0)
 			k = ft_print_env(*env);
 		else if (ft_strncmp(cmds->args[0], "exit", 5) == 0)
-			k = ft_exit(cmds->args);
+			k = ft_exit(cmds->args, factor);
 		else
 			return (-1);
 	}

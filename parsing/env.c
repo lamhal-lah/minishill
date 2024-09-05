@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:53:54 by lamhal            #+#    #+#             */
-/*   Updated: 2024/08/21 16:03:08 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/05 10:44:52 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_env	*ft_env(char **env)
 			ft_lstadd_back_env(&head, tmp);
 		i++;
 	}
+	shlvl(&head);
 	return (head);
 }

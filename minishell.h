@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:43:52 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/03 10:24:52 by lamhal           ###   ########.fr       */
+/*   Updated: 2024/09/05 11:44:49 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ typedef enum e_type
 	limtr,
 	limtr_qt,
 	ambigus,
-	nofile,
-	exprt
+	nofile
 }	t_type;
 
 typedef struct s_list
@@ -105,9 +104,9 @@ typedef struct s_pars
 
 //----------------------------------builtin-----------------------------------//
 
-int		ft_exit(char **av);
+int		ft_exit(char **av, int factor);
 int		check_if_builtin(t_cmds *cmds);
-int		ft_is_builtin(t_cmds *cmds, t_env **env);
+int		ft_is_builtin(t_cmds *cmds, t_env **env, int factor);
 int		pwd(t_env *env);
 int		ft_print_env(t_env *env);
 t_env	*ft_env(char **env);
@@ -119,6 +118,8 @@ void	ft_print_export(char **av, t_env *env);
 
 //-----------------------------utils-builtin----------------------------------//
 
+void	shlvl(t_env **env);
+void	under_score(t_cmds *cmds, t_env **env);
 int		chekc_string(char *str, char c);
 int		check_first_char(char *str);
 int		ft_check_key(char *str, char c);
@@ -140,6 +141,7 @@ void	middle_commands(t_cmds *cmd, t_env *env, int **fd, int i);
 
 //----------------------------------utils-execution---------------------------//
 
+void	kil(int *pid, int i, int **fd);
 int		fill_pipes(t_cmds *cmd, int ***fd, int i, int **pid);
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_getenv(char *name, t_env *env);
@@ -166,6 +168,7 @@ void	handle_execve_error(t_cmds *cmds, t_env *env);
 //---------------------------------utils--------------------------------------//
 
 void	handle_fds(t_cmds *cmd);
+long	ft_atoi(char *str);
 int		prepare(t_execute *exec);
 size_t	ft_strlen(const	char *str);
 size_t	ft_split_size(char **split);

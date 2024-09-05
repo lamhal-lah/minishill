@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 19:59:22 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 21:07:56 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/04 22:47:58 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ctrl_c(int signo)
 {
 	(void)signo;
-	printf("\n");
+	ft_putstr_fd("\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
@@ -79,7 +79,7 @@ int	check_digit(char *str)
 	return (0);
 }
 
-int	ft_exit(char **av)
+int	ft_exit(char **av, int factor)
 {
 	int		exit_code;
 	int		i;
@@ -89,7 +89,7 @@ int	ft_exit(char **av)
 		i++;
 	if (av[1] && av[1][0] != '#')
 	{
-		if (check_digit(av[1]))
+		if (check_digit(av[1]) || ft_strlen(av[1]) == 0)
 			(1) && (ft_putstr_fd("minishell: exit: ", 2), ft_putstr_fd(av[1],
 			2), ft_putstr_fd(": numeric argument required\n", 2), exit(255), 0);
 		else if (i > 2)
@@ -97,7 +97,8 @@ int	ft_exit(char **av)
 				("minishell: exit: too many arguments\n", 2), 1);
 		else if (i == 2 && !check_digit(av[1]))
 		{
-			ft_putstr_fd("exit\n", 1);
+			if (factor == 1)
+				ft_putstr_fd("exit\n", 2);
 			exit_code = (unsigned char)ft_atoi(av[1]);
 			exit(exit_code);
 		}

@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 21:16:40 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 01:16:05 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:32:57 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	error_management(t_cmds *cmds, t_env *env)
 			handle(cmds, env);
 	}
 	else
-		(check_if_builtin(cmds)) && (exit(ft_is_builtin(cmds, &env)), 0);
+		(check_if_builtin(cmds)) && (exit(ft_is_builtin(cmds, &env, 3)), 0);
 	(ft_strchr(cmds->args[0], '/')) && (slash_condition(cmds, env), 0);
 }
 

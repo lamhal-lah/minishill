@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 18:54:55 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/01 23:53:38 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:41:16 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	handle_one_cmd(t_cmds *cmd, t_env **env)
 		close(cmd->fdin);
 	if (cmd->fdout != 1)
 		close(cmd->fdout);
-	return (ft_is_builtin(cmd, env));
+	return (ft_is_builtin(cmd, env, 1));
 }
 
 int	open_rediractions_parent(t_cmds *cmds)

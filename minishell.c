@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:55:22 by lamhal            #+#    #+#             */
-/*   Updated: 2024/09/02 01:00:14 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:44:44 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,32 @@ static void	initialize(t_line *lol, t_execute *exec, char **env)
 {
 	g_i = 0;
 	rl_catch_signals = 0;
+	exec->status = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	lol->line = readline("minishell:  ");
 	tcgetattr(0, &lol->original_term);
 	lol->env_lst = ft_env(env);
-	exec->status = 0;
 }
 
-static void	ft_exit_now(t_cmds *cmds, t_line *lol, int i)
+static void	ft_exit_now(t_cmds *cmds, int i)
 {
-	if (cmds && cmds->args && cmds->args[0] && ft_strlen(lol->line) == 4
-		&& !ft_strncmp(cmds->args[0], "exit", 5) && cmds->args[1] == NULL)
+	if (cmds && cmds->args && cmds->args[0] && !ft_strncmp(cmds->args[0],
+			"exit", 5) && cmds->args[1] == NULL
+		&& cmds->next == NULL)
+	{
+		ft_putstr_fd("exit\n", 2);
+		if (g_i == 2)
+		{
+			g_i = 0;
+			exit(1);
+		}
 		exit(i);
+	}
 }
 
-static void	ft_free_line_prompt(t_line *lol, t_cmds *cmds, t_list *lst)
+void	ft_free_line_prompt(t_line *lol, t_cmds *cmds,
+	t_list *lst, t_execute exec)
 {
 	free(lol->line);
 	ft_lstclear(&lst);
@@ -64,6 +74,7 @@ static void	ft_free_line_prompt(t_line *lol, t_cmds *cmds, t_list *lst)
 		tcsetattr(0, TCSANOW, &lol->original_term);
 		lol->line = readline("minishell:  ");
 	}
+	(g_i == 2) && (exec.status = 1);
 }
 
 int	main(int ac, char **args, char **env)
@@ -83,9 +94,10 @@ int	main(int ac, char **args, char **env)
 		if (ft_strlen(lol.line) > 0)
 			add_history(lol.line);
 		cmds = proccess_line(lol.line, &exec.status, lol.env_lst);
-		ft_exit_now(cmds, &lol, i);
+		ft_exit_now(cmds, i);
 		(cmds) && (i = execute(cmds, &lol.env_lst, 0, &exec));
-		ft_free_line_prompt(&lol, cmds, lst);
+		ft_free_line_prompt(&lol, cmds, lst, exec);
 	}
+	(g_i == 2) && (exec.status = 1, i = 1);
 	exit(i);
 }

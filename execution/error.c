@@ -6,7 +6,7 @@
 /*   By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:45:24 by aboulakr          #+#    #+#             */
-/*   Updated: 2024/09/02 00:37:21 by aboulakr         ###   ########.fr       */
+/*   Updated: 2024/09/05 10:55:47 by aboulakr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	accessebility(t_cmds *cmds)
 	{
 		if (errno == 13)
 			print_error_and_exit(cmds, "Permission denied\n", 126);
-		else
-			print_error_and_exit(cmds, "command not found\n", 127);
 	}
 }
 

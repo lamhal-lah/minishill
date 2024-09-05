@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lamhal <lamhal@student.42.fr>              +#+  +:+       +#+         #
+#    By: aboulakr <aboulakr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/02 18:52:56 by lamhal            #+#    #+#              #
-#    Updated: 2024/09/02 06:51:00 by lamhal           ###   ########.fr        #
+#    Updated: 2024/09/05 11:08:16 by aboulakr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = cc -g  -fsanitize=address 
+CC = cc -g  #-fsanitize=address 
 CFLAGS = -Wall -Werror -Wextra 
 
 READLINEDIR = $(shell brew --prefix readline)
